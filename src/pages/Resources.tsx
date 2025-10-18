@@ -32,13 +32,13 @@ const Resources = () => {
       title: "Mental Health HelpLine",
       description: "Professional mental health services and counseling",
       contact: "888-(639-5433)",
-      website: "mentalhealthja.org",
+      website: "https://www.moh.gov.jm/mental-health-unit/",
     },
     {
-      title: "University Hospital Psychiatry",
-      description: "Psychiatric services and emergency care",
-      contact: "876-927-1620",
-      website: "uhwi.gov.jm",
+      title: "U-Matter",
+      description: "Counseling Services",
+      contact: "876-838 - 4897",
+      website: "https://jamaica.ureport.in",
     },
   ];
 
