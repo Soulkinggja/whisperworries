@@ -21,7 +21,7 @@ const Resources = () => {
     },
     {
       name: "Bellevue Crisis Line",
-      number: "1-888-991-4444",
+      number: "1-876-928-1380-9",
       description: "24/7 Mental Health Crisis Support",
       icon: <MessageCircle className="w-6 h-6" />,
     },
@@ -29,16 +29,10 @@ const Resources = () => {
 
   const supportResources = [
     {
-      title: "Mental Health Jamaica",
+      title: "Mental Health HelpLine",
       description: "Professional mental health services and counseling",
-      contact: "876-XXX-XXXX",
+      contact: "888-(639-5433)",
       website: "mentalhealthja.org",
-    },
-    {
-      title: "Caribbean Centre for Mental Health",
-      description: "Community-based mental health support",
-      contact: "876-XXX-XXXX",
-      website: "ccmh.org.jm",
     },
     {
       title: "University Hospital Psychiatry",
@@ -69,11 +63,7 @@ const Resources = () => {
   return (
     <div className="min-h-screen bg-gradient-calm">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Button
-          variant="ghost"
-          onClick={() => navigate(-1)}
-          className="mb-6"
-        >
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
@@ -84,9 +74,7 @@ const Resources = () => {
             <h1 className="text-4xl md:text-5xl font-bold">
               <span className="gradient-text">Mental Health Resources</span>
             </h1>
-            <p className="text-xl text-muted-foreground">
-              You're not alone. Help is available 24/7.
-            </p>
+            <p className="text-xl text-muted-foreground">You're not alone. Help is available 24/7.</p>
           </div>
 
           {/* Emergency Contacts */}
@@ -102,20 +90,14 @@ const Resources = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               {emergencyContacts.map((contact, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-4 p-4 bg-card rounded-lg shadow-[var(--shadow-soft)]"
-                >
+                <div key={index} className="flex items-start gap-4 p-4 bg-card rounded-lg shadow-[var(--shadow-soft)]">
                   <div className="w-12 h-12 bg-destructive/20 rounded-full flex items-center justify-center flex-shrink-0 text-destructive">
                     {contact.icon}
                   </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-lg">{contact.name}</h3>
                     <p className="text-sm text-muted-foreground mb-2">{contact.description}</p>
-                    <a
-                      href={`tel:${contact.number}`}
-                      className="text-2xl font-bold text-destructive hover:underline"
-                    >
+                    <a href={`tel:${contact.number}`} className="text-2xl font-bold text-destructive hover:underline">
                       {contact.number}
                     </a>
                   </div>
@@ -128,16 +110,11 @@ const Resources = () => {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Professional Support Services</CardTitle>
-              <CardDescription>
-                Connect with mental health professionals and organizations
-              </CardDescription>
+              <CardDescription>Connect with mental health professionals and organizations</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {supportResources.map((resource, index) => (
-                <div
-                  key={index}
-                  className="p-4 bg-muted rounded-lg space-y-2"
-                >
+                <div key={index} className="p-4 bg-muted rounded-lg space-y-2">
                   <h3 className="font-bold text-lg">{resource.title}</h3>
                   <p className="text-sm text-muted-foreground">{resource.description}</p>
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
@@ -173,10 +150,7 @@ const Resources = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               {selfCareResources.map((resource, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-4 p-4 bg-muted rounded-lg"
-                >
+                <div key={index} className="flex items-start gap-4 p-4 bg-muted rounded-lg">
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 text-primary">
                     {resource.icon}
                   </div>
@@ -196,11 +170,7 @@ const Resources = () => {
               <p className="text-lg">
                 Remember: Seeking help is a sign of strength, not weakness. Your mental health matters.
               </p>
-              <Button
-                variant="default"
-                size="lg"
-                onClick={() => navigate("/journal")}
-              >
+              <Button variant="default" size="lg" onClick={() => navigate("/journal")}>
                 Return to Journal
               </Button>
             </CardContent>
