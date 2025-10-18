@@ -35,6 +35,87 @@ export type Database = {
         }
         Relationships: []
       }
+      friend_connections: {
+        Row: {
+          created_at: string
+          id: string
+          user_id_1: string
+          user_id_2: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id_1: string
+          user_id_2: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id_1?: string
+          user_id_2?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friend_connections_user_id_1_fkey"
+            columns: ["user_id_1"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "friend_connections_user_id_2_fkey"
+            columns: ["user_id_2"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      friend_invitations: {
+        Row: {
+          created_at: string
+          id: string
+          receiver_email: string
+          receiver_id: string | null
+          sender_id: string
+          status: Database["public"]["Enums"]["invitation_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          receiver_email: string
+          receiver_id?: string | null
+          sender_id: string
+          status?: Database["public"]["Enums"]["invitation_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          receiver_email?: string
+          receiver_id?: string | null
+          sender_id?: string
+          status?: Database["public"]["Enums"]["invitation_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friend_invitations_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "friend_invitations_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_entries: {
         Row: {
           content: string
@@ -118,10 +199,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_id_by_email: {
+        Args: { user_email: string }
+        Returns: string
+      }
     }
     Enums: {
-      [_ in never]: never
+      invitation_status: "pending" | "accepted" | "declined"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -248,6 +332,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      invitation_status: ["pending", "accepted", "declined"],
+    },
   },
 } as const

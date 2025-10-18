@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { User } from "@supabase/supabase-js";
@@ -197,14 +197,22 @@ const Journal = () => {
   return (
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="container mx-auto max-w-4xl">
-        <Button
-          variant="ghost"
-          onClick={() => navigate("/customize")}
-          className="mb-6"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
-        </Button>
+        <div className="flex items-center justify-between mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/customize")}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate("/friends")}
+          >
+            <Users className="w-4 h-4 mr-2" />
+            Support Friends
+          </Button>
+        </div>
 
         <h1 className="text-4xl font-bold mb-2">
           Your <span className="gradient-text">Journal</span>
