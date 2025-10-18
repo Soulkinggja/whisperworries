@@ -23,6 +23,7 @@ const CharacterCustomization = () => {
   const [characterName, setCharacterName] = useState("");
   const [characterSaved, setCharacterSaved] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
   const [worries, setWorries] = useState("");
   const [suggestion, setSuggestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -184,10 +185,10 @@ const CharacterCustomization = () => {
   // Introduction animation screen
   if (showIntro) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-4 overflow-hidden animate-fade-in">
+      <div className={`min-h-screen bg-background flex items-center justify-center px-4 overflow-hidden transition-opacity duration-1000 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}>
         <div className="flex flex-col items-center gap-8">
           {/* Character moving to center */}
-          <div className="relative flex flex-col items-center gap-1 transition-all duration-[3000ms] ease-out animate-fade-in">
+          <div className="relative flex flex-col items-center gap-1 transition-all duration-[3000ms] ease-out">
             {/* Head */}
             <div
               className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
@@ -308,7 +309,7 @@ const CharacterCustomization = () => {
 
   if (characterSaved) {
     return (
-      <div className="min-h-screen bg-background px-4 py-12 animate-fade-in">
+      <div className="min-h-screen bg-background px-4 py-12 animate-fade-in transition-opacity duration-1000">
         <div className="container mx-auto max-w-6xl">
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -527,7 +528,7 @@ const CharacterCustomization = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background px-4 py-12 animate-fade-in">
+    <div className={`min-h-screen bg-background px-4 py-12 transition-opacity duration-1000 ${fadeOut ? 'opacity-0 animate-fade-out' : 'opacity-100 animate-fade-in'}`}>
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -725,11 +726,20 @@ const CharacterCustomization = () => {
               size="lg" 
               className="w-full text-lg"
               onClick={() => {
-                setShowIntro(true);
+                setFadeOut(true);
                 setTimeout(() => {
-                  setCharacterSaved(true);
-                  setShowIntro(false);
-                }, 10000); // 10 seconds for intro animation
+                  setFadeOut(false);
+                  setShowIntro(true);
+                  // Start fade out of intro after 8 seconds
+                  setTimeout(() => {
+                    setFadeOut(true);
+                    setTimeout(() => {
+                      setCharacterSaved(true);
+                      setShowIntro(false);
+                      setFadeOut(false);
+                    }, 1000); // 1 second fade out
+                  }, 8000); // 8 seconds of intro content
+                }, 1000); // 1 second fade out
               }}
             >
               <Sparkles className="w-5 h-5" />
