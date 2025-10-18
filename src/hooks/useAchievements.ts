@@ -60,15 +60,18 @@ export const useAchievements = (userId: string | undefined) => {
 
       const worryCount = count || 0;
 
-      // Check milestones
-      if (worryCount === 1) {
-        await checkAndAwardAchievement("first_worry");
-      } else if (worryCount === 5) {
-        await checkAndAwardAchievement("five_worries");
-      } else if (worryCount === 10) {
-        await checkAndAwardAchievement("ten_worries");
-      } else if (worryCount === 20) {
+      // Check milestones - award based on reaching thresholds
+      if (worryCount >= 20) {
         await checkAndAwardAchievement("twenty_worries");
+      }
+      if (worryCount >= 10) {
+        await checkAndAwardAchievement("ten_worries");
+      }
+      if (worryCount >= 5) {
+        await checkAndAwardAchievement("five_worries");
+      }
+      if (worryCount >= 1) {
+        await checkAndAwardAchievement("first_worry");
       }
 
       // Check use case variety
