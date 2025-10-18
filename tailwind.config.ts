@@ -98,7 +98,7 @@ export default {
         },
         "slide-in-right": {
           "0%": { transform: "translateX(100vw)" },
-          "100%": { transform: "translateX(-200px)" },
+          "100%": { transform: "translateX(-100vw)" },
         },
         "fade-in": {
           "0%": { opacity: "0", transform: "translateY(10px)" },
