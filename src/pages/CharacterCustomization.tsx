@@ -588,7 +588,7 @@ const CharacterCustomization = () => {
             {/* Name */}
             <div>
               <Label htmlFor="character-name" className="text-xl font-semibold mb-4 block">
-                Name Your Character
+                Name your Friend
               </Label>
               <Input
                 id="character-name"
