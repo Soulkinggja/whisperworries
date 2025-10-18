@@ -8,6 +8,7 @@ import CharacterCustomization from "./pages/CharacterCustomization";
 import Auth from "./pages/Auth";
 import Journal from "./pages/Journal";
 import Friends from "./pages/Friends";
+import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/customize" element={<CharacterCustomization />} />
           <Route path="/journal" element={<Journal />} />
           <Route path="/friends" element={<Friends />} />
+          <Route path="/resources" element={<Resources />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
