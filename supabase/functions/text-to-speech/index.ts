@@ -17,41 +17,35 @@ serve(async (req) => {
       throw new Error('Text is required');
     }
 
-    const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
-    if (!ELEVENLABS_API_KEY) {
-      throw new Error('ElevenLabs API key not configured');
+    const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+    if (!OPENAI_API_KEY) {
+      throw new Error('OpenAI API key not configured');
     }
 
-    // Use Aria voice by default (gentle, supportive tone)
-    const voiceId = voice || '9BWtsMINqrJLrRacOk9x';
+    // Use alloy voice by default (warm, supportive tone)
+    const selectedVoice = voice || 'alloy';
 
     console.log('Generating speech for text:', text.substring(0, 50) + '...');
 
-    // Generate speech using ElevenLabs
-    const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'audio/mpeg',
-          'Content-Type': 'application/json',
-          'xi-api-key': ELEVENLABS_API_KEY,
-        },
-        body: JSON.stringify({
-          text,
-          model_id: 'eleven_multilingual_v2',
-          voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.75,
-          },
-        }),
-      }
-    );
+    // Generate speech using OpenAI
+    const response = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'tts-1',
+        input: text,
+        voice: selectedVoice,
+        response_format: 'mp3',
+      }),
+    });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error('ElevenLabs API error:', error);
-      throw new Error(`Failed to generate speech: ${error}`);
+      const error = await response.json();
+      console.error('OpenAI API error:', error);
+      throw new Error(`Failed to generate speech: ${error.error?.message || 'Unknown error'}`);
     }
 
     // Convert audio to base64 in chunks to avoid stack overflow
