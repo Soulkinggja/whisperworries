@@ -89,17 +89,22 @@ const CharacterCustomization = () => {
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
         
-        // Generate and play speech
+        // Animate mouth based on text length (roughly 150 words per minute)
+        const wordCount = data.suggestion.split(' ').length;
+        const speakingDuration = (wordCount / 150) * 60 * 1000; // Convert to milliseconds
+        setIsSpeaking(true);
+        
+        setTimeout(() => {
+          setIsSpeaking(false);
+        }, speakingDuration);
+        
+        // Try to generate and play speech (optional, won't block animation)
         try {
           const { data: speechData, error: speechError } = await supabase.functions.invoke('text-to-speech', {
             body: { text: data.suggestion }
           });
 
-          if (speechError) throw speechError;
-
-          if (speechData?.audioContent) {
-            setIsSpeaking(true);
-            
+          if (!speechError && speechData?.audioContent) {
             // Convert base64 to audio and play
             const audioBlob = new Blob(
               [Uint8Array.from(atob(speechData.audioContent), c => c.charCodeAt(0))],
@@ -109,12 +114,10 @@ const CharacterCustomization = () => {
             const audio = new Audio(audioUrl);
             
             audio.onended = () => {
-              setIsSpeaking(false);
               URL.revokeObjectURL(audioUrl);
             };
             
             audio.onerror = () => {
-              setIsSpeaking(false);
               URL.revokeObjectURL(audioUrl);
             };
             
@@ -122,7 +125,6 @@ const CharacterCustomization = () => {
           }
         } catch (speechError) {
           console.error('Error playing speech:', speechError);
-          setIsSpeaking(false);
         }
 
         // Save to database
