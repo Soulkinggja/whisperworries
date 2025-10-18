@@ -168,19 +168,21 @@ All colors MUST be HSL.
   @keyframes rotate-gradient {
     0% {
       background-position: 0% 50%;
-      filter: hue-rotate(0deg);
     }
-    33% {
+    50% {
       background-position: 100% 50%;
-      filter: hue-rotate(30deg);
-    }
-    66% {
-      background-position: 0% 100%;
-      filter: hue-rotate(60deg);
     }
     100% {
       background-position: 0% 50%;
+    }
+  }
+  
+  @keyframes hue-rotate {
+    0% {
       filter: hue-rotate(0deg);
+    }
+    100% {
+      filter: hue-rotate(360deg);
     }
   }
   
@@ -194,7 +196,7 @@ All colors MUST be HSL.
   
   .animate-gradient {
     background-size: 200% 200%;
-    animation: rotate-gradient 15s ease-in-out infinite;
+    animation: rotate-gradient 8s ease infinite;
   }
   
   .gradient-text {
@@ -208,30 +210,30 @@ All colors MUST be HSL.
   .character-gradient-blue {
     background: var(--gradient-blue);
     background-size: 200% 200%;
-    animation: rotate-gradient 15s ease-in-out infinite;
+    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
   }
   
   .character-gradient-purple {
     background: var(--gradient-purple);
     background-size: 200% 200%;
-    animation: rotate-gradient 15s ease-in-out infinite;
+    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
   }
   
   .character-gradient-pink {
     background: var(--gradient-pink);
     background-size: 200% 200%;
-    animation: rotate-gradient 15s ease-in-out infinite;
+    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
   }
   
   .character-gradient-orange {
     background: var(--gradient-orange);
     background-size: 200% 200%;
-    animation: rotate-gradient 15s ease-in-out infinite;
+    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
   }
   
   .character-gradient-green {
     background: var(--gradient-green);
     background-size: 200% 200%;
-    animation: rotate-gradient 15s ease-in-out infinite;
+    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
   }
 }
