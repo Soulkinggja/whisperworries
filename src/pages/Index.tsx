@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Heart, Users, TrendingUp } from "lucide-react";
-import heroDoll from "@/assets/hero-doll.png";
-import dollsCollection from "@/assets/dolls-collection.png";
+import heroCloud from "@/assets/hero-cloud.png";
+import cloudsCollection from "@/assets/clouds-collection.png";
 
 const Index = () => {
   const [isHovering, setIsHovering] = useState(false);
@@ -24,21 +24,21 @@ const Index = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-card rounded-full shadow-[var(--shadow-soft)] mb-4">
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-muted-foreground">
-                Inspired by Guatemalan Tradition
+                A Safe Space for Your Thoughts
               </span>
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-              <span className="gradient-text">WorryWeave</span>
+              <span className="gradient-text">Whisper Worries</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl">
-              Transform your worries into strength through the ancient wisdom of worry dolls, 
-              reimagined for the modern world.
+              Transform your worries into lightness through gentle cloud companions 
+              that listen, care, and help you heal.
             </p>
 
             <p className="text-lg text-foreground/80 max-w-xl">
-              Create your personal weave doll, confide your worries, and join anonymous circles 
+              Create your personal cloud avatar, whisper your worries, and join anonymous circles 
               where collective healing happens overnight. Wake up to insights, affirmations, 
               and a lighter heart.
             </p>
@@ -52,7 +52,7 @@ const Index = () => {
                 onMouseLeave={() => setIsHovering(false)}
               >
                 <Sparkles className="w-5 h-5" />
-                Create Your Doll
+                Create Your Cloud
               </Button>
               <Button variant="outline" size="lg" className="text-lg border-2">
                 Learn More
@@ -80,8 +80,8 @@ const Index = () => {
           <div className="relative">
             <div className={`transition-transform duration-500 ${isHovering ? "scale-105" : ""}`}>
               <img 
-                src={heroDoll} 
-                alt="WorryWeave Doll" 
+                src={heroCloud} 
+                alt="Whisper Worries Cloud Avatar" 
                 className="w-full h-auto rounded-3xl shadow-[var(--shadow-glow)] animate-float"
               />
             </div>
@@ -94,7 +94,7 @@ const Index = () => {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              How <span className="gradient-text">WorryWeave</span> Works
+              How <span className="gradient-text">Whisper Worries</span> Works
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               A magical journey from worry to wisdom in three simple steps
@@ -107,10 +107,10 @@ const Index = () => {
               <div className="w-16 h-16 bg-gradient-sunset rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Create Your Doll</h3>
+              <h3 className="text-2xl font-bold mb-4">Create Your Cloud</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Craft a unique weave doll with cultural motifs inspired by Guatemalan and Jamaican folklore. 
-                Choose colors, patterns, and accessories that resonate with you.
+                Craft a unique cloud avatar with soft colors and gentle features. 
+                Choose hues, expressions, and accessories that bring you comfort and peace.
               </p>
             </div>
 
@@ -119,9 +119,9 @@ const Index = () => {
               <div className="w-16 h-16 bg-gradient-weave rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Heart className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Share Your Worries</h3>
+              <h3 className="text-2xl font-bold mb-4">Whisper Your Worries</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Confide your worries through voice or text. Your doll absorbs them with care, 
+                Confide your worries through voice or text. Your cloud absorbs them gently, 
                 creating a safe space for emotional release without judgment.
               </p>
             </div>
@@ -147,20 +147,20 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
               <img 
-                src={dollsCollection} 
-                alt="Worry Dolls Collection" 
+                src={cloudsCollection} 
+                alt="Cloud Avatars Collection" 
                 className="w-full h-auto rounded-3xl shadow-[var(--shadow-glow)] animate-pulse-glow"
               />
             </div>
 
             <div className="order-1 lg:order-2 space-y-6">
               <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-                Watch Your Dolls <span className="gradient-text">Evolve</span>
+                Watch Your Clouds <span className="gradient-text">Evolve</span>
               </h2>
               
               <p className="text-xl text-muted-foreground">
-                As you share and heal, your dolls transform. They grow wings, unlock new patterns, 
-                and gain magical accessories—visual proof of your emotional journey.
+                As you share and heal, your clouds transform. They gain new colors, gentle glows, 
+                and magical accessories—visual proof of your emotional journey.
               </p>
 
               <div className="space-y-4">
@@ -215,12 +215,12 @@ const Index = () => {
         <div className="container mx-auto text-center">
           <div className="max-w-3xl mx-auto space-y-8">
             <h2 className="text-4xl md:text-6xl font-bold text-white">
-              Ready to Unweave Your Worries?
+              Ready to Let Your Worries Float Away?
             </h2>
             
             <p className="text-xl text-white/90">
-              Join thousands finding peace through the ancient wisdom of worry dolls, 
-              reimagined for today's challenges.
+              Join thousands finding peace through gentle cloud companions 
+              designed for today's challenges.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
