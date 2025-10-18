@@ -168,12 +168,19 @@ All colors MUST be HSL.
   @keyframes rotate-gradient {
     0% {
       background-position: 0% 50%;
+      filter: hue-rotate(0deg);
     }
-    50% {
+    33% {
       background-position: 100% 50%;
+      filter: hue-rotate(30deg);
+    }
+    66% {
+      background-position: 0% 100%;
+      filter: hue-rotate(60deg);
     }
     100% {
       background-position: 0% 50%;
+      filter: hue-rotate(0deg);
     }
   }
   
@@ -187,7 +194,7 @@ All colors MUST be HSL.
   
   .animate-gradient {
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite;
+    animation: rotate-gradient 15s ease-in-out infinite;
   }
   
   .gradient-text {
@@ -201,30 +208,30 @@ All colors MUST be HSL.
   .character-gradient-blue {
     background: var(--gradient-blue);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite;
+    animation: rotate-gradient 15s ease-in-out infinite;
   }
   
   .character-gradient-purple {
     background: var(--gradient-purple);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite;
+    animation: rotate-gradient 15s ease-in-out infinite;
   }
   
   .character-gradient-pink {
     background: var(--gradient-pink);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite;
+    animation: rotate-gradient 15s ease-in-out infinite;
   }
   
   .character-gradient-orange {
     background: var(--gradient-orange);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite;
+    animation: rotate-gradient 15s ease-in-out infinite;
   }
   
   .character-gradient-green {
     background: var(--gradient-green);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite;
+    animation: rotate-gradient 15s ease-in-out infinite;
   }
 }
