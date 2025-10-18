@@ -191,6 +191,19 @@ const Auth = () => {
                     minLength={6}
                   />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-age">Age</Label>
+                  <Input
+                    id="signup-age"
+                    type="number"
+                    placeholder="Enter your age"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    required
+                    min="1"
+                    max="150"
+                  />
+                </div>
                 <Button
                   type="submit"
                   className="w-full"
