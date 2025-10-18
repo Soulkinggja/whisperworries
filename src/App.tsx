@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import IntroScreen from "./pages/IntroScreen";
 import CharacterCustomization from "./pages/CharacterCustomization";
 import Auth from "./pages/Auth";
+import Journal from "./pages/Journal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<IntroScreen />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/customize" element={<CharacterCustomization />} />
+          <Route path="/journal" element={<Journal />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
