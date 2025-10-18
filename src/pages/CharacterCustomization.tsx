@@ -5,6 +5,8 @@ import { Sparkles } from "lucide-react";
 const CharacterCustomization = () => {
   const [selectedColor, setSelectedColor] = useState("hsl(210, 100%, 50%)");
   const [selectedShape, setSelectedShape] = useState("square");
+  const [selectedFace, setSelectedFace] = useState("happy");
+  const [selectedClothing, setSelectedClothing] = useState("tshirt");
 
   const colors = [
     { name: "Blue", value: "hsl(210, 100%, 50%)" },
@@ -15,6 +17,19 @@ const CharacterCustomization = () => {
   ];
 
   const shapes = ["square", "rounded"];
+  
+  const faces = [
+    { name: "Happy", value: "happy" },
+    { name: "Calm", value: "calm" },
+    { name: "Neutral", value: "neutral" },
+    { name: "Cheerful", value: "cheerful" },
+  ];
+  
+  const clothing = [
+    { name: "T-Shirt", value: "tshirt" },
+    { name: "Hoodie", value: "hoodie" },
+    { name: "Tank Top", value: "tank" },
+  ];
 
   return (
     <div className="min-h-screen bg-background px-4 py-12">
@@ -34,22 +49,62 @@ const CharacterCustomization = () => {
             <div className="relative flex flex-col items-center gap-1">
               {/* Head */}
               <div
-                className="w-24 h-24 transition-all duration-300"
+                className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
                 style={{
                   backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
                 }}
-              />
+              >
+                {/* Face */}
+                <div className="flex flex-col items-center gap-2">
+                  {/* Eyes */}
+                  <div className="flex gap-3">
+                    <div 
+                      className="w-3 h-3 bg-foreground rounded-full"
+                      style={{
+                        height: selectedFace === "calm" ? "2px" : "12px",
+                      }}
+                    />
+                    <div 
+                      className="w-3 h-3 bg-foreground rounded-full"
+                      style={{
+                        height: selectedFace === "calm" ? "2px" : "12px",
+                      }}
+                    />
+                  </div>
+                  {/* Mouth */}
+                  <div 
+                    className="w-8 h-1 bg-foreground rounded-full"
+                    style={{
+                      borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
+                                   selectedFace === "cheerful" ? "0 0 100px 100px" :
+                                   selectedFace === "calm" ? "100px" : "100px",
+                      height: selectedFace === "happy" ? "8px" : 
+                              selectedFace === "cheerful" ? "10px" : "4px",
+                    }}
+                  />
+                </div>
+              </div>
               
-              {/* Body */}
+              {/* Body with Clothing */}
               <div
-                className="w-28 h-32 transition-all duration-300"
+                className="w-28 h-32 transition-all duration-300 relative"
                 style={{
                   backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
                   opacity: 0.9,
                 }}
-              />
+              >
+                {/* Clothing Detail */}
+                {selectedClothing === "hoodie" && (
+                  <div 
+                    className="absolute inset-x-2 top-2 h-8 bg-foreground/20 rounded-t-lg"
+                  />
+                )}
+                {selectedClothing === "tank" && (
+                  <div className="absolute inset-x-6 top-0 bottom-0 bg-foreground/10" />
+                )}
+              </div>
               
               {/* Arms */}
               <div className="absolute top-[100px] flex gap-[104px]">
@@ -128,6 +183,46 @@ const CharacterCustomization = () => {
                     }`}
                   >
                     {shape}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Face */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Choose Face</h3>
+              <div className="flex gap-3 flex-wrap">
+                {faces.map((face) => (
+                  <button
+                    key={face.value}
+                    onClick={() => setSelectedFace(face.value)}
+                    className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
+                      selectedFace === face.value
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border bg-card"
+                    }`}
+                  >
+                    {face.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Clothing */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Choose Clothing</h3>
+              <div className="flex gap-3 flex-wrap">
+                {clothing.map((item) => (
+                  <button
+                    key={item.value}
+                    onClick={() => setSelectedClothing(item.value)}
+                    className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
+                      selectedClothing === item.value
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border bg-card"
+                    }`}
+                  >
+                    {item.name}
                   </button>
                 ))}
               </div>
