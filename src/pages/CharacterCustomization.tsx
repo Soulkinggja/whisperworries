@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { WorryHistory } from "@/components/WorryHistory";
 import { Achievements } from "@/components/Achievements";
+import { ConversationThread } from "@/components/ConversationThread";
 import { useAchievements } from "@/hooks/useAchievements";
 import type { User } from "@supabase/supabase-js";
 
@@ -29,7 +30,7 @@ const CharacterCustomization = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedUseCase, setSelectedUseCase] = useState("venting");
-  const [activeTab, setActiveTab] = useState("new");
+  const [activeTab, setActiveTab] = useState("conversation");
   const { toast } = useToast();
   const { checkWorryMilestones } = useAchievements(user?.id);
 
@@ -293,11 +294,18 @@ const CharacterCustomization = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-8">
-              <TabsTrigger value="new">New Worry</TabsTrigger>
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-8">
+              <TabsTrigger value="conversation">Conversation</TabsTrigger>
+              <TabsTrigger value="new">Quick Worry</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
               <TabsTrigger value="achievements">Achievements</TabsTrigger>
             </TabsList>
+
+            <TabsContent value="conversation">
+              <div className="max-w-4xl mx-auto">
+                <ConversationThread user={user!} selectedUseCase={selectedUseCase} />
+              </div>
+            </TabsContent>
 
             <TabsContent value="new">
               <div className="grid md:grid-cols-2 gap-12 items-start">

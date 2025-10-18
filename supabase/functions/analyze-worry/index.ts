@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { worry, useCase = 'venting' } = await req.json();
+    const { worry, useCase = 'venting', conversationHistory = [] } = await req.json();
     
     if (!worry || typeof worry !== 'string') {
       return new Response(
@@ -41,6 +41,19 @@ serve(async (req) => {
 
     console.log('Analyzing worry:', worry);
 
+    // Build messages array with conversation history
+    const messages = [
+      {
+        role: 'system',
+        content: systemPrompt
+      },
+      ...conversationHistory,
+      {
+        role: 'user',
+        content: worry
+      }
+    ];
+
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -49,16 +62,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt
-          },
-          {
-            role: 'user',
-            content: worry
-          }
-        ],
+        messages: messages,
       }),
     });
 
