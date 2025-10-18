@@ -13,6 +13,7 @@ const CharacterCustomization = () => {
   const [worries, setWorries] = useState("");
   const [suggestion, setSuggestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const { toast } = useToast();
 
   const handleSubmitWorry = async () => {
@@ -37,6 +38,9 @@ const CharacterCustomization = () => {
 
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
+        setIsSpeaking(true);
+        // Stop speaking after 3 seconds
+        setTimeout(() => setIsSpeaking(false), 3000);
       } else {
         throw new Error('No suggestion received');
       }
@@ -113,7 +117,9 @@ const CharacterCustomization = () => {
                     </div>
                     {/* Mouth */}
                     <div 
-                      className="w-8 h-1 bg-foreground rounded-full"
+                      className={`w-8 h-1 bg-foreground rounded-full transition-all duration-150 ${
+                        isSpeaking ? 'animate-[mouth-talk_0.3s_ease-in-out_infinite]' : ''
+                      }`}
                       style={{
                         borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
                                      selectedFace === "cheerful" ? "0 0 100px 100px" :
