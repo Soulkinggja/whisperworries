@@ -92,9 +92,9 @@ const CharacterCustomization = () => {
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
         
-        // Animate mouth based on text length (roughly 150 words per minute)
+        // Animate mouth based on text length (roughly 180 words per minute for faster speech)
         const wordCount = data.suggestion.split(' ').length;
-        const speakingDuration = (wordCount / 150) * 60 * 1000; // Convert to milliseconds
+        const speakingDuration = (wordCount / 180) * 60 * 1000; // Convert to milliseconds
         setIsSpeaking(true);
         
         // Play character sounds
