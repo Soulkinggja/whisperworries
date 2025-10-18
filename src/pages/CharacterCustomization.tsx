@@ -6,7 +6,6 @@ const CharacterCustomization = () => {
   const [selectedColor, setSelectedColor] = useState("hsl(210, 100%, 50%)");
   const [selectedShape, setSelectedShape] = useState("square");
   const [selectedFace, setSelectedFace] = useState("happy");
-  const [selectedClothing, setSelectedClothing] = useState("tshirt");
 
   const colors = [
     { name: "Blue", value: "hsl(210, 100%, 50%)" },
@@ -23,12 +22,6 @@ const CharacterCustomization = () => {
     { name: "Calm", value: "calm" },
     { name: "Neutral", value: "neutral" },
     { name: "Cheerful", value: "cheerful" },
-  ];
-  
-  const clothing = [
-    { name: "T-Shirt", value: "tshirt" },
-    { name: "Hoodie", value: "hoodie" },
-    { name: "Tank Top", value: "tank" },
   ];
 
   return (
@@ -86,49 +79,15 @@ const CharacterCustomization = () => {
                 </div>
               </div>
               
-              {/* Body with Clothing */}
+              {/* Body */}
               <div
-                className="w-28 h-32 transition-all duration-300 relative overflow-hidden"
+                className="w-28 h-32 transition-all duration-300"
                 style={{
                   backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
                   opacity: 0.9,
                 }}
-              >
-                {/* T-Shirt */}
-                {selectedClothing === "tshirt" && (
-                  <>
-                    {/* Collar */}
-                    <div className="absolute inset-x-8 top-1 h-3 bg-black/70 rounded-b-lg border-b-2 border-black" />
-                    {/* Sleeves indication */}
-                    <div className="absolute left-0 top-4 w-6 h-8 bg-black/60 rounded-r-lg" />
-                    <div className="absolute right-0 top-4 w-6 h-8 bg-black/60 rounded-l-lg" />
-                  </>
-                )}
-                
-                {/* Hoodie */}
-                {selectedClothing === "hoodie" && (
-                  <>
-                    {/* Hood */}
-                    <div className="absolute inset-x-2 -top-2 h-4 bg-black/70 rounded-t-xl border-t-2 border-black" />
-                    {/* Zipper */}
-                    <div className="absolute left-1/2 -translate-x-1/2 top-2 w-1 h-24 bg-black/80" />
-                    {/* Pocket */}
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-16 h-10 border-2 border-black rounded-lg bg-black/40" />
-                  </>
-                )}
-                
-                {/* Tank Top */}
-                {selectedClothing === "tank" && (
-                  <>
-                    {/* Shoulder straps */}
-                    <div className="absolute left-4 top-0 w-4 h-full bg-black/70" />
-                    <div className="absolute right-4 top-0 w-4 h-full bg-black/70" />
-                    {/* Neck opening */}
-                    <div className="absolute inset-x-8 top-1 h-6 bg-transparent border-2 border-black rounded-b-full" />
-                  </>
-                )}
-              </div>
+              />
               
               {/* Arms */}
               <div className="absolute top-[100px] flex gap-[104px]">
@@ -227,26 +186,6 @@ const CharacterCustomization = () => {
                     }`}
                   >
                     {face.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Clothing */}
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Choose Clothing</h3>
-              <div className="flex gap-3 flex-wrap">
-                {clothing.map((item) => (
-                  <button
-                    key={item.value}
-                    onClick={() => setSelectedClothing(item.value)}
-                    className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
-                      selectedClothing === item.value
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border bg-card"
-                    }`}
-                  >
-                    {item.name}
                   </button>
                 ))}
               </div>
