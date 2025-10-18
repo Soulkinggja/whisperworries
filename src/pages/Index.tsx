@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Heart, Users, TrendingUp } from "lucide-react";
-import heroCloud from "@/assets/hero-cloud.png";
-import cloudsCollection from "@/assets/clouds-collection.png";
+import heroCharacter from "@/assets/hero-character.png";
+import charactersCollection from "@/assets/characters-collection.png";
 
 const Index = () => {
   const [isHovering, setIsHovering] = useState(false);
@@ -33,12 +33,12 @@ const Index = () => {
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl">
-              Transform your worries into lightness through gentle cloud companions 
+              Transform your worries into lightness through customizable block companions 
               that listen, care, and help you heal.
             </p>
 
             <p className="text-lg text-foreground/80 max-w-xl">
-              Create your personal cloud avatar, whisper your worries, and join anonymous circles 
+              Create your personal block character, whisper your worries, and join anonymous circles 
               where collective healing happens overnight. Wake up to insights, affirmations, 
               and a lighter heart.
             </p>
@@ -52,7 +52,7 @@ const Index = () => {
                 onMouseLeave={() => setIsHovering(false)}
               >
                 <Sparkles className="w-5 h-5" />
-                Create Your Cloud
+                Create Your Character
               </Button>
               <Button variant="outline" size="lg" className="text-lg border-2">
                 Learn More
@@ -80,8 +80,8 @@ const Index = () => {
           <div className="relative">
             <div className={`transition-transform duration-500 ${isHovering ? "scale-105" : ""}`}>
               <img 
-                src={heroCloud} 
-                alt="Whisper Worries Cloud Avatar" 
+                src={heroCharacter} 
+                alt="Whisper Worries Block Character Avatar" 
                 className="w-full h-auto rounded-3xl shadow-[var(--shadow-glow)] animate-float"
               />
             </div>
@@ -107,10 +107,10 @@ const Index = () => {
               <div className="w-16 h-16 bg-gradient-sunset rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Create Your Cloud</h3>
+              <h3 className="text-2xl font-bold mb-4">Create Your Character</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Craft a unique cloud avatar with soft colors and gentle features. 
-                Choose hues, expressions, and accessories that bring you comfort and peace.
+                Craft a unique block character with customizable colors, shapes, and features. 
+                Choose styles, expressions, and accessories that bring you comfort and peace.
               </p>
             </div>
 
@@ -121,7 +121,7 @@ const Index = () => {
               </div>
               <h3 className="text-2xl font-bold mb-4">Whisper Your Worries</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Confide your worries through voice or text. Your cloud absorbs them gently, 
+                Confide your worries through voice or text. Your character absorbs them gently, 
                 creating a safe space for emotional release without judgment.
               </p>
             </div>
@@ -147,20 +147,20 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
               <img 
-                src={cloudsCollection} 
-                alt="Cloud Avatars Collection" 
+                src={charactersCollection} 
+                alt="Block Character Avatars Collection" 
                 className="w-full h-auto rounded-3xl shadow-[var(--shadow-glow)] animate-pulse-glow"
               />
             </div>
 
             <div className="order-1 lg:order-2 space-y-6">
               <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-                Watch Your Clouds <span className="gradient-text">Evolve</span>
+                Watch Your Characters <span className="gradient-text">Evolve</span>
               </h2>
               
               <p className="text-xl text-muted-foreground">
-                As you share and heal, your clouds transform. They gain new colors, gentle glows, 
-                and magical accessories—visual proof of your emotional journey.
+                As you share and heal, your characters transform. They gain new colors, accessories, 
+                and unique features—visual proof of your emotional journey.
               </p>
 
               <div className="space-y-4">
