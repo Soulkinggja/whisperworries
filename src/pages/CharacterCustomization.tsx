@@ -88,8 +88,42 @@ const CharacterCustomization = () => {
 
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
-        setIsSpeaking(true);
-        setTimeout(() => setIsSpeaking(false), 3000);
+        
+        // Generate and play speech
+        try {
+          const { data: speechData, error: speechError } = await supabase.functions.invoke('text-to-speech', {
+            body: { text: data.suggestion }
+          });
+
+          if (speechError) throw speechError;
+
+          if (speechData?.audioContent) {
+            setIsSpeaking(true);
+            
+            // Convert base64 to audio and play
+            const audioBlob = new Blob(
+              [Uint8Array.from(atob(speechData.audioContent), c => c.charCodeAt(0))],
+              { type: 'audio/mpeg' }
+            );
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            
+            audio.onended = () => {
+              setIsSpeaking(false);
+              URL.revokeObjectURL(audioUrl);
+            };
+            
+            audio.onerror = () => {
+              setIsSpeaking(false);
+              URL.revokeObjectURL(audioUrl);
+            };
+            
+            await audio.play();
+          }
+        } catch (speechError) {
+          console.error('Error playing speech:', speechError);
+          setIsSpeaking(false);
+        }
 
         // Save to database
         const { error: dbError } = await supabase.from("worries").insert({
