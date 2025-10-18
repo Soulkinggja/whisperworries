@@ -52,7 +52,7 @@ const CharacterCustomization = () => {
               />
               
               {/* Arms */}
-              <div className="absolute top-[92px] flex gap-[64px]">
+              <div className="absolute top-[92px] flex gap-[88px]">
                 <div
                   className="w-12 h-28 transition-all duration-300"
                   style={{
