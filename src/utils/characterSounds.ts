@@ -38,9 +38,9 @@ export const playCharacterSound = (text: string, duration: number = 2000) => {
     oscillator1.frequency.value = frequency;
     oscillator2.frequency.value = frequency * 1.5; // Harmonic for richer sound
     
-    // Use sawtooth for more voice-like quality
-    oscillator1.type = 'sawtooth';
-    oscillator2.type = 'triangle';
+    // Use sine wave for smoother sound
+    oscillator1.type = 'sine';
+    oscillator2.type = 'sine';
     
     // Speech-like envelope with quick attack and decay
     const syllableStart = startTime + (i * timePerSyllable);
