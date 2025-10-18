@@ -174,6 +174,8 @@ const CharacterCustomization = () => {
     { name: "Calm", value: "calm" },
     { name: "Neutral", value: "neutral" },
     { name: "Cheerful", value: "cheerful" },
+    { name: "Sad", value: "sad" },
+    { name: "Angry", value: "angry" },
   ];
 
   if (characterSaved) {
@@ -231,13 +233,17 @@ const CharacterCustomization = () => {
                       <div 
                         className="w-3 h-3 bg-foreground rounded-full"
                         style={{
-                          height: selectedFace === "calm" ? "2px" : "12px",
+                          height: selectedFace === "calm" ? "2px" : 
+                                  selectedFace === "angry" ? "2px" : "12px",
+                          transform: selectedFace === "angry" ? "rotate(-20deg)" : "none",
                         }}
                       />
                       <div 
                         className="w-3 h-3 bg-foreground rounded-full"
                         style={{
-                          height: selectedFace === "calm" ? "2px" : "12px",
+                          height: selectedFace === "calm" ? "2px" : 
+                                  selectedFace === "angry" ? "2px" : "12px",
+                          transform: selectedFace === "angry" ? "rotate(20deg)" : "none",
                         }}
                       />
                     </div>
@@ -249,9 +255,13 @@ const CharacterCustomization = () => {
                       style={{
                         borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
                                      selectedFace === "cheerful" ? "0 0 100px 100px" :
+                                     selectedFace === "sad" ? "100px 100px 0 0" :
+                                     selectedFace === "angry" ? "0" :
                                      selectedFace === "calm" ? "100px" : "100px",
                         height: selectedFace === "happy" ? "8px" : 
-                                selectedFace === "cheerful" ? "10px" : "4px",
+                                selectedFace === "cheerful" ? "10px" : 
+                                selectedFace === "sad" ? "6px" :
+                                selectedFace === "angry" ? "3px" : "4px",
                       }}
                     />
                   </div>
@@ -404,13 +414,17 @@ const CharacterCustomization = () => {
                     <div 
                       className="w-3 h-3 bg-foreground rounded-full"
                       style={{
-                        height: selectedFace === "calm" ? "2px" : "12px",
+                        height: selectedFace === "calm" ? "2px" : 
+                                selectedFace === "angry" ? "2px" : "12px",
+                        transform: selectedFace === "angry" ? "rotate(-20deg)" : "none",
                       }}
                     />
                     <div 
                       className="w-3 h-3 bg-foreground rounded-full"
                       style={{
-                        height: selectedFace === "calm" ? "2px" : "12px",
+                        height: selectedFace === "calm" ? "2px" : 
+                                selectedFace === "angry" ? "2px" : "12px",
+                        transform: selectedFace === "angry" ? "rotate(20deg)" : "none",
                       }}
                     />
                   </div>
@@ -420,9 +434,13 @@ const CharacterCustomization = () => {
                     style={{
                       borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
                                    selectedFace === "cheerful" ? "0 0 100px 100px" :
+                                   selectedFace === "sad" ? "100px 100px 0 0" :
+                                   selectedFace === "angry" ? "0" :
                                    selectedFace === "calm" ? "100px" : "100px",
                       height: selectedFace === "happy" ? "8px" : 
-                              selectedFace === "cheerful" ? "10px" : "4px",
+                              selectedFace === "cheerful" ? "10px" : 
+                              selectedFace === "sad" ? "6px" :
+                              selectedFace === "angry" ? "3px" : "4px",
                     }}
                   />
                 </div>
