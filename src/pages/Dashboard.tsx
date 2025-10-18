@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Heart, 
   Sparkles, 
@@ -17,14 +19,17 @@ import {
   Users,
   LifeBuoy,
   LogOut,
-  User
+  User,
+  Send
 } from "lucide-react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [user, setUser] = useState<any>(null);
   const [currentStreak, setCurrentStreak] = useState(7);
   const [loading, setLoading] = useState(true);
+  const [worry, setWorry] = useState("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -50,6 +55,20 @@ const Dashboard = () => {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/");
+  };
+
+  const handleWorrySubmit = () => {
+    if (!worry.trim()) {
+      toast({
+        title: "Share your worry",
+        description: "Write what's on your mind so we can help.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Navigate to AI Advice with the worry
+    navigate("/ai-advice", { state: { worry } });
   };
 
   if (loading) {
@@ -100,6 +119,33 @@ const Dashboard = () => {
                 <p className="text-white/80">Your daily encouragement</p>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Worry Input */}
+        <Card className="bg-card/50 backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Heart className="w-5 h-5 text-primary" />
+              What's worrying you today?
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Textarea
+              placeholder="Share your worries here... We're here to listen and support you."
+              value={worry}
+              onChange={(e) => setWorry(e.target.value)}
+              rows={4}
+              className="resize-none"
+            />
+            <Button
+              variant="magical"
+              className="w-full"
+              onClick={handleWorrySubmit}
+            >
+              <Send className="w-4 h-4" />
+              Get Support
+            </Button>
           </CardContent>
         </Card>
 

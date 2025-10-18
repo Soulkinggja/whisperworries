@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,10 +8,23 @@ import { ArrowLeft, Sparkles, Send } from "lucide-react";
 
 const AIAdvice = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [worry, setWorry] = useState("");
   const [advice, setAdvice] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Check if worry was passed from Dashboard
+    if (location.state?.worry) {
+      setWorry(location.state.worry);
+      // Auto-submit if worry was passed
+      setTimeout(() => {
+        const response = getAdvice(location.state.worry);
+        setAdvice(response);
+      }, 500);
+    }
+  }, [location.state]);
 
   const getAdvice = (text: string) => {
     const keywords = {
