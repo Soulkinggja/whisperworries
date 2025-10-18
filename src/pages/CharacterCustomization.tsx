@@ -91,75 +91,14 @@ const CharacterCustomization = () => {
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
         
-        // Estimate speaking duration based on text length
-        const wordCount = data.suggestion.split(' ').length;
-        const estimatedDuration = (wordCount / 150) * 60 * 1000; // 150 words per minute
-        
-        // Generate and play text-to-speech
-        try {
-          const { data: speechData, error: speechError } = await supabase.functions.invoke('text-to-speech', {
-            body: { text: data.suggestion }
-          });
-
-          if (!speechError && speechData?.audioContent) {
-            // Convert base64 to audio and play
-            const audioBlob = new Blob(
-              [Uint8Array.from(atob(speechData.audioContent), c => c.charCodeAt(0))],
-              { type: 'audio/mpeg' }
-            );
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-            
-            // Sync mouth animation with actual audio playback
-            audio.onplay = () => {
-              setIsSpeaking(true);
-            };
-            
-            audio.onended = () => {
-              setIsSpeaking(false);
-              URL.revokeObjectURL(audioUrl);
-            };
-            
-            audio.onerror = () => {
-              setIsSpeaking(false);
-              URL.revokeObjectURL(audioUrl);
-              console.error('Error playing audio');
-            };
-            
-            // Handle autoplay restrictions
-            try {
-              await audio.play();
-            } catch (playError) {
-              console.log('Autoplay blocked, showing manual play option');
-              toast({
-                title: "Click to hear response",
-                description: "Your browser blocked autoplay. Click here to play the audio.",
-                action: (
-                  <button
-                    onClick={() => audio.play().catch(console.error)}
-                    className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm"
-                  >
-                    Play Audio
-                  </button>
-                ),
-              });
-            }
-          } else {
-            // Fallback: animate mouth based on estimated duration if TTS fails
-            setIsSpeaking(true);
-            setTimeout(() => {
-              setIsSpeaking(false);
-            }, estimatedDuration);
-            console.error('Text-to-speech failed:', speechError);
-          }
-        } catch (speechError) {
-          // Fallback: animate mouth based on estimated duration
-          setIsSpeaking(true);
-          setTimeout(() => {
-            setIsSpeaking(false);
-          }, estimatedDuration);
-          console.error('Error with text-to-speech:', speechError);
-        }
+        // Play musical melody
+        const { playMelody } = await import('@/utils/musicalMelody');
+        setIsSpeaking(true);
+        playMelody().then(() => {
+          setIsSpeaking(false);
+        }).catch(() => {
+          setIsSpeaking(false);
+        });
 
         // Save to database
         const { error: dbError } = await supabase.from("worries").insert({
@@ -213,8 +152,6 @@ const CharacterCustomization = () => {
     { name: "Sad", value: "sad" },
     { name: "Angry", value: "angry" },
   ];
-
-  // No intro sounds - text-to-speech only
 
   // Introduction animation screen
   if (showIntro) {
