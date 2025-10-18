@@ -1,73 +1,41 @@
-# Welcome to your Lovable project
+WhisperWorries: Mental Health Support App
 
-## Project info
+Overview 
 
-**URL**: https://lovable.dev/projects/5d2c1b72-24e3-4abd-b8eb-b94628568b04
+Whisper Worries is a user-friendly mental health app designed to help you manage your worries and find calm. With a simple interface, users can type their worries, receive tailored advice, and take actionable steps toward mental well-being. Whether you're feeling overwhelmed, anxious, or just need a moment of clarity, Whisper Worries is here to support you.
+Features
 
-## How can I edit this code?
+Worry Input: Easily type out your worries or concerns in a safe, private space.
+Personalized Advice: Receive practical, evidence-based suggestions to address your specific worries, powered by expert mental health strategies.
+Simple Interface: Clean, intuitive design ensures a stress-free user experience.
+Privacy First: Your data is secure, with no worries stored or shared without your consent.
+Actionable Steps: Get clear, manageable advice to tackle your concerns and build resilience.
 
-There are several ways of editing your application.
+How It Works 
 
-**Use Lovable**
+Open the Web App: Launch Whisper Worries on your device.
+Type Your Worry: Use the text box to describe what’s on your mind, big or small.
+Receive Advice: Whisper Worries analyzes your input and provides tailored suggestions to help you cope or resolve your worry.
+Take Action: Follow the step-by-step guidance to address your concern and feel more in control.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/5d2c1b72-24e3-4abd-b8eb-b94628568b04) and start prompting.
+Why Whisper Worries? 
 
-Changes made via Lovable will be committed automatically to this repo.
+Accessible: Available anytime, anywhere, right on your phone or tablet.
+Empowering: Encourages proactive mental health care with practical tools.
+Non-Judgmental: A safe space to express yourself without fear of stigma.
 
-**Use your preferred IDE**
+Privacy 
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+All data is encrypted and stored locally on your device.
+No personal information is shared without explicit user consent.
+Optional anonymous usage data helps us improve the app (opt-in only).
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Support 
 
-Follow these steps:
+Have questions or need help? Contact our support team at support@Whisper Worriesapp.com or visit our Help Center.
+Contributing
+We welcome feedback and suggestions! Reach out via feedback@Whisper Worriesapp.com to share your ideas for improving Whisper Worries.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+License 
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/5d2c1b72-24e3-4abd-b8eb-b94628568b04) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Whisper Worries is proprietary software developed by The Gamma Rays Team In The Intellibus Hackathon 2025 
