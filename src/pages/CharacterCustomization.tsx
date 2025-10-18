@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sparkles, LogOut } from "lucide-react";
@@ -18,6 +20,7 @@ const CharacterCustomization = () => {
   const [selectedColor, setSelectedColor] = useState("hsl(210, 100%, 50%)");
   const [selectedShape, setSelectedShape] = useState("square");
   const [selectedFace, setSelectedFace] = useState("happy");
+  const [characterName, setCharacterName] = useState("");
   const [characterSaved, setCharacterSaved] = useState(false);
   const [worries, setWorries] = useState("");
   const [suggestion, setSuggestion] = useState("");
@@ -338,7 +341,10 @@ const CharacterCustomization = () => {
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Preview */}
-          <div className="bg-card rounded-3xl p-12 shadow-[var(--shadow-soft)] flex items-center justify-center min-h-[400px]">
+          <div className="bg-card rounded-3xl p-12 shadow-[var(--shadow-soft)] flex flex-col items-center justify-center min-h-[400px] gap-6">
+            {characterName && (
+              <h2 className="text-2xl font-bold gradient-text">{characterName}</h2>
+            )}
             <div className="relative flex flex-col items-center gap-1">
               {/* Head */}
               <div
@@ -433,6 +439,22 @@ const CharacterCustomization = () => {
 
           {/* Customization Options */}
           <div className="space-y-8">
+            {/* Name */}
+            <div>
+              <Label htmlFor="character-name" className="text-xl font-semibold mb-4 block">
+                Name Your Character
+              </Label>
+              <Input
+                id="character-name"
+                type="text"
+                placeholder="Enter a name..."
+                value={characterName}
+                onChange={(e) => setCharacterName(e.target.value)}
+                className="text-lg"
+                maxLength={20}
+              />
+            </div>
+
             {/* Colors */}
             <div>
               <h3 className="text-xl font-semibold mb-4">Choose Color</h3>
