@@ -46,13 +46,26 @@ const ACHIEVEMENT_CONFIG = {
 export const Achievements = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
 
+  useEffect(() => {
+    // Get current user
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUserId(session.user.id);
+      }
+    });
+  }, []);
+
   const fetchAchievements = async () => {
+    if (!userId) return;
+    
     try {
       const { data, error } = await supabase
         .from("achievements")
         .select("*")
+        .eq("user_id", userId)
         .order("unlocked_at", { ascending: false });
 
       if (error) throw error;
@@ -70,8 +83,10 @@ export const Achievements = () => {
   };
 
   useEffect(() => {
-    fetchAchievements();
-  }, []);
+    if (userId) {
+      fetchAchievements();
+    }
+  }, [userId]);
 
   if (loading) {
     return (
