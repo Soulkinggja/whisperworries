@@ -17,7 +17,7 @@ import type { User } from "@supabase/supabase-js";
 const CharacterCustomization = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const [selectedColor, setSelectedColor] = useState("hsl(210, 100%, 50%)");
+  const [selectedColor, setSelectedColor] = useState("character-gradient-blue");
   const [selectedShape, setSelectedShape] = useState("square");
   const [selectedFace, setSelectedFace] = useState("happy");
   const [characterName, setCharacterName] = useState("");
@@ -135,11 +135,11 @@ const CharacterCustomization = () => {
   };
 
   const colors = [
-    { name: "Blue", value: "hsl(210, 100%, 50%)" },
-    { name: "Purple", value: "hsl(280, 80%, 60%)" },
-    { name: "Pink", value: "hsl(330, 80%, 60%)" },
-    { name: "Orange", value: "hsl(30, 90%, 55%)" },
-    { name: "Green", value: "hsl(150, 60%, 50%)" },
+    { name: "Blue", value: "character-gradient-blue" },
+    { name: "Purple", value: "character-gradient-purple" },
+    { name: "Pink", value: "character-gradient-pink" },
+    { name: "Orange", value: "character-gradient-orange" },
+    { name: "Green", value: "character-gradient-green" },
   ];
 
   const shapes = ["square", "rounded"];
@@ -162,9 +162,8 @@ const CharacterCustomization = () => {
           <div className="relative flex flex-col items-center gap-1 transition-all duration-[3000ms] ease-out">
             {/* Head */}
             <div
-              className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+              className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center ${selectedColor}`}
               style={{
-                backgroundColor: selectedColor,
                 borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
               }}
             >
@@ -209,30 +208,24 @@ const CharacterCustomization = () => {
             
             {/* Body */}
             <div
-              className="w-28 h-32 transition-all duration-300"
+              className={`w-28 h-32 transition-all duration-300 opacity-90 ${selectedColor}`}
               style={{
-                backgroundColor: selectedColor,
                 borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
-                opacity: 0.9,
               }}
             />
             
             {/* Arms */}
             <div className="absolute top-[100px] flex gap-[104px]">
               <div
-                className="w-12 h-28 transition-all duration-300"
+                className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                 style={{
-                  backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
-                  opacity: 0.85,
                 }}
               />
               <div
-                className="w-12 h-28 transition-all duration-300"
+                className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                 style={{
-                  backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
-                  opacity: 0.85,
                 }}
               />
             </div>
@@ -240,19 +233,15 @@ const CharacterCustomization = () => {
             {/* Legs */}
             <div className="flex gap-2">
               <div
-                className="w-12 h-32 transition-all duration-300"
+                className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
                 style={{
-                  backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
-                  opacity: 0.85,
                 }}
               />
               <div
-                className="w-12 h-32 transition-all duration-300"
+                className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
                 style={{
-                  backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
-                  opacity: 0.85,
                 }}
               />
             </div>
@@ -320,9 +309,8 @@ const CharacterCustomization = () => {
               <div className="relative flex flex-col items-center gap-1">
                 {/* Head */}
                 <div
-                  className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+                  className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center ${selectedColor}`}
                   style={{
-                    backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
                   }}
                 >
@@ -369,30 +357,24 @@ const CharacterCustomization = () => {
                 
                 {/* Body */}
                 <div
-                  className="w-28 h-32 transition-all duration-300"
+                  className={`w-28 h-32 transition-all duration-300 opacity-90 ${selectedColor}`}
                   style={{
-                    backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
-                    opacity: 0.9,
                   }}
                 />
                 
                 {/* Arms */}
                 <div className="absolute top-[100px] flex gap-[104px]">
                   <div
-                    className="w-12 h-28 transition-all duration-300"
+                    className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                     style={{
-                      backgroundColor: selectedColor,
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
-                      opacity: 0.85,
                     }}
                   />
                   <div
-                    className="w-12 h-28 transition-all duration-300"
+                    className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                     style={{
-                      backgroundColor: selectedColor,
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
-                      opacity: 0.85,
                     }}
                   />
                 </div>
@@ -400,19 +382,15 @@ const CharacterCustomization = () => {
                 {/* Legs */}
                 <div className="flex gap-2">
                   <div
-                    className="w-12 h-32 transition-all duration-300"
+                    className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
                     style={{
-                      backgroundColor: selectedColor,
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
-                      opacity: 0.85,
                     }}
                   />
                   <div
-                    className="w-12 h-32 transition-all duration-300"
+                    className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
                     style={{
-                      backgroundColor: selectedColor,
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
-                      opacity: 0.85,
                     }}
                   />
                 </div>
@@ -519,9 +497,8 @@ const CharacterCustomization = () => {
             <div className="relative flex flex-col items-center gap-1">
               {/* Head */}
               <div
-                className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+                className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center ${selectedColor}`}
                 style={{
-                  backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
                 }}
               >
@@ -566,30 +543,24 @@ const CharacterCustomization = () => {
               
               {/* Body */}
               <div
-                className="w-28 h-32 transition-all duration-300"
+                className={`w-28 h-32 transition-all duration-300 opacity-90 ${selectedColor}`}
                 style={{
-                  backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
-                  opacity: 0.9,
                 }}
               />
               
               {/* Arms */}
               <div className="absolute top-[100px] flex gap-[104px]">
                 <div
-                  className="w-12 h-28 transition-all duration-300"
+                  className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                   style={{
-                    backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
-                    opacity: 0.85,
                   }}
                 />
                 <div
-                  className="w-12 h-28 transition-all duration-300"
+                  className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                   style={{
-                    backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
-                    opacity: 0.85,
                   }}
                 />
               </div>
@@ -597,19 +568,15 @@ const CharacterCustomization = () => {
               {/* Legs */}
               <div className="flex gap-2">
                 <div
-                  className="w-12 h-32 transition-all duration-300"
+                  className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
                   style={{
-                    backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
-                    opacity: 0.85,
                   }}
                 />
                 <div
-                  className="w-12 h-32 transition-all duration-300"
+                  className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
                   style={{
-                    backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
-                    opacity: 0.85,
                   }}
                 />
               </div>
@@ -642,10 +609,9 @@ const CharacterCustomization = () => {
                   <button
                     key={color.name}
                     onClick={() => setSelectedColor(color.value)}
-                    className={`w-16 h-16 rounded-xl transition-all hover:scale-110 ${
+                    className={`w-16 h-16 rounded-xl transition-all hover:scale-110 ${color.value} ${
                       selectedColor === color.value ? "ring-4 ring-primary ring-offset-2" : ""
                     }`}
-                    style={{ backgroundColor: color.value }}
                     aria-label={`Select ${color.name}`}
                   />
                 ))}
