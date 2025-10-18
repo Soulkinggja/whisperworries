@@ -97,6 +97,9 @@ const CharacterCustomization = () => {
         const speakingDuration = (wordCount / 150) * 60 * 1000; // Convert to milliseconds
         setIsSpeaking(true);
         
+        // Play character sounds
+        playCharacterSound(data.suggestion, speakingDuration);
+        
         setTimeout(() => {
           setIsSpeaking(false);
         }, speakingDuration);
