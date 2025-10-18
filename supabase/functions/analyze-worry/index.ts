@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { worry, useCase = 'venting', conversationHistory = [] } = await req.json();
+    const { worry, useCase = 'venting', conversationHistory = [], attachmentUrl } = await req.json();
     
     if (!worry || typeof worry !== 'string') {
       return new Response(
@@ -41,6 +41,22 @@ serve(async (req) => {
 
     console.log('Analyzing worry:', worry);
     console.log('Conversation history length:', conversationHistory.length);
+    if (attachmentUrl) {
+      console.log('Processing attachment:', attachmentUrl);
+    }
+
+    // Build user message content
+    const userContent: any[] = [{ type: 'text', text: worry }];
+    
+    // Add image if attachment URL is provided
+    if (attachmentUrl) {
+      userContent.push({
+        type: 'image_url',
+        image_url: {
+          url: attachmentUrl
+        }
+      });
+    }
 
     // Build messages array with conversation history
     const messages = [
@@ -51,7 +67,7 @@ serve(async (req) => {
       ...conversationHistory,
       {
         role: 'user',
-        content: worry
+        content: userContent
       }
     ];
 

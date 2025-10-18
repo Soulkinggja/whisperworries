@@ -212,12 +212,13 @@ export const ConversationThread = ({
         content: msg.content,
       }));
 
-      // Get AI response
+      // Get AI response with attachment if present
       const { data, error } = await supabase.functions.invoke("analyze-worry", {
         body: {
           worry: userMessage,
           useCase: useCase,
           conversationHistory: conversationHistory,
+          attachmentUrl: attachmentUrl,
         },
       });
 
