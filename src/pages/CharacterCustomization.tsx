@@ -88,21 +88,45 @@ const CharacterCustomization = () => {
               
               {/* Body with Clothing */}
               <div
-                className="w-28 h-32 transition-all duration-300 relative"
+                className="w-28 h-32 transition-all duration-300 relative overflow-hidden"
                 style={{
                   backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
                   opacity: 0.9,
                 }}
               >
-                {/* Clothing Detail */}
-                {selectedClothing === "hoodie" && (
-                  <div 
-                    className="absolute inset-x-2 top-2 h-8 bg-foreground/20 rounded-t-lg"
-                  />
+                {/* T-Shirt */}
+                {selectedClothing === "tshirt" && (
+                  <>
+                    {/* Collar */}
+                    <div className="absolute inset-x-8 top-1 h-3 bg-background/80 rounded-b-lg border-b-2 border-foreground/20" />
+                    {/* Sleeves indication */}
+                    <div className="absolute left-0 top-4 w-6 h-8 bg-background/60 rounded-r-lg" />
+                    <div className="absolute right-0 top-4 w-6 h-8 bg-background/60 rounded-l-lg" />
+                  </>
                 )}
+                
+                {/* Hoodie */}
+                {selectedClothing === "hoodie" && (
+                  <>
+                    {/* Hood */}
+                    <div className="absolute inset-x-2 -top-2 h-4 bg-background/70 rounded-t-xl border-t-2 border-foreground/20" />
+                    {/* Zipper */}
+                    <div className="absolute left-1/2 -translate-x-1/2 top-2 w-1 h-24 bg-foreground/30" />
+                    {/* Pocket */}
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-16 h-10 border-2 border-foreground/20 rounded-lg bg-background/40" />
+                  </>
+                )}
+                
+                {/* Tank Top */}
                 {selectedClothing === "tank" && (
-                  <div className="absolute inset-x-6 top-0 bottom-0 bg-foreground/10" />
+                  <>
+                    {/* Shoulder straps */}
+                    <div className="absolute left-4 top-0 w-4 h-full bg-background/70" />
+                    <div className="absolute right-4 top-0 w-4 h-full bg-background/70" />
+                    {/* Neck opening */}
+                    <div className="absolute inset-x-8 top-1 h-6 bg-transparent border-2 border-foreground/20 rounded-b-full" />
+                  </>
                 )}
               </div>
               
