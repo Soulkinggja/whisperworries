@@ -21,7 +21,6 @@ const CharacterCustomization = () => {
   const [selectedShape, setSelectedShape] = useState("square");
   const [selectedFace, setSelectedFace] = useState("happy");
   const [characterName, setCharacterName] = useState("");
-  const [characterGender, setCharacterGender] = useState("");
   const [characterSaved, setCharacterSaved] = useState(false);
   const [worries, setWorries] = useState("");
   const [suggestion, setSuggestion] = useState("");
@@ -535,20 +534,6 @@ const CharacterCustomization = () => {
                 className="text-lg"
                 maxLength={20}
               />
-            </div>
-
-            {/* Gender */}
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Choose Gender</h3>
-              <Select value={characterGender} onValueChange={setCharacterGender}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
 
             {/* Colors */}
