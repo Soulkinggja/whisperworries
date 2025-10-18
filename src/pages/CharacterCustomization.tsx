@@ -221,6 +221,20 @@ const CharacterCustomization = () => {
                 <h2 className="text-2xl font-bold gradient-text">{characterName}</h2>
               )}
               <div className="relative flex flex-col items-center gap-1">
+                {/* Wig for female */}
+                {characterGender === "female" && (
+                  <div
+                    className="absolute transition-all duration-300"
+                    style={{
+                      width: "96px",
+                      height: "48px",
+                      backgroundColor: "#4A3728",
+                      borderRadius: selectedShape === "square" ? "4px 4px 0 0" : selectedShape === "rounded" ? "24px 24px 0 0" : "50% 50% 0 0",
+                      top: "-4px",
+                      zIndex: 10,
+                    }}
+                  />
+                )}
                 {/* Head */}
                 <div
                   className="transition-all duration-300 relative flex items-center justify-center"
@@ -274,7 +288,7 @@ const CharacterCustomization = () => {
                 
                 {/* Body */}
                 <div
-                  className="transition-all duration-300"
+                  className="transition-all duration-300 relative"
                   style={{
                     width: characterGender === "female" ? "104px" : "128px",
                     height: characterGender === "female" ? "120px" : "136px",
@@ -282,7 +296,19 @@ const CharacterCustomization = () => {
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "16px" : "12px") : "50%",
                     opacity: 0.9,
                   }}
-                />
+                >
+                  {/* Dress overlay for female */}
+                  {characterGender === "female" && (
+                    <div
+                      className="absolute inset-0 transition-all duration-300"
+                      style={{
+                        backgroundColor: "#E91E63",
+                        opacity: 0.7,
+                        borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "16px" : "50%",
+                      }}
+                    />
+                  )}
+                </div>
                 
                 {/* Arms */}
                 <div 
@@ -315,9 +341,9 @@ const CharacterCustomization = () => {
                 </div>
                 
                 {/* Legs */}
-                <div className="flex gap-2">
+                <div className="flex gap-2 relative">
                   <div
-                    className="transition-all duration-300"
+                    className="transition-all duration-300 relative"
                     style={{
                       width: characterGender === "female" ? "44px" : "56px",
                       height: characterGender === "female" ? "120px" : "136px",
@@ -325,9 +351,21 @@ const CharacterCustomization = () => {
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "14px" : "10px") : "50%",
                       opacity: 0.85,
                     }}
-                  />
+                  >
+                    {/* Dress bottom for female */}
+                    {characterGender === "female" && (
+                      <div
+                        className="absolute inset-0 transition-all duration-300"
+                        style={{
+                          backgroundColor: "#E91E63",
+                          opacity: 0.7,
+                          borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "14px" : "50%",
+                        }}
+                      />
+                    )}
+                  </div>
                   <div
-                    className="transition-all duration-300"
+                    className="transition-all duration-300 relative"
                     style={{
                       width: characterGender === "female" ? "44px" : "56px",
                       height: characterGender === "female" ? "120px" : "136px",
@@ -335,7 +373,19 @@ const CharacterCustomization = () => {
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "14px" : "10px") : "50%",
                       opacity: 0.85,
                     }}
-                  />
+                  >
+                    {/* Dress bottom for female */}
+                    {characterGender === "female" && (
+                      <div
+                        className="absolute inset-0 transition-all duration-300"
+                        style={{
+                          backgroundColor: "#E91E63",
+                          opacity: 0.7,
+                          borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "14px" : "50%",
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -438,6 +488,20 @@ const CharacterCustomization = () => {
               <h2 className="text-2xl font-bold gradient-text">{characterName}</h2>
             )}
             <div className="relative flex flex-col items-center gap-1">
+              {/* Wig for female */}
+              {characterGender === "female" && (
+                <div
+                  className="absolute transition-all duration-300"
+                  style={{
+                    width: "96px",
+                    height: "48px",
+                    backgroundColor: "#4A3728",
+                    borderRadius: selectedShape === "square" ? "4px 4px 0 0" : selectedShape === "rounded" ? "24px 24px 0 0" : "50% 50% 0 0",
+                    top: "-4px",
+                    zIndex: 10,
+                  }}
+                />
+              )}
               {/* Head */}
               <div
                 className="transition-all duration-300 relative flex items-center justify-center"
@@ -489,7 +553,7 @@ const CharacterCustomization = () => {
               
               {/* Body */}
               <div
-                className="transition-all duration-300"
+                className="transition-all duration-300 relative"
                 style={{
                   width: characterGender === "female" ? "104px" : "128px",
                   height: characterGender === "female" ? "120px" : "136px",
@@ -497,7 +561,19 @@ const CharacterCustomization = () => {
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "16px" : "12px") : "50%",
                   opacity: 0.9,
                 }}
-              />
+              >
+                {/* Dress overlay for female */}
+                {characterGender === "female" && (
+                  <div
+                    className="absolute inset-0 transition-all duration-300"
+                    style={{
+                      backgroundColor: "#E91E63",
+                      opacity: 0.7,
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "16px" : "50%",
+                    }}
+                  />
+                )}
+              </div>
               
               {/* Arms */}
               <div 
@@ -530,9 +606,9 @@ const CharacterCustomization = () => {
               </div>
               
               {/* Legs */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 relative">
                 <div
-                  className="transition-all duration-300"
+                  className="transition-all duration-300 relative"
                   style={{
                     width: characterGender === "female" ? "44px" : "56px",
                     height: characterGender === "female" ? "120px" : "136px",
@@ -540,9 +616,21 @@ const CharacterCustomization = () => {
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "14px" : "10px") : "50%",
                     opacity: 0.85,
                   }}
-                />
+                >
+                  {/* Dress bottom for female */}
+                  {characterGender === "female" && (
+                    <div
+                      className="absolute inset-0 transition-all duration-300"
+                      style={{
+                        backgroundColor: "#E91E63",
+                        opacity: 0.7,
+                        borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "14px" : "50%",
+                      }}
+                    />
+                  )}
+                </div>
                 <div
-                  className="transition-all duration-300"
+                  className="transition-all duration-300 relative"
                   style={{
                     width: characterGender === "female" ? "44px" : "56px",
                     height: characterGender === "female" ? "120px" : "136px",
@@ -550,7 +638,19 @@ const CharacterCustomization = () => {
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "14px" : "10px") : "50%",
                     opacity: 0.85,
                   }}
-                />
+                >
+                  {/* Dress bottom for female */}
+                  {characterGender === "female" && (
+                    <div
+                      className="absolute inset-0 transition-all duration-300"
+                      style={{
+                        backgroundColor: "#E91E63",
+                        opacity: 0.7,
+                        borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "14px" : "50%",
+                      }}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
