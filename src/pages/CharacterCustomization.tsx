@@ -22,6 +22,7 @@ const CharacterCustomization = () => {
   const [selectedFace, setSelectedFace] = useState("happy");
   const [characterName, setCharacterName] = useState("");
   const [characterSaved, setCharacterSaved] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
   const [worries, setWorries] = useState("");
   const [suggestion, setSuggestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -179,6 +180,125 @@ const CharacterCustomization = () => {
     { name: "Sad", value: "sad" },
     { name: "Angry", value: "angry" },
   ];
+
+  // Introduction animation screen
+  if (showIntro) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-4 overflow-hidden">
+        <div className="flex flex-col items-center gap-8 animate-fade-in">
+          {/* Character moving to center */}
+          <div className="relative flex flex-col items-center gap-1 transition-all duration-[2000ms] ease-out">
+            {/* Head */}
+            <div
+              className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+              style={{
+                backgroundColor: selectedColor,
+                borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+              }}
+            >
+              {/* Face */}
+              <div className="flex flex-col items-center gap-2">
+                {/* Eyes */}
+                <div className="flex gap-3">
+                  <div 
+                    className="w-3 h-3 bg-foreground rounded-full"
+                    style={{
+                      height: selectedFace === "calm" ? "2px" : 
+                              selectedFace === "angry" ? "2px" : "12px",
+                      transform: selectedFace === "angry" ? "rotate(-20deg)" : "none",
+                    }}
+                  />
+                  <div 
+                    className="w-3 h-3 bg-foreground rounded-full"
+                    style={{
+                      height: selectedFace === "calm" ? "2px" : 
+                              selectedFace === "angry" ? "2px" : "12px",
+                      transform: selectedFace === "angry" ? "rotate(20deg)" : "none",
+                    }}
+                  />
+                </div>
+                {/* Mouth */}
+                <div 
+                  className="w-8 h-1 bg-foreground rounded-full"
+                  style={{
+                    borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
+                                 selectedFace === "cheerful" ? "0 0 100px 100px" :
+                                 selectedFace === "sad" ? "100px 100px 0 0" :
+                                 selectedFace === "angry" ? "0" :
+                                 selectedFace === "calm" ? "100px" : "100px",
+                    height: selectedFace === "happy" ? "8px" : 
+                            selectedFace === "cheerful" ? "10px" : 
+                            selectedFace === "sad" ? "6px" :
+                            selectedFace === "angry" ? "3px" : "4px",
+                  }}
+                />
+              </div>
+            </div>
+            
+            {/* Body */}
+            <div
+              className="w-28 h-32 transition-all duration-300"
+              style={{
+                backgroundColor: selectedColor,
+                borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                opacity: 0.9,
+              }}
+            />
+            
+            {/* Arms */}
+            <div className="absolute top-[100px] flex gap-[104px]">
+              <div
+                className="w-12 h-28 transition-all duration-300"
+                style={{
+                  backgroundColor: selectedColor,
+                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                  opacity: 0.85,
+                }}
+              />
+              <div
+                className="w-12 h-28 transition-all duration-300"
+                style={{
+                  backgroundColor: selectedColor,
+                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                  opacity: 0.85,
+                }}
+              />
+            </div>
+            
+            {/* Legs */}
+            <div className="flex gap-2">
+              <div
+                className="w-12 h-32 transition-all duration-300"
+                style={{
+                  backgroundColor: selectedColor,
+                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                  opacity: 0.85,
+                }}
+              />
+              <div
+                className="w-12 h-32 transition-all duration-300"
+                style={{
+                  backgroundColor: selectedColor,
+                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                  opacity: 0.85,
+                }}
+              />
+            </div>
+          </div>
+          
+          {/* Introduction text */}
+          <div className="text-center space-y-4 animate-fade-in" style={{ animationDelay: "1s" }}>
+            <h1 className="text-4xl font-bold gradient-text animate-bounce">
+              Hello! I'm {characterName}
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-md">
+              I'm here to listen to your worries and help you feel better. Let's talk whenever you need me.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (characterSaved) {
     return (
@@ -598,7 +718,13 @@ const CharacterCustomization = () => {
               variant="magical" 
               size="lg" 
               className="w-full text-lg"
-              onClick={() => setCharacterSaved(true)}
+              onClick={() => {
+                setShowIntro(true);
+                setTimeout(() => {
+                  setCharacterSaved(true);
+                  setShowIntro(false);
+                }, 5000); // 5 seconds for intro animation
+              }}
             >
               <Sparkles className="w-5 h-5" />
               Save Character
