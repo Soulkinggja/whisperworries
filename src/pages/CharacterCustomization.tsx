@@ -13,7 +13,6 @@ import { WorryHistory } from "@/components/WorryHistory";
 import { Achievements } from "@/components/Achievements";
 import { useAchievements } from "@/hooks/useAchievements";
 import type { User } from "@supabase/supabase-js";
-import { playCharacterSound } from "@/utils/characterSounds";
 
 const CharacterCustomization = () => {
   const navigate = useNavigate();
@@ -92,19 +91,11 @@ const CharacterCustomization = () => {
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
         
-        // Animate mouth based on text length (roughly 300 words per minute for very fast speech)
+        // Estimate speaking duration based on text length
         const wordCount = data.suggestion.split(' ').length;
-        const speakingDuration = (wordCount / 300) * 60 * 1000; // Convert to milliseconds
-        setIsSpeaking(true);
+        const estimatedDuration = (wordCount / 150) * 60 * 1000; // 150 words per minute
         
-        // Play character sounds
-        playCharacterSound(data.suggestion, speakingDuration);
-        
-        setTimeout(() => {
-          setIsSpeaking(false);
-        }, speakingDuration);
-        
-        // Try to generate and play speech (optional, won't block animation)
+        // Generate and play text-to-speech
         try {
           const { data: speechData, error: speechError } = await supabase.functions.invoke('text-to-speech', {
             body: { text: data.suggestion }
@@ -119,18 +110,38 @@ const CharacterCustomization = () => {
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
             
+            // Sync mouth animation with actual audio playback
+            audio.onplay = () => {
+              setIsSpeaking(true);
+            };
+            
             audio.onended = () => {
+              setIsSpeaking(false);
               URL.revokeObjectURL(audioUrl);
             };
             
             audio.onerror = () => {
+              setIsSpeaking(false);
               URL.revokeObjectURL(audioUrl);
+              console.error('Error playing audio');
             };
             
             await audio.play();
+          } else {
+            // Fallback: animate mouth based on estimated duration if TTS fails
+            setIsSpeaking(true);
+            setTimeout(() => {
+              setIsSpeaking(false);
+            }, estimatedDuration);
+            console.error('Text-to-speech failed:', speechError);
           }
         } catch (speechError) {
-          console.error('Error playing speech:', speechError);
+          // Fallback: animate mouth based on estimated duration
+          setIsSpeaking(true);
+          setTimeout(() => {
+            setIsSpeaking(false);
+          }, estimatedDuration);
+          console.error('Error with text-to-speech:', speechError);
         }
 
         // Save to database
@@ -186,30 +197,7 @@ const CharacterCustomization = () => {
     { name: "Angry", value: "angry" },
   ];
 
-  // Play sounds during intro
-  useEffect(() => {
-    if (showIntro && !fadeOut) {
-      // Sound for "Hello! I'm [name]"
-      setTimeout(() => {
-        playCharacterSound(`Hello! I'm ${characterName}`, 1500);
-      }, 2000);
-      
-      // Sound for second line
-      setTimeout(() => {
-        playCharacterSound("I'm here to listen to your worries and help you feel better", 2000);
-      }, 3000);
-      
-      // Sound for third line
-      setTimeout(() => {
-        playCharacterSound("Whenever you need someone to talk to, I'll be right here for you", 2500);
-      }, 5000);
-      
-      // Sound for final line
-      setTimeout(() => {
-        playCharacterSound("Let's begin", 1000);
-      }, 7000);
-    }
-  }, [showIntro, fadeOut, characterName]);
+  // No intro sounds - text-to-speech only
 
   // Introduction animation screen
   if (showIntro) {
