@@ -44,14 +44,14 @@ export const playCharacterSound = (text: string, duration: number = 2000) => {
     
     // Speech-like envelope with quick attack and decay
     const syllableStart = startTime + (i * timePerSyllable);
-    const syllableDuration = timePerSyllable * 0.95; // Minimal gap for faster speech
+    const syllableDuration = timePerSyllable * 0.98; // Almost no gap for very fast speech
     const syllableEnd = syllableStart + syllableDuration;
     
     // Volume envelope mimicking speech
     const peakVolume = 0.08; // Lower volume for comfort
     gainNode.gain.setValueAtTime(0, syllableStart);
-    gainNode.gain.linearRampToValueAtTime(peakVolume, syllableStart + 0.005); // Very fast attack
-    gainNode.gain.linearRampToValueAtTime(peakVolume * 0.7, syllableStart + syllableDuration * 0.3); // Hold
+    gainNode.gain.linearRampToValueAtTime(peakVolume, syllableStart + 0.003); // Very fast attack
+    gainNode.gain.linearRampToValueAtTime(peakVolume * 0.8, syllableStart + syllableDuration * 0.2); // Shorter hold
     gainNode.gain.linearRampToValueAtTime(0, syllableEnd); // Quick release
     
     oscillator1.start(syllableStart);
