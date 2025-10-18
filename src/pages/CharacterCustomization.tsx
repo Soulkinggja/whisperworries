@@ -31,7 +31,7 @@ const CharacterCustomization = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Preview */}
           <div className="bg-card rounded-3xl p-12 shadow-[var(--shadow-soft)] flex items-center justify-center min-h-[400px]">
-            <div className="relative flex flex-col items-center">
+            <div className="relative flex flex-col items-center gap-1">
               {/* Head */}
               <div
                 className="w-24 h-24 transition-all duration-300"
@@ -43,7 +43,7 @@ const CharacterCustomization = () => {
               
               {/* Body */}
               <div
-                className="w-28 h-32 transition-all duration-300 -mt-1"
+                className="w-28 h-32 transition-all duration-300"
                 style={{
                   backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
@@ -52,7 +52,7 @@ const CharacterCustomization = () => {
               />
               
               {/* Arms */}
-              <div className="absolute top-[88px] flex gap-[72px]">
+              <div className="absolute top-[92px] flex gap-[72px]">
                 <div
                   className="w-12 h-28 transition-all duration-300"
                   style={{
@@ -72,7 +72,7 @@ const CharacterCustomization = () => {
               </div>
               
               {/* Legs */}
-              <div className="flex gap-2 -mt-1">
+              <div className="flex gap-2">
                 <div
                   className="w-12 h-32 transition-all duration-300"
                   style={{
