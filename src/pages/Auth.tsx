@@ -102,10 +102,10 @@ const Auth = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">
+          <h1 className="text-4xl font-bold mb-2 animate-float">
             <span className="gradient-text">Whisper Worries</span>
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground animate-float" style={{ animationDelay: '0.5s' }}>
             Your safe space for sharing worries
           </p>
         </div>
