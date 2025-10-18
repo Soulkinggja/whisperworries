@@ -322,6 +322,24 @@ const CharacterCustomization = () => {
             {/* Worries Input */}
             <div className="space-y-6">
               <div className="bg-card rounded-3xl p-6 shadow-[var(--shadow-soft)]">
+                {/* Feeling Selector */}
+                <div className="mb-6">
+                  <label className="text-lg font-semibold mb-3 block">How are you feeling today?</label>
+                  <Select value={selectedFace} onValueChange={setSelectedFace}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select how you're feeling" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="happy">😊 Happy</SelectItem>
+                      <SelectItem value="calm">😌 Calm</SelectItem>
+                      <SelectItem value="neutral">😐 Neutral</SelectItem>
+                      <SelectItem value="cheerful">😄 Cheerful</SelectItem>
+                      <SelectItem value="sad">😢 Sad</SelectItem>
+                      <SelectItem value="angry">😠 Angry</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
                 <div className="mb-4">
                   <label className="text-sm font-medium mb-2 block">I want to use this for:</label>
                   <Select value={selectedUseCase} onValueChange={setSelectedUseCase}>
