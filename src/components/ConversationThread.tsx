@@ -1,214 +1,170 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { formatDistanceToNow } from "date-fns";
+import { Send, Loader2, MessageCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { Loader2, Send, Plus } from "lucide-react";
-import type { User } from "@supabase/supabase-js";
+import { Card } from "./ui/card";
+import { ScrollArea } from "./ui/scroll-area";
 
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   created_at: string;
 }
 
-interface Conversation {
-  id: string;
-  title: string | null;
-  use_case: string;
-  created_at: string;
-  updated_at: string;
-}
-
 interface ConversationThreadProps {
-  user: User;
-  selectedUseCase: string;
+  conversationId: string | null;
+  useCase: string;
+  onConversationStart: (conversationId: string) => void;
 }
 
-export const ConversationThread = ({ user, selectedUseCase }: ConversationThreadProps) => {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+export const ConversationThread = ({ 
+  conversationId, 
+  useCase,
+  onConversationStart 
+}: ConversationThreadProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
+    if (conversationId) {
+      fetchMessages();
+    } else {
+      setMessages([]);
+    }
+  }, [conversationId]);
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  useEffect(() => {
-    fetchConversations();
-  }, [user]);
+  const fetchMessages = async () => {
+    if (!conversationId) return;
 
-  useEffect(() => {
-    if (activeConversationId) {
-      fetchMessages(activeConversationId);
-    }
-  }, [activeConversationId]);
-
-  const fetchConversations = async () => {
     setIsLoading(true);
-    const { data, error } = await supabase
-      .from("conversations")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("updated_at", { ascending: false });
+    try {
+      const { data, error } = await supabase
+        .from("conversation_messages")
+        .select("*")
+        .eq("conversation_id", conversationId)
+        .order("created_at", { ascending: true });
 
-    if (error) {
-      console.error("Error fetching conversations:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load conversations",
-        variant: "destructive",
-      });
-    } else {
-      setConversations(data || []);
-      if (data && data.length > 0 && !activeConversationId) {
-        setActiveConversationId(data[0].id);
-      }
-    }
-    setIsLoading(false);
-  };
-
-  const fetchMessages = async (conversationId: string) => {
-    const { data, error } = await supabase
-      .from("conversation_messages")
-      .select("*")
-      .eq("conversation_id", conversationId)
-      .order("created_at", { ascending: true });
-
-    if (error) {
+      if (error) throw error;
+      setMessages((data || []).map(msg => ({
+        id: msg.id,
+        role: msg.role as "user" | "assistant",
+        content: msg.content,
+        created_at: msg.created_at,
+      })));
+    } catch (error) {
       console.error("Error fetching messages:", error);
       toast({
         title: "Error",
-        description: "Failed to load messages",
+        description: "Failed to load conversation history.",
         variant: "destructive",
       });
-    } else {
-      setMessages((data || []) as Message[]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const createNewConversation = async () => {
-    const { data, error } = await supabase
-      .from("conversations")
-      .insert({
-        user_id: user.id,
-        use_case: selectedUseCase,
-        title: `Conversation ${new Date().toLocaleDateString()}`,
-      })
-      .select()
-      .single();
+  const handleSendMessage = async () => {
+    if (!newMessage.trim()) return;
 
-    if (error) {
-      console.error("Error creating conversation:", error);
-      toast({
-        title: "Error",
-        description: "Failed to create conversation",
-        variant: "destructive",
-      });
-      return null;
-    }
-
-    setConversations([data, ...conversations]);
-    setActiveConversationId(data.id);
-    setMessages([]);
-    return data.id;
-  };
-
-  const sendMessage = async () => {
-    if (!newMessage.trim()) {
-      toast({
-        title: "Please enter a message",
-        description: "Your message cannot be empty.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    let conversationId = activeConversationId;
-    
-    // Create new conversation if none exists
-    if (!conversationId) {
-      conversationId = await createNewConversation();
-      if (!conversationId) return;
-    }
-
+    const userMessage = newMessage.trim();
+    setNewMessage("");
     setIsSending(true);
 
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      let currentConversationId = conversationId;
+
+      // Create new conversation if this is the first message
+      if (!currentConversationId) {
+        const { data: newConversation, error: convError } = await supabase
+          .from("conversations")
+          .insert({
+            user_id: user.id,
+            use_case: useCase,
+            title: userMessage.substring(0, 50),
+          })
+          .select()
+          .single();
+
+        if (convError) throw convError;
+        currentConversationId = newConversation.id;
+        onConversationStart(currentConversationId);
+      }
+
       // Save user message
       const { error: userMsgError } = await supabase
         .from("conversation_messages")
         .insert({
-          conversation_id: conversationId,
+          conversation_id: currentConversationId,
           role: "user",
-          content: newMessage,
+          content: userMessage,
         });
 
       if (userMsgError) throw userMsgError;
 
-      // Update local state immediately
-      const userMessage: Message = {
-        id: crypto.randomUUID(),
+      // Update UI with user message immediately
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
         role: "user",
-        content: newMessage,
+        content: userMessage,
         created_at: new Date().toISOString(),
-      };
-      setMessages([...messages, userMessage]);
-      setNewMessage("");
+      }]);
 
-      // Build conversation history for AI
+      // Get conversation history for AI context
       const conversationHistory = messages.map(msg => ({
         role: msg.role,
-        content: msg.content
+        content: msg.content,
       }));
 
       // Get AI response
-      const { data, error } = await supabase.functions.invoke('analyze-worry', {
-        body: { 
-          worry: newMessage, 
-          useCase: selectedUseCase,
-          conversationHistory 
-        }
+      const { data, error } = await supabase.functions.invoke("analyze-worry", {
+        body: {
+          worry: userMessage,
+          useCase: useCase,
+          conversationHistory: conversationHistory,
+        },
       });
 
       if (error) throw error;
 
       if (data?.suggestion) {
-        // Save AI response
-        const { error: aiMsgError } = await supabase
+        // Save assistant message
+        const { error: assistantMsgError } = await supabase
           .from("conversation_messages")
           .insert({
-            conversation_id: conversationId,
+            conversation_id: currentConversationId,
             role: "assistant",
             content: data.suggestion,
           });
 
-        if (aiMsgError) throw aiMsgError;
+        if (assistantMsgError) throw assistantMsgError;
 
-        // Update local state with AI response
-        const aiMessage: Message = {
-          id: crypto.randomUUID(),
+        // Update UI with assistant message
+        setMessages(prev => [...prev, {
+          id: Date.now().toString() + "_ai",
           role: "assistant",
           content: data.suggestion,
           created_at: new Date().toISOString(),
-        };
-        setMessages(prev => [...prev, aiMessage]);
-
-        // Update conversation updated_at
-        await supabase
-          .from("conversations")
-          .update({ updated_at: new Date().toISOString() })
-          .eq("id", conversationId);
+        }]);
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -219,89 +175,97 @@ export const ConversationThread = ({ user, selectedUseCase }: ConversationThread
       });
     } finally {
       setIsSending(false);
+      textareaRef.current?.focus();
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      handleSendMessage();
     }
   };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-[600px] bg-card rounded-2xl shadow-[var(--shadow-soft)] overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        <h3 className="text-lg font-semibold">Conversation</h3>
-        <Button
-          onClick={createNewConversation}
-          size="sm"
-          variant="outline"
-          className="gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          New
-        </Button>
-      </div>
-
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
-            <p className="text-lg mb-2">Start a conversation</p>
-            <p className="text-sm">Share your thoughts and get supportive responses</p>
-          </div>
-        ) : (
-          messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
+    <div className="flex flex-col h-full max-h-[600px]">
+      {messages.length > 0 ? (
+        <ScrollArea className="flex-1 pr-4">
+          <div className="space-y-4 pb-4">
+            {messages.map((message, index) => (
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                  message.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-secondary/50 text-foreground'
-                }`}
+                key={message.id || index}
+                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                <Card
+                  className={`max-w-[80%] p-4 ${
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted"
+                  }`}
+                >
+                  {message.role === "assistant" && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <MessageCircle className="w-4 h-4 text-primary" />
+                      <span className="text-xs font-medium text-primary">
+                        Your Friend
+                      </span>
+                    </div>
+                  )}
+                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  <span className="text-xs opacity-70 mt-2 block">
+                    {formatDistanceToNow(new Date(message.created_at), {
+                      addSuffix: true,
+                    })}
+                  </span>
+                </Card>
               </div>
-            </div>
-          ))
-        )}
-        <div ref={messagesEndRef} />
-      </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        </ScrollArea>
+      ) : (
+        <div className="flex-1 flex items-center justify-center text-center py-12">
+          <div>
+            <MessageCircle className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+            <p className="text-muted-foreground">
+              Start a conversation with your friend
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Share what's on your mind and get support
+            </p>
+          </div>
+        </div>
+      )}
 
-      {/* Input */}
-      <div className="p-4 border-t border-border">
+      <div className="pt-4 border-t">
         <div className="flex gap-2">
           <Textarea
+            ref={textareaRef}
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Type your message... (Press Enter to send)"
-            className="min-h-[60px] resize-none"
+            onKeyDown={handleKeyDown}
+            placeholder="Type your message... (Press Enter to send, Shift+Enter for new line)"
+            className="min-h-[80px] resize-none"
             disabled={isSending}
           />
           <Button
-            onClick={sendMessage}
-            disabled={isSending || !newMessage.trim()}
+            onClick={handleSendMessage}
+            disabled={!newMessage.trim() || isSending}
             size="icon"
-            className="h-[60px] w-[60px]"
+            className="h-[80px] w-[80px]"
           >
             {isSending ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
-              <Send className="h-5 w-5" />
+              <Send className="w-5 h-5" />
             )}
           </Button>
         </div>

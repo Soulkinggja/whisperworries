@@ -40,6 +40,7 @@ serve(async (req) => {
     }
 
     console.log('Analyzing worry:', worry);
+    console.log('Conversation history length:', conversationHistory.length);
 
     // Build messages array with conversation history
     const messages = [

@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { WorryHistory } from "@/components/WorryHistory";
 import { Achievements } from "@/components/Achievements";
 import { ConversationThread } from "@/components/ConversationThread";
+import { ConversationList } from "@/components/ConversationList";
 import { useAchievements } from "@/hooks/useAchievements";
 import type { User } from "@supabase/supabase-js";
 
@@ -31,6 +32,7 @@ const CharacterCustomization = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedUseCase, setSelectedUseCase] = useState("venting");
   const [activeTab, setActiveTab] = useState("conversation");
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const { toast } = useToast();
   const { checkWorryMilestones } = useAchievements(user?.id);
 
@@ -302,8 +304,20 @@ const CharacterCustomization = () => {
             </TabsList>
 
             <TabsContent value="conversation">
-              <div className="max-w-4xl mx-auto">
-                <ConversationThread user={user!} selectedUseCase={selectedUseCase} />
+              <div className="grid lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-1">
+                  <ConversationList
+                    selectedConversationId={currentConversationId}
+                    onSelectConversation={setCurrentConversationId}
+                  />
+                </div>
+                <div className="lg:col-span-2">
+                  <ConversationThread
+                    conversationId={currentConversationId}
+                    useCase={selectedUseCase}
+                    onConversationStart={setCurrentConversationId}
+                  />
+                </div>
               </div>
             </TabsContent>
 
