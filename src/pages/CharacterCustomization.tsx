@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sparkles } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Sparkles, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { WorryHistory } from "@/components/WorryHistory";
+import type { User } from "@supabase/supabase-js";
 
 const CharacterCustomization = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
   const [selectedColor, setSelectedColor] = useState("hsl(210, 100%, 50%)");
   const [selectedShape, setSelectedShape] = useState("square");
   const [selectedFace, setSelectedFace] = useState("happy");
@@ -16,13 +22,49 @@ const CharacterCustomization = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedUseCase, setSelectedUseCase] = useState("venting");
+  const [activeTab, setActiveTab] = useState("new");
   const { toast } = useToast();
+
+  // Auth check
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        navigate("/auth");
+      } else {
+        setUser(session.user);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate("/auth");
+      } else {
+        setUser(session.user);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  };
 
   const handleSubmitWorry = async () => {
     if (!worries.trim()) {
       toast({
         title: "Please enter your worries",
         description: "Your companion needs to know what's troubling you.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to save your worries.",
         variant: "destructive",
       });
       return;
@@ -41,8 +83,24 @@ const CharacterCustomization = () => {
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
         setIsSpeaking(true);
-        // Stop speaking after 3 seconds
         setTimeout(() => setIsSpeaking(false), 3000);
+
+        // Save to database
+        const { error: dbError } = await supabase.from("worries").insert({
+          user_id: user.id,
+          worry_text: worries,
+          use_case: selectedUseCase,
+          suggestion: data.suggestion,
+        });
+
+        if (dbError) {
+          console.error("Error saving worry:", dbError);
+          toast({
+            title: "Warning",
+            description: "Suggestion received but couldn't save to history.",
+            variant: "destructive",
+          });
+        }
       } else {
         throw new Error('No suggestion received');
       }
@@ -78,17 +136,30 @@ const CharacterCustomization = () => {
   if (characterSaved) {
     return (
       <div className="min-h-screen bg-background px-4 py-12">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Share Your <span className="gradient-text">Worries</span>
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              Your companion is here to listen. What's on your mind?
-            </p>
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                Share Your <span className="gradient-text">Worries</span>
+              </h1>
+              <p className="text-xl text-muted-foreground">
+                Your companion is here to listen
+              </p>
+            </div>
+            <Button variant="outline" onClick={handleSignOut}>
+              <LogOut className="w-4 h-4" />
+              Sign Out
+            </Button>
           </div>
-          
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+              <TabsTrigger value="new">New Worry</TabsTrigger>
+              <TabsTrigger value="history">History</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="new">
+              <div className="grid md:grid-cols-2 gap-12 items-start">
             {/* Character Preview */}
             <div className="bg-card rounded-3xl p-12 shadow-[var(--shadow-soft)] flex items-center justify-center min-h-[400px]">
               <div className="relative flex flex-col items-center gap-1">
@@ -231,6 +302,12 @@ const CharacterCustomization = () => {
               </Button>
             </div>
           </div>
+            </TabsContent>
+
+            <TabsContent value="history">
+              <WorryHistory />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     );

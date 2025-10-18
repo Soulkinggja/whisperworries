@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import IntroScreen from "./pages/IntroScreen";
 import CharacterCustomization from "./pages/CharacterCustomization";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -17,6 +18,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<IntroScreen />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/customize" element={<CharacterCustomization />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
