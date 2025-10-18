@@ -223,10 +223,12 @@ const CharacterCustomization = () => {
               <div className="relative flex flex-col items-center gap-1">
                 {/* Head */}
                 <div
-                  className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+                  className="transition-all duration-300 relative flex items-center justify-center"
                   style={{
+                    width: characterGender === "female" ? "88px" : characterGender === "male" ? "96px" : "92px",
+                    height: characterGender === "female" ? "88px" : characterGender === "male" ? "96px" : "92px",
                     backgroundColor: selectedColor,
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "16px" : "12px") : "50%",
                   }}
                 >
                   {/* Face */}
@@ -272,29 +274,41 @@ const CharacterCustomization = () => {
                 
                 {/* Body */}
                 <div
-                  className="w-28 h-32 transition-all duration-300"
+                  className="transition-all duration-300"
                   style={{
+                    width: characterGender === "female" ? "104px" : characterGender === "male" ? "128px" : "112px",
+                    height: characterGender === "female" ? "120px" : characterGender === "male" ? "136px" : "128px",
                     backgroundColor: selectedColor,
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "16px" : "12px") : "50%",
                     opacity: 0.9,
                   }}
                 />
                 
                 {/* Arms */}
-                <div className="absolute top-[100px] flex gap-[104px]">
+                <div 
+                  className="absolute flex"
+                  style={{
+                    top: characterGender === "female" ? "95px" : "100px",
+                    gap: characterGender === "female" ? "88px" : characterGender === "male" ? "112px" : "96px"
+                  }}
+                >
                   <div
-                    className="w-12 h-28 transition-all duration-300"
+                    className="transition-all duration-300"
                     style={{
+                      width: characterGender === "female" ? "40px" : characterGender === "male" ? "52px" : "48px",
+                      height: characterGender === "female" ? "104px" : characterGender === "male" ? "120px" : "112px",
                       backgroundColor: selectedColor,
-                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "12px" : "8px") : "50%",
                       opacity: 0.85,
                     }}
                   />
                   <div
-                    className="w-12 h-28 transition-all duration-300"
+                    className="transition-all duration-300"
                     style={{
+                      width: characterGender === "female" ? "40px" : characterGender === "male" ? "52px" : "48px",
+                      height: characterGender === "female" ? "104px" : characterGender === "male" ? "120px" : "112px",
                       backgroundColor: selectedColor,
-                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "12px" : "8px") : "50%",
                       opacity: 0.85,
                     }}
                   />
@@ -303,18 +317,22 @@ const CharacterCustomization = () => {
                 {/* Legs */}
                 <div className="flex gap-2">
                   <div
-                    className="w-12 h-32 transition-all duration-300"
+                    className="transition-all duration-300"
                     style={{
+                      width: characterGender === "female" ? "44px" : characterGender === "male" ? "56px" : "48px",
+                      height: characterGender === "female" ? "120px" : characterGender === "male" ? "136px" : "128px",
                       backgroundColor: selectedColor,
-                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "14px" : "10px") : "50%",
                       opacity: 0.85,
                     }}
                   />
                   <div
-                    className="w-12 h-32 transition-all duration-300"
+                    className="transition-all duration-300"
                     style={{
+                      width: characterGender === "female" ? "44px" : characterGender === "male" ? "56px" : "48px",
+                      height: characterGender === "female" ? "120px" : characterGender === "male" ? "136px" : "128px",
                       backgroundColor: selectedColor,
-                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "14px" : "10px") : "50%",
                       opacity: 0.85,
                     }}
                   />
@@ -422,10 +440,12 @@ const CharacterCustomization = () => {
             <div className="relative flex flex-col items-center gap-1">
               {/* Head */}
               <div
-                className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+                className="transition-all duration-300 relative flex items-center justify-center"
                 style={{
+                  width: characterGender === "female" ? "88px" : characterGender === "male" ? "96px" : "92px",
+                  height: characterGender === "female" ? "88px" : characterGender === "male" ? "96px" : "92px",
                   backgroundColor: selectedColor,
-                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "16px" : "12px") : "50%",
                 }}
               >
                 {/* Face */}
@@ -469,29 +489,41 @@ const CharacterCustomization = () => {
               
               {/* Body */}
               <div
-                className="w-28 h-32 transition-all duration-300"
+                className="transition-all duration-300"
                 style={{
+                  width: characterGender === "female" ? "104px" : characterGender === "male" ? "128px" : "112px",
+                  height: characterGender === "female" ? "120px" : characterGender === "male" ? "136px" : "128px",
                   backgroundColor: selectedColor,
-                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "16px" : "12px") : "50%",
                   opacity: 0.9,
                 }}
               />
               
               {/* Arms */}
-              <div className="absolute top-[100px] flex gap-[104px]">
+              <div 
+                className="absolute flex"
+                style={{
+                  top: characterGender === "female" ? "95px" : "100px",
+                  gap: characterGender === "female" ? "88px" : characterGender === "male" ? "112px" : "96px"
+                }}
+              >
                 <div
-                  className="w-12 h-28 transition-all duration-300"
+                  className="transition-all duration-300"
                   style={{
+                    width: characterGender === "female" ? "40px" : characterGender === "male" ? "52px" : "48px",
+                    height: characterGender === "female" ? "104px" : characterGender === "male" ? "120px" : "112px",
                     backgroundColor: selectedColor,
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "12px" : "8px") : "50%",
                     opacity: 0.85,
                   }}
                 />
                 <div
-                  className="w-12 h-28 transition-all duration-300"
+                  className="transition-all duration-300"
                   style={{
+                    width: characterGender === "female" ? "40px" : characterGender === "male" ? "52px" : "48px",
+                    height: characterGender === "female" ? "104px" : characterGender === "male" ? "120px" : "112px",
                     backgroundColor: selectedColor,
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "12px" : "8px") : "50%",
                     opacity: 0.85,
                   }}
                 />
@@ -500,18 +532,22 @@ const CharacterCustomization = () => {
               {/* Legs */}
               <div className="flex gap-2">
                 <div
-                  className="w-12 h-32 transition-all duration-300"
+                  className="transition-all duration-300"
                   style={{
+                    width: characterGender === "female" ? "44px" : characterGender === "male" ? "56px" : "48px",
+                    height: characterGender === "female" ? "120px" : characterGender === "male" ? "136px" : "128px",
                     backgroundColor: selectedColor,
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "14px" : "10px") : "50%",
                     opacity: 0.85,
                   }}
                 />
                 <div
-                  className="w-12 h-32 transition-all duration-300"
+                  className="transition-all duration-300"
                   style={{
+                    width: characterGender === "female" ? "44px" : characterGender === "male" ? "56px" : "48px",
+                    height: characterGender === "female" ? "120px" : characterGender === "male" ? "136px" : "128px",
                     backgroundColor: selectedColor,
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "14px" : "10px") : "50%",
                     opacity: 0.85,
                   }}
                 />
