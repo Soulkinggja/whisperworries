@@ -14,7 +14,7 @@ const CharacterCustomization = () => {
     { name: "Green", value: "hsl(150, 60%, 50%)" },
   ];
 
-  const shapes = ["square", "rounded", "circle"];
+  const shapes = ["square", "rounded"];
 
   return (
     <div className="min-h-screen bg-background px-4 py-12">
