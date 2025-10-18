@@ -138,7 +138,7 @@ const CharacterCustomization = () => {
     return (
       <div className="min-h-screen bg-background px-4 py-12 relative overflow-hidden">
         {/* Flying badges */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none z-50">
           <Badge 
             variant="secondary" 
             className="absolute animate-[slide-in-right_8s_linear_infinite] top-[15%] text-lg py-2 px-4"
@@ -169,7 +169,7 @@ const CharacterCustomization = () => {
           </Badge>
         </div>
         
-        <div className="container mx-auto max-w-6xl relative z-10">
+        <div className="container mx-auto max-w-6xl relative">
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-2">
