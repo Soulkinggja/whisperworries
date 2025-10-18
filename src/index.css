@@ -158,12 +158,29 @@ All colors MUST be HSL.
     }
   }
   
+  @keyframes rotate-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
   
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: rotate-gradient 8s ease infinite;
   }
   
   .gradient-text {
