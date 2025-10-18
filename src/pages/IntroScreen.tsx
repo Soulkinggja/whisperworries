@@ -6,7 +6,7 @@ const IntroScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/customize");
+      navigate("/auth");
     }, 2000);
 
     return () => clearTimeout(timer);
