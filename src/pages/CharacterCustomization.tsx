@@ -184,10 +184,10 @@ const CharacterCustomization = () => {
   // Introduction animation screen
   if (showIntro) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-4 overflow-hidden">
-        <div className="flex flex-col items-center gap-8 animate-fade-in">
+      <div className="min-h-screen bg-background flex items-center justify-center px-4 overflow-hidden animate-fade-in">
+        <div className="flex flex-col items-center gap-8">
           {/* Character moving to center */}
-          <div className="relative flex flex-col items-center gap-1 transition-all duration-[2000ms] ease-out">
+          <div className="relative flex flex-col items-center gap-1 transition-all duration-[3000ms] ease-out animate-fade-in">
             {/* Head */}
             <div
               className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
@@ -287,12 +287,18 @@ const CharacterCustomization = () => {
           </div>
           
           {/* Introduction text */}
-          <div className="text-center space-y-4 animate-fade-in" style={{ animationDelay: "1s" }}>
+          <div className="text-center space-y-6 animate-fade-in" style={{ animationDelay: "2s" }}>
             <h1 className="text-4xl font-bold gradient-text animate-bounce">
               Hello! I'm {characterName}
             </h1>
-            <p className="text-xl text-muted-foreground max-w-md">
-              I'm here to listen to your worries and help you feel better. Let's talk whenever you need me.
+            <p className="text-xl text-muted-foreground max-w-md animate-fade-in" style={{ animationDelay: "3s" }}>
+              I'm here to listen to your worries and help you feel better.
+            </p>
+            <p className="text-lg text-muted-foreground max-w-md animate-fade-in" style={{ animationDelay: "5s" }}>
+              Whenever you need someone to talk to, I'll be right here for you.
+            </p>
+            <p className="text-base text-muted-foreground/80 animate-fade-in" style={{ animationDelay: "7s" }}>
+              Let's begin...
             </p>
           </div>
         </div>
@@ -302,7 +308,7 @@ const CharacterCustomization = () => {
 
   if (characterSaved) {
     return (
-      <div className="min-h-screen bg-background px-4 py-12">
+      <div className="min-h-screen bg-background px-4 py-12 animate-fade-in">
         <div className="container mx-auto max-w-6xl">
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -521,7 +527,7 @@ const CharacterCustomization = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background px-4 py-12">
+    <div className="min-h-screen bg-background px-4 py-12 animate-fade-in">
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -723,7 +729,7 @@ const CharacterCustomization = () => {
                 setTimeout(() => {
                   setCharacterSaved(true);
                   setShowIntro(false);
-                }, 5000); // 5 seconds for intro animation
+                }, 10000); // 10 seconds for intro animation
               }}
             >
               <Sparkles className="w-5 h-5" />
