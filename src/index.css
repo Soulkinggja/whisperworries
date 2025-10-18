@@ -177,15 +177,6 @@ All colors MUST be HSL.
     }
   }
   
-  @keyframes hue-rotate {
-    0% {
-      filter: hue-rotate(0deg);
-    }
-    100% {
-      filter: hue-rotate(360deg);
-    }
-  }
-  
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
@@ -210,30 +201,30 @@ All colors MUST be HSL.
   .character-gradient-blue {
     background: var(--gradient-blue);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
+    animation: rotate-gradient 8s ease infinite;
   }
   
   .character-gradient-purple {
     background: var(--gradient-purple);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
+    animation: rotate-gradient 8s ease infinite;
   }
   
   .character-gradient-pink {
     background: var(--gradient-pink);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
+    animation: rotate-gradient 8s ease infinite;
   }
   
   .character-gradient-orange {
     background: var(--gradient-orange);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
+    animation: rotate-gradient 8s ease infinite;
   }
   
   .character-gradient-green {
     background: var(--gradient-green);
     background-size: 200% 200%;
-    animation: rotate-gradient 8s ease infinite, hue-rotate 15s linear infinite;
+    animation: rotate-gradient 8s ease infinite;
   }
 }
