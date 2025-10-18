@@ -13,6 +13,7 @@ import { WorryHistory } from "@/components/WorryHistory";
 import { Achievements } from "@/components/Achievements";
 import { useAchievements } from "@/hooks/useAchievements";
 import type { User } from "@supabase/supabase-js";
+import { playCharacterSound } from "@/utils/characterSounds";
 
 const CharacterCustomization = () => {
   const navigate = useNavigate();
@@ -181,6 +182,31 @@ const CharacterCustomization = () => {
     { name: "Sad", value: "sad" },
     { name: "Angry", value: "angry" },
   ];
+
+  // Play sounds during intro
+  useEffect(() => {
+    if (showIntro && !fadeOut) {
+      // Sound for "Hello! I'm [name]"
+      setTimeout(() => {
+        playCharacterSound(`Hello! I'm ${characterName}`, 1500);
+      }, 2000);
+      
+      // Sound for second line
+      setTimeout(() => {
+        playCharacterSound("I'm here to listen to your worries and help you feel better", 2000);
+      }, 3000);
+      
+      // Sound for third line
+      setTimeout(() => {
+        playCharacterSound("Whenever you need someone to talk to, I'll be right here for you", 2500);
+      }, 5000);
+      
+      // Sound for final line
+      setTimeout(() => {
+        playCharacterSound("Let's begin", 1000);
+      }, 7000);
+    }
+  }, [showIntro, fadeOut, characterName]);
 
   // Introduction animation screen
   if (showIntro) {
