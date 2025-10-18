@@ -48,7 +48,7 @@ export const playCharacterSound = (text: string, duration: number = 2000) => {
     const syllableEnd = syllableStart + syllableDuration;
     
     // Volume envelope mimicking speech
-    const peakVolume = 0.15; // Increased volume
+    const peakVolume = 0.35; // Much louder volume
     gainNode.gain.setValueAtTime(0, syllableStart);
     gainNode.gain.linearRampToValueAtTime(peakVolume, syllableStart + 0.003); // Very fast attack
     gainNode.gain.linearRampToValueAtTime(peakVolume * 0.8, syllableStart + syllableDuration * 0.2); // Shorter hold
