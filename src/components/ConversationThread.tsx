@@ -30,6 +30,7 @@ export const ConversationThread = ({
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -85,6 +86,7 @@ export const ConversationThread = ({
 
     const userMessage = newMessage.trim();
     setNewMessage("");
+    setIsTyping(true);
     setIsSending(true);
 
     try {
@@ -175,6 +177,7 @@ export const ConversationThread = ({
       });
     } finally {
       setIsSending(false);
+      setIsTyping(false);
       textareaRef.current?.focus();
     }
   };
@@ -197,7 +200,7 @@ export const ConversationThread = ({
   return (
     <div className="flex flex-col h-full max-h-[600px]">
       {messages.length > 0 ? (
-        <ScrollArea className="flex-1 pr-4">
+        <ScrollArea className={`flex-1 pr-4 transition-opacity duration-300 ${isTyping ? "opacity-0" : "opacity-100"}`}>
           <div className="space-y-4 pb-4">
             {messages.map((message, index) => (
               <div

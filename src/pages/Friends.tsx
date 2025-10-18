@@ -327,7 +327,39 @@ const Friends = () => {
                         </p>
                       </div>
                     </div>
-                    <span className="text-sm text-muted-foreground">Pending</span>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={async () => {
+                        setLoading(true);
+                        try {
+                          const { error } = await supabase
+                            .from("friend_invitations")
+                            .delete()
+                            .eq("id", invitation.id);
+
+                          if (error) throw error;
+
+                          toast({
+                            title: "Invitation cancelled",
+                            description: "Your friend invitation has been cancelled",
+                          });
+                          fetchInvitations(currentUserId!);
+                        } catch (error: any) {
+                          toast({
+                            title: "Error",
+                            description: error.message || "Failed to cancel invitation",
+                            variant: "destructive",
+                          });
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
+                      disabled={loading}
+                    >
+                      <X className="w-4 h-4 mr-1" />
+                      Cancel
+                    </Button>
                   </CardContent>
                 </Card>
               ))

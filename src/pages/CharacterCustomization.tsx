@@ -13,6 +13,7 @@ import { WorryHistory } from "@/components/WorryHistory";
 import { Achievements } from "@/components/Achievements";
 import { ConversationThread } from "@/components/ConversationThread";
 import { ConversationList } from "@/components/ConversationList";
+import { FriendCharacter } from "@/components/FriendCharacter";
 import { useAchievements } from "@/hooks/useAchievements";
 import type { User } from "@supabase/supabase-js";
 
@@ -324,100 +325,13 @@ const CharacterCustomization = () => {
             <TabsContent value="new">
               <div className="grid md:grid-cols-2 gap-12 items-start">
             {/* Character Preview */}
-            <div className="bg-card rounded-3xl p-12 shadow-[var(--shadow-soft)] flex flex-col items-center justify-center min-h-[400px] gap-6">
-              {characterName && (
-                <h2 className="text-2xl font-bold gradient-text animate-bounce">{characterName}</h2>
-              )}
-              <div className="relative flex flex-col items-center gap-1">
-                {/* Head */}
-                <div
-                  className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center ${selectedColor}`}
-                  style={{
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
-                  }}
-                >
-                  {/* Face */}
-                  <div className="flex flex-col items-center gap-2">
-                    {/* Eyes */}
-                    <div className="flex gap-3">
-                      <div 
-                        className="w-3 h-3 bg-foreground rounded-full"
-                        style={{
-                          height: selectedFace === "calm" ? "2px" : 
-                                  selectedFace === "angry" ? "2px" : "12px",
-                          transform: selectedFace === "angry" ? "rotate(-20deg)" : "none",
-                        }}
-                      />
-                      <div 
-                        className="w-3 h-3 bg-foreground rounded-full"
-                        style={{
-                          height: selectedFace === "calm" ? "2px" : 
-                                  selectedFace === "angry" ? "2px" : "12px",
-                          transform: selectedFace === "angry" ? "rotate(20deg)" : "none",
-                        }}
-                      />
-                    </div>
-                    {/* Mouth */}
-                    <div 
-                      className={`w-8 h-1 bg-foreground rounded-full transition-all duration-150 ${
-                        isSpeaking ? 'animate-[mouth-talk_0.3s_ease-in-out_infinite]' : ''
-                      }`}
-                      style={{
-                        borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
-                                     selectedFace === "cheerful" ? "0 0 100px 100px" :
-                                     selectedFace === "sad" ? "100px 100px 0 0" :
-                                     selectedFace === "angry" ? "0" :
-                                     selectedFace === "calm" ? "100px" : "100px",
-                        height: selectedFace === "happy" ? "8px" : 
-                                selectedFace === "cheerful" ? "10px" : 
-                                selectedFace === "sad" ? "6px" :
-                                selectedFace === "angry" ? "3px" : "4px",
-                      }}
-                    />
-                  </div>
-                </div>
-                
-                {/* Body */}
-                <div
-                  className={`w-28 h-32 transition-all duration-300 opacity-90 ${selectedColor}`}
-                  style={{
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
-                  }}
-                />
-                
-                {/* Arms */}
-                <div className="absolute top-[100px] flex gap-[120px]">
-                  <div
-                    className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
-                    style={{
-                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
-                    }}
-                  />
-                  <div
-                    className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
-                    style={{
-                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
-                    }}
-                  />
-                </div>
-                
-                {/* Legs */}
-                <div className="flex gap-2">
-                  <div
-                    className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
-                    style={{
-                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
-                    }}
-                  />
-                  <div
-                    className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
-                    style={{
-                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
+            <FriendCharacter
+              selectedColor={selectedColor}
+              selectedShape={selectedShape}
+              selectedFace={selectedFace}
+              isSpeaking={isSpeaking}
+              characterName={characterName}
+            />
 
             {/* Worries Input */}
             <div className="space-y-6">
