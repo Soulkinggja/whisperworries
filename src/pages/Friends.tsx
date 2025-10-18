@@ -278,7 +278,7 @@ const Friends = () => {
                       <div>
                         <p className="font-medium">Friend Request</p>
                         <p className="text-sm text-muted-foreground">
-                          Received {new Date(invitation.created_at).toLocaleDateString()}
+                          From: {invitation.receiver_email}
                         </p>
                       </div>
                     </div>
