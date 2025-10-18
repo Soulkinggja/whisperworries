@@ -215,7 +215,7 @@ const CharacterCustomization = () => {
             />
             
             {/* Arms */}
-            <div className="absolute top-[100px] flex gap-[104px]">
+            <div className="absolute top-[100px] flex gap-[120px]">
               <div
                 className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                 style={{
@@ -364,7 +364,7 @@ const CharacterCustomization = () => {
                 />
                 
                 {/* Arms */}
-                <div className="absolute top-[100px] flex gap-[104px]">
+                <div className="absolute top-[100px] flex gap-[120px]">
                   <div
                     className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                     style={{
@@ -550,7 +550,7 @@ const CharacterCustomization = () => {
               />
               
               {/* Arms */}
-              <div className="absolute top-[100px] flex gap-[104px]">
+              <div className="absolute top-[100px] flex gap-[120px]">
                 <div
                   className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
                   style={{
