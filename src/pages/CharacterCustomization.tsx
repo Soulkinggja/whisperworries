@@ -8,6 +8,8 @@ import { Sparkles, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { WorryHistory } from "@/components/WorryHistory";
+import { Achievements } from "@/components/Achievements";
+import { useAchievements } from "@/hooks/useAchievements";
 import type { User } from "@supabase/supabase-js";
 
 const CharacterCustomization = () => {
@@ -24,6 +26,7 @@ const CharacterCustomization = () => {
   const [selectedUseCase, setSelectedUseCase] = useState("venting");
   const [activeTab, setActiveTab] = useState("new");
   const { toast } = useToast();
+  const { checkWorryMilestones } = useAchievements(user?.id);
 
   // Auth check
   useEffect(() => {
@@ -100,6 +103,9 @@ const CharacterCustomization = () => {
             description: "Suggestion received but couldn't save to history.",
             variant: "destructive",
           });
+        } else {
+          // Check for achievements after successfully saving worry
+          checkWorryMilestones();
         }
       } else {
         throw new Error('No suggestion received');
@@ -153,9 +159,10 @@ const CharacterCustomization = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-8">
               <TabsTrigger value="new">New Worry</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
+              <TabsTrigger value="achievements">Achievements</TabsTrigger>
             </TabsList>
 
             <TabsContent value="new">
@@ -306,6 +313,10 @@ const CharacterCustomization = () => {
 
             <TabsContent value="history">
               <WorryHistory />
+            </TabsContent>
+
+            <TabsContent value="achievements">
+              <Achievements />
             </TabsContent>
           </Tabs>
         </div>
