@@ -39,6 +39,7 @@ export type Database = {
         Row: {
           content: string
           created_at: string
+          gender: string | null
           id: string
           mood: string | null
           title: string | null
@@ -48,6 +49,7 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string
+          gender?: string | null
           id?: string
           mood?: string | null
           title?: string | null
@@ -57,6 +59,7 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string
+          gender?: string | null
           id?: string
           mood?: string | null
           title?: string | null
@@ -68,14 +71,17 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          gender: string | null
           id: string
         }
         Insert: {
           created_at?: string
+          gender?: string | null
           id: string
         }
         Update: {
           created_at?: string
+          gender?: string | null
           id?: string
         }
         Relationships: []
