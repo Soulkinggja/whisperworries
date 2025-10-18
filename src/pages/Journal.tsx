@@ -199,11 +199,11 @@ const Journal = () => {
       <div className="container mx-auto max-w-4xl">
         <Button
           variant="ghost"
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/customize")}
           className="mb-6"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Dashboard
+          Back
         </Button>
 
         <h1 className="text-4xl font-bold mb-2">
