@@ -221,36 +221,6 @@ const CharacterCustomization = () => {
                 <h2 className="text-2xl font-bold gradient-text">{characterName}</h2>
               )}
               <div className="relative flex flex-col items-center gap-1">
-                {/* Hair for female */}
-                {characterGender === "female" && (
-                  <>
-                    {/* Hair top/bangs */}
-                    <div
-                      className="absolute transition-all duration-300"
-                      style={{
-                        width: "100px",
-                        height: "56px",
-                        backgroundColor: "#3D2817",
-                        borderRadius: selectedShape === "square" ? "8px 8px 0 0" : selectedShape === "rounded" ? "28px 28px 0 0" : "50% 50% 0 0",
-                        top: "-8px",
-                        zIndex: 10,
-                      }}
-                    />
-                    {/* Hair sides */}
-                    <div
-                      className="absolute transition-all duration-300"
-                      style={{
-                        width: "120px",
-                        height: "100px",
-                        backgroundColor: "#3D2817",
-                        borderRadius: "50%",
-                        top: "8px",
-                        zIndex: 5,
-                        opacity: 0.9,
-                      }}
-                    />
-                  </>
-                )}
                 {/* Head */}
                 <div
                   className="transition-all duration-300 relative flex items-center justify-center"
@@ -259,7 +229,6 @@ const CharacterCustomization = () => {
                     height: characterGender === "female" ? "88px" : "96px",
                     backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "16px" : "12px") : "50%",
-                    zIndex: 8,
                   }}
                 >
                   {/* Face */}
@@ -469,36 +438,6 @@ const CharacterCustomization = () => {
               <h2 className="text-2xl font-bold gradient-text">{characterName}</h2>
             )}
             <div className="relative flex flex-col items-center gap-1">
-              {/* Hair for female */}
-              {characterGender === "female" && (
-                <>
-                  {/* Hair top/bangs */}
-                  <div
-                    className="absolute transition-all duration-300"
-                    style={{
-                      width: "100px",
-                      height: "56px",
-                      backgroundColor: "#3D2817",
-                      borderRadius: selectedShape === "square" ? "8px 8px 0 0" : selectedShape === "rounded" ? "28px 28px 0 0" : "50% 50% 0 0",
-                      top: "-8px",
-                      zIndex: 10,
-                    }}
-                  />
-                  {/* Hair sides */}
-                  <div
-                    className="absolute transition-all duration-300"
-                    style={{
-                      width: "120px",
-                      height: "100px",
-                      backgroundColor: "#3D2817",
-                      borderRadius: "50%",
-                      top: "8px",
-                      zIndex: 5,
-                      opacity: 0.9,
-                    }}
-                  />
-                </>
-              )}
               {/* Head */}
               <div
                 className="transition-all duration-300 relative flex items-center justify-center"
@@ -507,7 +446,6 @@ const CharacterCustomization = () => {
                   height: characterGender === "female" ? "88px" : "96px",
                   backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? (characterGender === "female" ? "16px" : "12px") : "50%",
-                  zIndex: 8,
                 }}
               >
                 {/* Face */}
