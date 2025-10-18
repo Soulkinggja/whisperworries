@@ -481,7 +481,7 @@ const CharacterCustomization = () => {
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Create Your <span className="gradient-text">Block Character</span>
+            Create Your <span className="gradient-text">Block Friend</span>
           </h1>
           <p className="text-xl text-muted-foreground">
             Customize your companion to reflect your unique personality
