@@ -9,7 +9,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { WorryHistory } from "@/components/WorryHistory";
 import type { User } from "@supabase/supabase-js";
-import { Badge } from "@/components/ui/badge";
 
 const CharacterCustomization = () => {
   const navigate = useNavigate();
@@ -136,40 +135,8 @@ const CharacterCustomization = () => {
 
   if (characterSaved) {
     return (
-      <div className="min-h-screen bg-background px-4 py-12 relative overflow-hidden">
-        {/* Flying badges */}
-        <div className="absolute inset-0 pointer-events-none z-50">
-          <Badge 
-            variant="secondary" 
-            className="absolute animate-[slide-in-right_8s_linear_infinite] top-[15%] text-lg py-2 px-4"
-            style={{ right: '-200px', animationDelay: '0s' }}
-          >
-            You're brave! 💪
-          </Badge>
-          <Badge 
-            variant="secondary" 
-            className="absolute animate-[slide-in-right_10s_linear_infinite] top-[35%] text-lg py-2 px-4"
-            style={{ right: '-200px', animationDelay: '2s' }}
-          >
-            You're not alone 🤝
-          </Badge>
-          <Badge 
-            variant="secondary" 
-            className="absolute animate-[slide-in-right_9s_linear_infinite] top-[55%] text-lg py-2 px-4"
-            style={{ right: '-200px', animationDelay: '4s' }}
-          >
-            We're here for you 💙
-          </Badge>
-          <Badge 
-            variant="secondary" 
-            className="absolute animate-[slide-in-right_11s_linear_infinite] top-[75%] text-lg py-2 px-4"
-            style={{ right: '-200px', animationDelay: '6s' }}
-          >
-            You've got this! ✨
-          </Badge>
-        </div>
-        
-        <div className="container mx-auto max-w-6xl relative">
+      <div className="min-h-screen bg-background px-4 py-12">
+        <div className="container mx-auto max-w-6xl">
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-2">
@@ -347,40 +314,8 @@ const CharacterCustomization = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background px-4 py-12 relative overflow-hidden">
-      {/* Flying badges */}
-      <div className="absolute inset-0 pointer-events-none">
-        <Badge 
-          variant="secondary" 
-          className="absolute animate-[slide-in-right_8s_linear_infinite] top-[20%] text-lg py-2 px-4"
-          style={{ right: '-200px', animationDelay: '0s' }}
-        >
-          You're brave! 💪
-        </Badge>
-        <Badge 
-          variant="secondary" 
-          className="absolute animate-[slide-in-right_10s_linear_infinite] top-[40%] text-lg py-2 px-4"
-          style={{ right: '-200px', animationDelay: '2s' }}
-        >
-          You're not alone 🤝
-        </Badge>
-        <Badge 
-          variant="secondary" 
-          className="absolute animate-[slide-in-right_9s_linear_infinite] top-[60%] text-lg py-2 px-4"
-          style={{ right: '-200px', animationDelay: '4s' }}
-        >
-          We're here for you 💙
-        </Badge>
-        <Badge 
-          variant="secondary" 
-          className="absolute animate-[slide-in-right_11s_linear_infinite] top-[80%] text-lg py-2 px-4"
-          style={{ right: '-200px', animationDelay: '6s' }}
-        >
-          You've got this! ✨
-        </Badge>
-      </div>
-
-      <div className="container mx-auto max-w-4xl relative z-10">
+    <div className="min-h-screen bg-background px-4 py-12">
+      <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Create Your <span className="gradient-text">Block Character</span>

@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Sparkles } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -112,21 +111,6 @@ const Auth = () => {
         </div>
 
         <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
-          <div className="flex flex-wrap gap-2 justify-center mb-6">
-            <Badge variant="secondary" className="animate-fade-in">
-              You're brave! 💪
-            </Badge>
-            <Badge variant="secondary" className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              You're not alone 🤝
-            </Badge>
-            <Badge variant="secondary" className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              We're here for you 💙
-            </Badge>
-            <Badge variant="secondary" className="animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              You've got this! ✨
-            </Badge>
-          </div>
-          
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
