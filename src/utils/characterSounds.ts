@@ -1,60 +1,63 @@
-// Utility for generating musical character sounds using Web Audio API
-// Creates pleasant melodies that play while the character speaks
+// Utility for generating character speaking sounds using Web Audio API
+// Creates speech-like sounds with natural pitch variation and rhythm
 
 export const playCharacterSound = (text: string, duration: number = 2000) => {
   const audioContext = new AudioContext();
   const startTime = audioContext.currentTime;
   
-  // Musical scale (C major pentatonic - always sounds pleasant)
-  const scale = [261.63, 293.66, 329.63, 392.00, 440.00]; // C, D, E, G, A
-  
-  // Calculate number of notes based on text length
+  // Calculate syllables for more natural speech rhythm
   const words = text.split(' ');
-  const noteCount = Math.min(words.length, 20); // Cap at 20 notes
+  const syllableCount = words.reduce((count, word) => {
+    const vowels = word.match(/[aeiou]+/gi);
+    return count + (vowels ? vowels.length : 1);
+  }, 0);
   
-  const timePerNote = (duration / 1000) / noteCount;
+  const timePerSyllable = (duration / 1000) / syllableCount; // Convert to seconds
   
-  for (let i = 0; i < noteCount; i++) {
-    // Create oscillators for harmony
+  for (let i = 0; i < syllableCount; i++) {
+    // Create multiple oscillators for richer, more speech-like sound
     const oscillator1 = audioContext.createOscillator();
     const oscillator2 = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
     
+    // Mix two oscillators for more complex, voice-like timbre
     oscillator1.connect(gainNode);
     oscillator2.connect(gainNode);
     gainNode.connect(audioContext.destination);
     
-    // Pick notes from the scale in a melodic pattern
-    const noteIndex = i % scale.length;
-    const frequency = scale[noteIndex];
+    // Natural speech pitch variation (around 200-400Hz range)
+    const basePitch = 250;
+    // Add sentence intonation (rising and falling)
+    const sentenceProgress = i / syllableCount;
+    const intonation = Math.sin(sentenceProgress * Math.PI) * 50; // Rise and fall
+    // Add random variation for naturalness
+    const randomVariation = (Math.random() - 0.5) * 30;
     
-    // Add some variation - go up and down the scale
-    const direction = Math.floor(i / scale.length) % 2 === 0 ? 1 : -1;
-    const actualIndex = direction > 0 ? noteIndex : (scale.length - 1 - noteIndex);
+    const frequency = basePitch + intonation + randomVariation;
     
-    oscillator1.frequency.value = scale[actualIndex];
-    oscillator2.frequency.value = scale[actualIndex] * 2; // Octave harmony
+    oscillator1.frequency.value = frequency;
+    oscillator2.frequency.value = frequency * 1.5; // Harmonic for richer sound
     
-    // Triangle wave for pleasant musical tone
+    // Use triangle wave for smoother sound with some harmonics
     oscillator1.type = 'triangle';
     oscillator2.type = 'triangle';
     
-    // Musical envelope
-    const noteStart = startTime + (i * timePerNote);
-    const noteDuration = timePerNote * 0.9;
-    const noteEnd = noteStart + noteDuration;
+    // Speech-like envelope with quick attack and decay
+    const syllableStart = startTime + (i * timePerSyllable);
+    const syllableDuration = timePerSyllable * 0.98; // Almost no gap for very fast speech
+    const syllableEnd = syllableStart + syllableDuration;
     
-    // Volume envelope for musical notes
-    const peakVolume = 0.3;
-    gainNode.gain.setValueAtTime(0, noteStart);
-    gainNode.gain.linearRampToValueAtTime(peakVolume, noteStart + 0.02); // Gentle attack
-    gainNode.gain.linearRampToValueAtTime(peakVolume * 0.6, noteStart + noteDuration * 0.7); // Sustain
-    gainNode.gain.exponentialRampToValueAtTime(0.01, noteEnd); // Smooth release
+    // Volume envelope mimicking speech
+    const peakVolume = 0.5; // Maximum comfortable volume
+    gainNode.gain.setValueAtTime(0, syllableStart);
+    gainNode.gain.linearRampToValueAtTime(peakVolume, syllableStart + 0.003); // Very fast attack
+    gainNode.gain.linearRampToValueAtTime(peakVolume * 0.8, syllableStart + syllableDuration * 0.2); // Shorter hold
+    gainNode.gain.linearRampToValueAtTime(0, syllableEnd); // Quick release
     
-    oscillator1.start(noteStart);
-    oscillator1.stop(noteEnd);
-    oscillator2.start(noteStart);
-    oscillator2.stop(noteEnd);
+    oscillator1.start(syllableStart);
+    oscillator1.stop(syllableEnd);
+    oscillator2.start(syllableStart);
+    oscillator2.stop(syllableEnd);
   }
   
   // Clean up
