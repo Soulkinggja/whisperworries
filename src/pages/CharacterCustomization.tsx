@@ -217,7 +217,7 @@ const CharacterCustomization = () => {
             {/* Character Preview */}
             <div className="bg-card rounded-3xl p-12 shadow-[var(--shadow-soft)] flex flex-col items-center justify-center min-h-[400px] gap-6">
               {characterName && (
-                <h2 className="text-2xl font-bold gradient-text">{characterName}</h2>
+                <h2 className="text-2xl font-bold gradient-text animate-bounce">{characterName}</h2>
               )}
               <div className="relative flex flex-col items-center gap-1">
                 {/* Head */}
@@ -416,7 +416,7 @@ const CharacterCustomization = () => {
           {/* Preview */}
           <div className="bg-card rounded-3xl p-12 shadow-[var(--shadow-soft)] flex flex-col items-center justify-center min-h-[400px] gap-6">
             {characterName && (
-              <h2 className="text-2xl font-bold gradient-text">{characterName}</h2>
+              <h2 className="text-2xl font-bold gradient-text animate-bounce">{characterName}</h2>
             )}
             <div className="relative flex flex-col items-center gap-1">
               {/* Head */}
