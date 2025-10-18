@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { Sparkles } from "lucide-react";
 
 const CharacterCustomization = () => {
   const [selectedColor, setSelectedColor] = useState("hsl(210, 100%, 50%)");
   const [selectedShape, setSelectedShape] = useState("square");
   const [selectedFace, setSelectedFace] = useState("happy");
+  const [characterSaved, setCharacterSaved] = useState(false);
+  const [worries, setWorries] = useState("");
 
   const colors = [
     { name: "Blue", value: "hsl(210, 100%, 50%)" },
@@ -23,6 +26,36 @@ const CharacterCustomization = () => {
     { name: "Neutral", value: "neutral" },
     { name: "Cheerful", value: "cheerful" },
   ];
+
+  if (characterSaved) {
+    return (
+      <div className="min-h-screen bg-background px-4 py-12">
+        <div className="container mx-auto max-w-2xl">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Share Your <span className="gradient-text">Worries</span>
+            </h1>
+            <p className="text-xl text-muted-foreground">
+              Your companion is here to listen. What's on your mind?
+            </p>
+          </div>
+          
+          <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
+            <Textarea
+              value={worries}
+              onChange={(e) => setWorries(e.target.value)}
+              placeholder="Type your worries here..."
+              className="min-h-[300px] text-lg resize-none"
+            />
+            <Button variant="magical" size="lg" className="w-full mt-6 text-lg">
+              <Sparkles className="w-5 h-5" />
+              Submit
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background px-4 py-12">
@@ -191,7 +224,12 @@ const CharacterCustomization = () => {
               </div>
             </div>
 
-            <Button variant="magical" size="lg" className="w-full text-lg">
+            <Button 
+              variant="magical" 
+              size="lg" 
+              className="w-full text-lg"
+              onClick={() => setCharacterSaved(true)}
+            >
               <Sparkles className="w-5 h-5" />
               Save Character
             </Button>
