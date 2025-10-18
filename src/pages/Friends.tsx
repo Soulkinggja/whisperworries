@@ -216,8 +216,8 @@ const Friends = () => {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Support Friends
           </h1>
-          <Button variant="ghost" onClick={() => navigate("/journal")}>
-            Back to Journal
+          <Button variant="ghost" onClick={() => navigate(-1)}>
+            Back
           </Button>
         </div>
 
@@ -340,17 +340,21 @@ const Friends = () => {
 
                           if (error) throw error;
 
+                          // Immediately update UI by removing from the list
+                          setSentInvitations(prev => prev.filter(inv => inv.id !== invitation.id));
+
                           toast({
                             title: "Invitation cancelled",
                             description: "Your friend invitation has been cancelled",
                           });
-                          fetchInvitations(currentUserId!);
                         } catch (error: any) {
                           toast({
                             title: "Error",
                             description: error.message || "Failed to cancel invitation",
                             variant: "destructive",
                           });
+                          // Refetch on error to sync state
+                          fetchInvitations(currentUserId!);
                         } finally {
                           setLoading(false);
                         }

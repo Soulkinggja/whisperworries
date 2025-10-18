@@ -40,13 +40,13 @@ export const FriendCharacter = ({
   const getIdleTransform = () => {
     switch (idleAnimation) {
       case 0:
-        return "translateY(0px)";
+        return "translateY(0px) rotate(0deg)";
       case 1:
-        return "translateY(-5px)";
+        return "translateY(-15px) rotate(2deg)";
       case 2:
-        return "translateY(-2px)";
+        return "translateY(-8px) rotate(-1deg)";
       default:
-        return "translateY(0px)";
+        return "translateY(0px) rotate(0deg)";
     }
   };
 

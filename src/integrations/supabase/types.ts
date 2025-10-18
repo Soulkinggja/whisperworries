@@ -37,6 +37,7 @@ export type Database = {
       }
       conversation_messages: {
         Row: {
+          attachment_url: string | null
           content: string
           conversation_id: string
           created_at: string
@@ -44,6 +45,7 @@ export type Database = {
           role: string
         }
         Insert: {
+          attachment_url?: string | null
           content: string
           conversation_id: string
           created_at?: string
@@ -51,6 +53,7 @@ export type Database = {
           role: string
         }
         Update: {
+          attachment_url?: string | null
           content?: string
           conversation_id?: string
           created_at?: string
