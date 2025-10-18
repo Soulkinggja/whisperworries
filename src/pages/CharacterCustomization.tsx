@@ -126,7 +126,24 @@ const CharacterCustomization = () => {
               console.error('Error playing audio');
             };
             
-            await audio.play();
+            // Handle autoplay restrictions
+            try {
+              await audio.play();
+            } catch (playError) {
+              console.log('Autoplay blocked, showing manual play option');
+              toast({
+                title: "Click to hear response",
+                description: "Your browser blocked autoplay. Click here to play the audio.",
+                action: (
+                  <button
+                    onClick={() => audio.play().catch(console.error)}
+                    className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm"
+                  >
+                    Play Audio
+                  </button>
+                ),
+              });
+            }
           } else {
             // Fallback: animate mouth based on estimated duration if TTS fails
             setIsSpeaking(true);
