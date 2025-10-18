@@ -11,17 +11,28 @@ serve(async (req) => {
   }
 
   try {
-    const { worry } = await req.json();
+    const { worry, useCase = 'venting' } = await req.json();
     
     if (!worry || typeof worry !== 'string') {
       return new Response(
         JSON.stringify({ error: 'Worry text is required' }),
         { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       );
     }
+
+    // Customize the system prompt based on use case
+    const useCasePrompts: Record<string, string> = {
+      'venting': 'You are a compassionate listener. The user needs to vent and feel heard. Validate their feelings warmly, show empathy, and provide gentle encouragement. Keep your response supportive and understanding.',
+      'journaling': 'You are a thoughtful journaling companion. Help the user reflect on their thoughts and feelings. Ask gentle questions that encourage deeper self-exploration and provide insights that help them understand themselves better.',
+      'problem-solving': 'You are a practical problem-solving assistant. Help the user break down their concern into manageable steps. Provide clear, actionable advice and structured solutions they can implement.',
+      'emotional-support': 'You are a caring emotional support companion. Provide warmth, comfort, and reassurance. Help the user feel less alone and remind them of their strength and resilience.',
+      'self-reflection': 'You are a mindful reflection guide. Help the user gain perspective on their situation. Encourage them to consider different viewpoints and find meaningful insights about themselves and their circumstances.'
+    };
+
+    const systemPrompt = useCasePrompts[useCase] || useCasePrompts['venting'];
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -41,11 +52,11 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: 'You are a compassionate and helpful AI companion. When users share their worries, provide empathetic, practical suggestions to help them feel better. Keep responses warm, supportive, and actionable. Limit responses to 3-4 sentences.'
+            content: systemPrompt
           },
           {
             role: 'user',
-            content: `I'm worried about: ${worry}`
+            content: worry
           }
         ],
       }),

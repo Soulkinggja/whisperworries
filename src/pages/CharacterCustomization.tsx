@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +15,7 @@ const CharacterCustomization = () => {
   const [suggestion, setSuggestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [selectedUseCase, setSelectedUseCase] = useState("venting");
   const { toast } = useToast();
 
   const handleSubmitWorry = async () => {
@@ -31,7 +33,7 @@ const CharacterCustomization = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke('analyze-worry', {
-        body: { worry: worries }
+        body: { worry: worries, useCase: selectedUseCase }
       });
 
       if (error) throw error;
@@ -186,11 +188,26 @@ const CharacterCustomization = () => {
             {/* Worries Input */}
             <div className="space-y-6">
               <div className="bg-card rounded-3xl p-6 shadow-[var(--shadow-soft)]">
+                <div className="mb-4">
+                  <label className="text-sm font-medium mb-2 block">I want to use this for:</label>
+                  <Select value={selectedUseCase} onValueChange={setSelectedUseCase}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a use case" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="venting">Venting</SelectItem>
+                      <SelectItem value="journaling">Journaling</SelectItem>
+                      <SelectItem value="problem-solving">Problem Solving</SelectItem>
+                      <SelectItem value="emotional-support">Emotional Support</SelectItem>
+                      <SelectItem value="self-reflection">Self-Reflection</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <Textarea
                   value={worries}
                   onChange={(e) => setWorries(e.target.value)}
                   placeholder="Type your worries here..."
-                  className="min-h-[350px] text-lg resize-none"
+                  className="min-h-[300px] text-lg resize-none"
                   disabled={isLoading}
                 />
               </div>
