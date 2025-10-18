@@ -1,49 +1,66 @@
 // Utility for generating character speaking sounds using Web Audio API
+// Creates speech-like sounds with natural pitch variation and rhythm
 
 export const playCharacterSound = (text: string, duration: number = 2000) => {
   const audioContext = new AudioContext();
   const startTime = audioContext.currentTime;
   
-  // Calculate pitch variation based on text characteristics
+  // Calculate syllables for more natural speech rhythm
   const words = text.split(' ');
   const syllableCount = words.reduce((count, word) => {
-    // Rough syllable estimation: vowel clusters
     const vowels = word.match(/[aeiou]+/gi);
     return count + (vowels ? vowels.length : 1);
   }, 0);
   
-  // Create pitch pattern based on syllables
-  const timePerSyllable = duration / syllableCount;
+  const timePerSyllable = (duration / 1000) / syllableCount; // Convert to seconds
   
   for (let i = 0; i < syllableCount; i++) {
-    const oscillator = audioContext.createOscillator();
+    // Create multiple oscillators for richer, more speech-like sound
+    const oscillator1 = audioContext.createOscillator();
+    const oscillator2 = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
     
-    oscillator.connect(gainNode);
+    // Mix two oscillators for more complex, voice-like timbre
+    oscillator1.connect(gainNode);
+    oscillator2.connect(gainNode);
     gainNode.connect(audioContext.destination);
     
-    // Vary frequency for each syllable (between 200Hz and 600Hz)
-    const basePitch = 300;
-    const pitchVariation = Math.sin(i * 0.5) * 150; // Sine wave for natural variation
-    const frequency = basePitch + pitchVariation;
+    // Natural speech pitch variation (around 200-400Hz range)
+    const basePitch = 250;
+    // Add sentence intonation (rising and falling)
+    const sentenceProgress = i / syllableCount;
+    const intonation = Math.sin(sentenceProgress * Math.PI) * 50; // Rise and fall
+    // Add random variation for naturalness
+    const randomVariation = (Math.random() - 0.5) * 30;
     
-    oscillator.frequency.value = frequency;
-    oscillator.type = 'triangle'; // Softer sound than square wave
+    const frequency = basePitch + intonation + randomVariation;
     
-    // Envelope for each syllable
+    oscillator1.frequency.value = frequency;
+    oscillator2.frequency.value = frequency * 1.5; // Harmonic for richer sound
+    
+    // Use sawtooth for more voice-like quality
+    oscillator1.type = 'sawtooth';
+    oscillator2.type = 'triangle';
+    
+    // Speech-like envelope with quick attack and decay
     const syllableStart = startTime + (i * timePerSyllable);
-    const syllableEnd = syllableStart + timePerSyllable * 0.7; // 70% duty cycle
+    const syllableDuration = timePerSyllable * 0.65; // Slightly shorter for speech gaps
+    const syllableEnd = syllableStart + syllableDuration;
     
+    // Volume envelope mimicking speech
+    const peakVolume = 0.08; // Lower volume for comfort
     gainNode.gain.setValueAtTime(0, syllableStart);
-    gainNode.gain.linearRampToValueAtTime(0.1, syllableStart + 0.02); // Quick attack
-    gainNode.gain.linearRampToValueAtTime(0.05, syllableEnd - 0.05); // Sustain
-    gainNode.gain.linearRampToValueAtTime(0, syllableEnd); // Release
+    gainNode.gain.linearRampToValueAtTime(peakVolume, syllableStart + 0.01); // Fast attack
+    gainNode.gain.linearRampToValueAtTime(peakVolume * 0.7, syllableStart + syllableDuration * 0.3); // Hold
+    gainNode.gain.linearRampToValueAtTime(0, syllableEnd); // Quick release
     
-    oscillator.start(syllableStart);
-    oscillator.stop(syllableEnd);
+    oscillator1.start(syllableStart);
+    oscillator1.stop(syllableEnd);
+    oscillator2.start(syllableStart);
+    oscillator2.stop(syllableEnd);
   }
   
-  // Clean up context after all sounds complete
+  // Clean up
   setTimeout(() => {
     audioContext.close();
   }, duration + 500);
