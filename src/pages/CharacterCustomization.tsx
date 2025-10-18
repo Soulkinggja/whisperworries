@@ -92,19 +92,10 @@ const CharacterCustomization = () => {
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
         
-        // Animate mouth based on text length (roughly 300 words per minute for very fast speech)
         const wordCount = data.suggestion.split(' ').length;
-        const speakingDuration = (wordCount / 300) * 60 * 1000; // Convert to milliseconds
-        setIsSpeaking(true);
+        const speakingDuration = (wordCount / 300) * 60 * 1000;
         
-        // Play character sounds
-        playCharacterSound(data.suggestion, speakingDuration);
-        
-        setTimeout(() => {
-          setIsSpeaking(false);
-        }, speakingDuration);
-        
-        // Try to generate and play speech (optional, won't block animation)
+        // First, try to generate and play text-to-speech
         try {
           const { data: speechData, error: speechError } = await supabase.functions.invoke('text-to-speech', {
             body: { text: data.suggestion }
@@ -119,18 +110,33 @@ const CharacterCustomization = () => {
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
             
+            setIsSpeaking(true);
+            
             audio.onended = () => {
               URL.revokeObjectURL(audioUrl);
+              setIsSpeaking(false);
+              // Play musical sounds after speech ends
+              playCharacterSound(data.suggestion, speakingDuration);
             };
             
             audio.onerror = () => {
               URL.revokeObjectURL(audioUrl);
+              setIsSpeaking(false);
             };
             
             await audio.play();
+          } else {
+            // Fallback to just musical sounds if TTS fails
+            setIsSpeaking(true);
+            playCharacterSound(data.suggestion, speakingDuration);
+            setTimeout(() => setIsSpeaking(false), speakingDuration);
           }
         } catch (speechError) {
           console.error('Error playing speech:', speechError);
+          // Fallback to just musical sounds
+          setIsSpeaking(true);
+          playCharacterSound(data.suggestion, speakingDuration);
+          setTimeout(() => setIsSpeaking(false), speakingDuration);
         }
 
         // Save to database
