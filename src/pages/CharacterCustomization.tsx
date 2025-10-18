@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const CharacterCustomization = () => {
   const [selectedColor, setSelectedColor] = useState("hsl(210, 100%, 50%)");
@@ -9,6 +11,46 @@ const CharacterCustomization = () => {
   const [selectedFace, setSelectedFace] = useState("happy");
   const [characterSaved, setCharacterSaved] = useState(false);
   const [worries, setWorries] = useState("");
+  const [suggestion, setSuggestion] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmitWorry = async () => {
+    if (!worries.trim()) {
+      toast({
+        title: "Please enter your worries",
+        description: "Your companion needs to know what's troubling you.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setSuggestion("");
+
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-worry', {
+        body: { worry: worries }
+      });
+
+      if (error) throw error;
+
+      if (data?.suggestion) {
+        setSuggestion(data.suggestion);
+      } else {
+        throw new Error('No suggestion received');
+      }
+    } catch (error) {
+      console.error('Error getting suggestion:', error);
+      toast({
+        title: "Something went wrong",
+        description: "Your companion couldn't process your worry. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const colors = [
     { name: "Blue", value: "hsl(210, 100%, 50%)" },
@@ -143,11 +185,26 @@ const CharacterCustomization = () => {
                   onChange={(e) => setWorries(e.target.value)}
                   placeholder="Type your worries here..."
                   className="min-h-[350px] text-lg resize-none"
+                  disabled={isLoading}
                 />
               </div>
-              <Button variant="magical" size="lg" className="w-full text-lg">
+              
+              {suggestion && (
+                <div className="bg-card rounded-3xl p-6 shadow-[var(--shadow-soft)] border-2 border-primary/20">
+                  <h3 className="text-lg font-semibold mb-3 text-primary">Your companion suggests:</h3>
+                  <p className="text-base text-foreground leading-relaxed">{suggestion}</p>
+                </div>
+              )}
+              
+              <Button 
+                variant="magical" 
+                size="lg" 
+                className="w-full text-lg"
+                onClick={handleSubmitWorry}
+                disabled={isLoading}
+              >
                 <Sparkles className="w-5 h-5" />
-                Submit
+                {isLoading ? "Thinking..." : "Submit"}
               </Button>
             </div>
           </div>
