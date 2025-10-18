@@ -30,8 +30,8 @@ const CharacterCustomization = () => {
   if (characterSaved) {
     return (
       <div className="min-h-screen bg-background px-4 py-12">
-        <div className="container mx-auto max-w-2xl">
-          <div className="text-center mb-8">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Share Your <span className="gradient-text">Worries</span>
             </h1>
@@ -40,17 +40,116 @@ const CharacterCustomization = () => {
             </p>
           </div>
           
-          <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
-            <Textarea
-              value={worries}
-              onChange={(e) => setWorries(e.target.value)}
-              placeholder="Type your worries here..."
-              className="min-h-[300px] text-lg resize-none"
-            />
-            <Button variant="magical" size="lg" className="w-full mt-6 text-lg">
-              <Sparkles className="w-5 h-5" />
-              Submit
-            </Button>
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            {/* Character Preview */}
+            <div className="bg-card rounded-3xl p-12 shadow-[var(--shadow-soft)] flex items-center justify-center min-h-[400px]">
+              <div className="relative flex flex-col items-center gap-1">
+                {/* Head */}
+                <div
+                  className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+                  style={{
+                    backgroundColor: selectedColor,
+                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                  }}
+                >
+                  {/* Face */}
+                  <div className="flex flex-col items-center gap-2">
+                    {/* Eyes */}
+                    <div className="flex gap-3">
+                      <div 
+                        className="w-3 h-3 bg-foreground rounded-full"
+                        style={{
+                          height: selectedFace === "calm" ? "2px" : "12px",
+                        }}
+                      />
+                      <div 
+                        className="w-3 h-3 bg-foreground rounded-full"
+                        style={{
+                          height: selectedFace === "calm" ? "2px" : "12px",
+                        }}
+                      />
+                    </div>
+                    {/* Mouth */}
+                    <div 
+                      className="w-8 h-1 bg-foreground rounded-full"
+                      style={{
+                        borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
+                                     selectedFace === "cheerful" ? "0 0 100px 100px" :
+                                     selectedFace === "calm" ? "100px" : "100px",
+                        height: selectedFace === "happy" ? "8px" : 
+                                selectedFace === "cheerful" ? "10px" : "4px",
+                      }}
+                    />
+                  </div>
+                </div>
+                
+                {/* Body */}
+                <div
+                  className="w-28 h-32 transition-all duration-300"
+                  style={{
+                    backgroundColor: selectedColor,
+                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                    opacity: 0.9,
+                  }}
+                />
+                
+                {/* Arms */}
+                <div className="absolute top-[100px] flex gap-[104px]">
+                  <div
+                    className="w-12 h-28 transition-all duration-300"
+                    style={{
+                      backgroundColor: selectedColor,
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                      opacity: 0.85,
+                    }}
+                  />
+                  <div
+                    className="w-12 h-28 transition-all duration-300"
+                    style={{
+                      backgroundColor: selectedColor,
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                      opacity: 0.85,
+                    }}
+                  />
+                </div>
+                
+                {/* Legs */}
+                <div className="flex gap-2">
+                  <div
+                    className="w-12 h-32 transition-all duration-300"
+                    style={{
+                      backgroundColor: selectedColor,
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                      opacity: 0.85,
+                    }}
+                  />
+                  <div
+                    className="w-12 h-32 transition-all duration-300"
+                    style={{
+                      backgroundColor: selectedColor,
+                      borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                      opacity: 0.85,
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Worries Input */}
+            <div className="space-y-6">
+              <div className="bg-card rounded-3xl p-6 shadow-[var(--shadow-soft)]">
+                <Textarea
+                  value={worries}
+                  onChange={(e) => setWorries(e.target.value)}
+                  placeholder="Type your worries here..."
+                  className="min-h-[350px] text-lg resize-none"
+                />
+              </div>
+              <Button variant="magical" size="lg" className="w-full text-lg">
+                <Sparkles className="w-5 h-5" />
+                Submit
+              </Button>
+            </div>
           </div>
         </div>
       </div>
