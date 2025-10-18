@@ -21,6 +21,7 @@ const CharacterCustomization = () => {
   const [selectedShape, setSelectedShape] = useState("square");
   const [selectedFace, setSelectedFace] = useState("happy");
   const [characterName, setCharacterName] = useState("");
+  const [characterGender, setCharacterGender] = useState("");
   const [characterSaved, setCharacterSaved] = useState(false);
   const [worries, setWorries] = useState("");
   const [suggestion, setSuggestion] = useState("");
@@ -271,7 +272,7 @@ const CharacterCustomization = () => {
                 
                 {/* Body */}
                 <div
-                  className="w-32 h-34 transition-all duration-300"
+                  className="w-28 h-32 transition-all duration-300"
                   style={{
                     backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
@@ -280,9 +281,9 @@ const CharacterCustomization = () => {
                 />
                 
                 {/* Arms */}
-                <div className="absolute top-[100px] flex gap-[112px]">
+                <div className="absolute top-[100px] flex gap-[104px]">
                   <div
-                    className="w-[52px] h-[120px] transition-all duration-300"
+                    className="w-12 h-28 transition-all duration-300"
                     style={{
                       backgroundColor: selectedColor,
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
@@ -290,7 +291,7 @@ const CharacterCustomization = () => {
                     }}
                   />
                   <div
-                    className="w-[52px] h-[120px] transition-all duration-300"
+                    className="w-12 h-28 transition-all duration-300"
                     style={{
                       backgroundColor: selectedColor,
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
@@ -302,7 +303,7 @@ const CharacterCustomization = () => {
                 {/* Legs */}
                 <div className="flex gap-2">
                   <div
-                    className="w-14 h-34 transition-all duration-300"
+                    className="w-12 h-32 transition-all duration-300"
                     style={{
                       backgroundColor: selectedColor,
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
@@ -310,7 +311,7 @@ const CharacterCustomization = () => {
                     }}
                   />
                   <div
-                    className="w-14 h-34 transition-all duration-300"
+                    className="w-12 h-32 transition-all duration-300"
                     style={{
                       backgroundColor: selectedColor,
                       borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
@@ -468,7 +469,7 @@ const CharacterCustomization = () => {
               
               {/* Body */}
               <div
-                className="w-32 h-34 transition-all duration-300"
+                className="w-28 h-32 transition-all duration-300"
                 style={{
                   backgroundColor: selectedColor,
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
@@ -477,9 +478,9 @@ const CharacterCustomization = () => {
               />
               
               {/* Arms */}
-              <div className="absolute top-[100px] flex gap-[112px]">
+              <div className="absolute top-[100px] flex gap-[104px]">
                 <div
-                  className="w-[52px] h-[120px] transition-all duration-300"
+                  className="w-12 h-28 transition-all duration-300"
                   style={{
                     backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
@@ -487,7 +488,7 @@ const CharacterCustomization = () => {
                   }}
                 />
                 <div
-                  className="w-[52px] h-[120px] transition-all duration-300"
+                  className="w-12 h-28 transition-all duration-300"
                   style={{
                     backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
@@ -499,7 +500,7 @@ const CharacterCustomization = () => {
               {/* Legs */}
               <div className="flex gap-2">
                 <div
-                  className="w-14 h-34 transition-all duration-300"
+                  className="w-12 h-32 transition-all duration-300"
                   style={{
                     backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
@@ -507,7 +508,7 @@ const CharacterCustomization = () => {
                   }}
                 />
                 <div
-                  className="w-14 h-34 transition-all duration-300"
+                  className="w-12 h-32 transition-all duration-300"
                   style={{
                     backgroundColor: selectedColor,
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
@@ -537,6 +538,20 @@ const CharacterCustomization = () => {
             </div>
 
             {/* Gender */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Choose Gender</h3>
+              <Select value={characterGender} onValueChange={setCharacterGender}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Colors */}
             <div>
               <h3 className="text-xl font-semibold mb-4">Choose Color</h3>
