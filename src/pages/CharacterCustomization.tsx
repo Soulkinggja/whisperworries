@@ -25,7 +25,7 @@ const CharacterCustomization = () => {
   const [user, setUser] = useState<User | null>(null);
   const [selectedColor, setSelectedColor] = useState("character-gradient-blue");
   const [customColor, setCustomColor] = useState("hsl(270, 65%, 65%)");
-  const [selectedShape, setSelectedShape] = useState("square");
+  const [selectedShape, setSelectedShape] = useState("circle");
   const [selectedFace, setSelectedFace] = useState("happy");
   const [characterName, setCharacterName] = useState("");
   const [characterSaved, setCharacterSaved] = useState(false);
@@ -150,7 +150,7 @@ const CharacterCustomization = () => {
     { name: "Green", value: "character-gradient-green" },
   ];
 
-  const shapes = ["square", "rounded"];
+  const shapes = ["circle", "square", "triangle"];
   
   const faces = [
     { name: "Happy", value: "happy" },
@@ -172,8 +172,9 @@ const CharacterCustomization = () => {
             <div
               className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
               style={{
-                borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "0",
                 backgroundColor: customColor,
+                clipPath: selectedShape === "triangle" ? "polygon(50% 0%, 0% 100%, 100% 100%)" : "none",
               }}
             >
               {/* Face */}
@@ -219,7 +220,7 @@ const CharacterCustomization = () => {
             <div
               className="w-28 h-32 transition-all duration-300 opacity-90"
               style={{
-                borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "4px",
                 backgroundColor: customColor,
               }}
             />
@@ -229,14 +230,14 @@ const CharacterCustomization = () => {
               <div
                 className="w-12 h-28 transition-all duration-300 opacity-85"
                 style={{
-                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                  borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "8px",
                   backgroundColor: customColor,
                 }}
               />
               <div
                 className="w-12 h-28 transition-all duration-300 opacity-85"
                 style={{
-                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                  borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "8px",
                   backgroundColor: customColor,
                 }}
               />
@@ -247,14 +248,14 @@ const CharacterCustomization = () => {
               <div
                 className="w-12 h-32 transition-all duration-300 opacity-85"
                 style={{
-                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                  borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "10px",
                   backgroundColor: customColor,
                 }}
               />
               <div
                 className="w-12 h-32 transition-all duration-300 opacity-85"
                 style={{
-                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                  borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "10px",
                   backgroundColor: customColor,
                 }}
               />
@@ -521,8 +522,9 @@ const CharacterCustomization = () => {
               <div
                 className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
                 style={{
-                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                  borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "0",
                   backgroundColor: customColor,
+                  clipPath: selectedShape === "triangle" ? "polygon(50% 0%, 0% 100%, 100% 100%)" : "none",
                 }}
               >
                 {/* Face */}
@@ -568,7 +570,7 @@ const CharacterCustomization = () => {
               <div
                 className="w-28 h-32 transition-all duration-300 opacity-90"
                 style={{
-                  borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                  borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "4px",
                   backgroundColor: customColor,
                 }}
               />
@@ -578,14 +580,14 @@ const CharacterCustomization = () => {
                 <div
                   className="w-12 h-28 transition-all duration-300 opacity-85"
                   style={{
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                    borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "8px",
                     backgroundColor: customColor,
                   }}
                 />
                 <div
                   className="w-12 h-28 transition-all duration-300 opacity-85"
                   style={{
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                    borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "8px",
                     backgroundColor: customColor,
                   }}
                 />
@@ -596,14 +598,14 @@ const CharacterCustomization = () => {
                 <div
                   className="w-12 h-32 transition-all duration-300 opacity-85"
                   style={{
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                    borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "10px",
                     backgroundColor: customColor,
                   }}
                 />
                 <div
                   className="w-12 h-32 transition-all duration-300 opacity-85"
                   style={{
-                    borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                    borderRadius: selectedShape === "circle" ? "50%" : selectedShape === "square" ? "4px" : "10px",
                     backgroundColor: customColor,
                   }}
                 />
