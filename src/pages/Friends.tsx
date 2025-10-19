@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { User, UserPlus, Users, Mail, Check, X, Loader2 } from "lucide-react";
+import { z } from "zod";
 
 interface FriendInvitation {
   id: string;
@@ -95,6 +96,19 @@ const Friends = () => {
 
   const sendInvitation = async () => {
     if (!email || !currentUserId) return;
+
+    // Validate email input
+    const emailSchema = z.string().trim().email('Invalid email address').min(5).max(255);
+    try {
+      emailSchema.parse(email);
+    } catch (validationError) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setLoading(true);
     try {

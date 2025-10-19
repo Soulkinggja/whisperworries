@@ -249,6 +249,16 @@ const CharacterCustomization = () => {
     setSuggestion("");
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast({
+          title: "Authentication required",
+          description: "Please sign in to use this feature.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke('analyze-worry', {
         body: { worry: worries, useCase: selectedUseCase }
       });
