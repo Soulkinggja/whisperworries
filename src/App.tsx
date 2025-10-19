@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { Layout } from "./components/Layout";
+import Index from "./pages/Index";
 import IntroScreen from "./pages/IntroScreen";
 import CharacterCustomization from "./pages/CharacterCustomization";
 import Auth from "./pages/Auth";
@@ -28,6 +29,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<IntroScreen />} />
+            <Route path="/dashboard" element={<Layout><Index /></Layout>} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/customize" element={<Layout><CharacterCustomization /></Layout>} />
             <Route path="/journal" element={<Layout><Journal /></Layout>} />

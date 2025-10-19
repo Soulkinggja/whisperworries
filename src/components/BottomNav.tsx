@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { BookOpen, Users, HeartPulse, User } from "lucide-react";
+import { BookOpen, Users, HeartPulse, User, LayoutDashboard } from "lucide-react";
 
 export const BottomNav = () => {
   const navItems = [
+    { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/journal", icon: BookOpen, label: "Journal" },
     { to: "/friends", icon: Users, label: "Friends" },
     { to: "/resources", icon: HeartPulse, label: "Resources" },
