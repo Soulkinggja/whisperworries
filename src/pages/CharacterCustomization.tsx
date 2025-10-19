@@ -34,6 +34,8 @@ const CharacterCustomization = () => {
   const [selectedShape, setSelectedShape] = useState("circle");
   const [selectedFace, setSelectedFace] = useState("happy");
   const [characterName, setCharacterName] = useState("");
+  const [selectedGender, setSelectedGender] = useState<"male" | "female" | null>(null);
+  const [selectedHairStyle, setSelectedHairStyle] = useState<string>("short");
   const [characterSaved, setCharacterSaved] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
@@ -122,12 +124,12 @@ const CharacterCustomization = () => {
     };
   }, [user]);
 
-  // Load character customization from profile
+  // Load character customization from profile and check if customization completed
   useEffect(() => {
     if (user?.id) {
       supabase
         .from('profiles')
-        .select('character_color, character_shape, character_face, display_name')
+        .select('character_color, character_shape, character_face, display_name, gender, onboarding_completed')
         .eq('id', user.id)
         .single()
         .then(({ data }) => {
@@ -136,6 +138,11 @@ const CharacterCustomization = () => {
             if (data.character_shape) setSelectedShape(data.character_shape);
             if (data.character_face) setSelectedFace(data.character_face);
             if (data.display_name) setCharacterName(data.display_name);
+            if (data.gender) setSelectedGender(data.gender as "male" | "female");
+            // If onboarding completed, show dashboard instead of customization
+            if (data.onboarding_completed) {
+              setCharacterSaved(true);
+            }
           }
         });
     }
@@ -348,6 +355,78 @@ const CharacterCustomization = () => {
     { name: "Sad", value: "sad" },
     { name: "Angry", value: "angry" },
   ];
+
+  const maleHairStyles = [
+    { name: "Short", value: "short" },
+    { name: "Spiky", value: "spiky" },
+    { name: "Wavy", value: "wavy" },
+  ];
+
+  const femaleHairStyles = [
+    { name: "Long", value: "long" },
+    { name: "Ponytail", value: "ponytail" },
+    { name: "Curly", value: "curly" },
+  ];
+
+  const handleSaveCharacter = async () => {
+    if (!characterName.trim()) {
+      toast({
+        title: "Name Required",
+        description: "Please give your companion a name!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!selectedGender) {
+      toast({
+        title: "Gender Required",
+        description: "Please select a gender for your companion!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!user?.id) return;
+
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          character_color: customColor,
+          character_shape: selectedShape,
+          character_face: selectedFace,
+          display_name: characterName,
+          gender: selectedGender,
+          onboarding_completed: true,
+        })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Your companion has been created!",
+      });
+
+      // Show intro animation then dashboard
+      setShowIntro(true);
+      setTimeout(() => {
+        setFadeOut(true);
+        setTimeout(() => {
+          setShowIntro(false);
+          setCharacterSaved(true);
+        }, 1000);
+      }, 9000);
+    } catch (error) {
+      console.error('Error saving character:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save your companion. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   // Introduction animation screen
   if (showIntro) {
@@ -889,6 +968,61 @@ const CharacterCustomization = () => {
               <ColorPicker value={customColor} onChange={setCustomColor} />
             </div>
 
+            {/* Gender Selection */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Choose Gender</h3>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setSelectedGender("male");
+                    setSelectedHairStyle("short");
+                  }}
+                  className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
+                    selectedGender === "male"
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border bg-card"
+                  }`}
+                >
+                  ♂ Male
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedGender("female");
+                    setSelectedHairStyle("long");
+                  }}
+                  className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
+                    selectedGender === "female"
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border bg-card"
+                  }`}
+                >
+                  ♀ Female
+                </button>
+              </div>
+            </div>
+
+            {/* Hair Style Selection */}
+            {selectedGender && (
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Choose Hair Style</h3>
+                <div className="flex gap-3 flex-wrap">
+                  {(selectedGender === "male" ? maleHairStyles : femaleHairStyles).map((hair) => (
+                    <button
+                      key={hair.value}
+                      onClick={() => setSelectedHairStyle(hair.value)}
+                      className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
+                        selectedHairStyle === hair.value
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border bg-card"
+                      }`}
+                    >
+                      {hair.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Shapes */}
             <div>
               <h3 className="text-xl font-semibold mb-4">Choose Shape</h3>
@@ -933,35 +1067,7 @@ const CharacterCustomization = () => {
               variant="magical" 
               size="lg" 
               className="w-full text-lg"
-              onClick={async () => {
-                // Save character to database
-                if (user?.id) {
-                  await supabase
-                    .from('profiles')
-                    .update({
-                      character_color: customColor,
-                      character_shape: selectedShape,
-                      character_face: selectedFace,
-                      display_name: characterName,
-                    })
-                    .eq('id', user.id);
-                }
-
-                setFadeOut(true);
-                setTimeout(() => {
-                  setFadeOut(false);
-                  setShowIntro(true);
-                  // Start fade out of intro after 8 seconds
-                  setTimeout(() => {
-                    setFadeOut(true);
-                    setTimeout(() => {
-                      setCharacterSaved(true);
-                      setShowIntro(false);
-                      setFadeOut(false);
-                    }, 1000); // 1 second fade out
-                  }, 8000); // 8 seconds of intro content
-                }, 1000); // 1 second fade out
-              }}
+              onClick={handleSaveCharacter}
             >
               <Sparkles className="w-5 h-5" />
               Save Character

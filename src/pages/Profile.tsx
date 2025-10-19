@@ -19,6 +19,9 @@ interface Profile {
   theme: string | null;
   gender: string | null;
   voice_preference: string | null;
+  character_color: string | null;
+  character_shape: string | null;
+  character_face: string | null;
 }
 
 const Profile = () => {
@@ -35,6 +38,9 @@ const Profile = () => {
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [customColor, setCustomColor] = useState("hsl(270, 65%, 65%)");
+  const [selectedShape, setSelectedShape] = useState("circle");
+  const [selectedFace, setSelectedFace] = useState("happy");
 
   useEffect(() => {
     checkAuth();
@@ -119,6 +125,9 @@ const Profile = () => {
       setDisplayName(data.display_name || "");
       setGender(data.gender || "");
       setSelectedVoice(data.voice_preference || "");
+      setCustomColor(data.character_color || "hsl(270, 65%, 65%)");
+      setSelectedShape(data.character_shape || "circle");
+      setSelectedFace(data.character_face || "happy");
       if (data.theme) {
         setTheme(data.theme);
       }
@@ -204,6 +213,9 @@ const Profile = () => {
           gender: gender || null,
           theme: theme || "system",
           voice_preference: selectedVoice || null,
+          character_color: customColor,
+          character_shape: selectedShape,
+          character_face: selectedFace,
         })
         .eq("id", user.id);
 
@@ -381,66 +393,62 @@ const Profile = () => {
           </CardContent>
         </Card>
 
-        {/* Wellness Quick Access */}
+        {/* Avatar Customization */}
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Wellness Tools</CardTitle>
+            <CardTitle>Avatar Customization</CardTitle>
             <CardDescription>
-              Quick access to your daily wellness features
+              Customize your companion's appearance
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid sm:grid-cols-2 gap-4">
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex flex-col items-start gap-2"
-              onClick={() => navigate("/daily-check-in")}
-            >
-              <div className="flex items-center gap-2 w-full">
-                <span className="text-2xl">😊</span>
-                <span className="font-semibold">Daily Check-In</span>
-              </div>
-              <span className="text-sm text-muted-foreground">Track your mood today</span>
-            </Button>
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex flex-col items-start gap-2"
-              onClick={() => navigate("/breathing")}
-            >
-              <div className="flex items-center gap-2 w-full">
-                <span className="text-2xl">🫁</span>
-                <span className="font-semibold">Breathing Exercises</span>
-              </div>
-              <span className="text-sm text-muted-foreground">Calm your mind</span>
-            </Button>
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex flex-col items-start gap-2"
-              onClick={() => navigate("/avatar-demo")}
-            >
-              <div className="flex items-center gap-2 w-full">
-                <span className="text-2xl">👤</span>
-                <span className="font-semibold">Avatar Styles</span>
-              </div>
-              <span className="text-sm text-muted-foreground">View male & female options</span>
-            </Button>
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex flex-col items-start gap-2"
-              onClick={() => navigate("/customize")}
-            >
-              <div className="flex items-center gap-2 w-full">
-                <span className="text-2xl">🎨</span>
-                <span className="font-semibold">Customize Avatar</span>
-              </div>
-              <span className="text-sm text-muted-foreground">Create your companion</span>
-            </Button>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="avatarColor">Color</Label>
+              <Input
+                id="avatarColor"
+                type="color"
+                value={customColor}
+                onChange={(e) => setCustomColor(e.target.value)}
+                className="mt-2 h-12"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="shape">Shape</Label>
+              <Select value={selectedShape} onValueChange={setSelectedShape}>
+                <SelectTrigger id="shape" className="mt-2">
+                  <SelectValue placeholder="Select shape" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="circle">Circle</SelectItem>
+                  <SelectItem value="square">Square</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="face">Face Expression</Label>
+              <Select value={selectedFace} onValueChange={setSelectedFace}>
+                <SelectTrigger id="face" className="mt-2">
+                  <SelectValue placeholder="Select expression" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="happy">😊 Happy</SelectItem>
+                  <SelectItem value="calm">😌 Calm</SelectItem>
+                  <SelectItem value="neutral">😐 Neutral</SelectItem>
+                  <SelectItem value="cheerful">😄 Cheerful</SelectItem>
+                  <SelectItem value="sad">😢 Sad</SelectItem>
+                  <SelectItem value="angry">😠 Angry</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </CardContent>
         </Card>
 
         {/* Appearance Settings */}
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Appearance</CardTitle>
+            <CardTitle>App Appearance</CardTitle>
             <CardDescription>
               Customize how the app looks and sounds for you
             </CardDescription>
