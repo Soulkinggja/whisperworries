@@ -32,19 +32,37 @@ const Auth = () => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate("/customize");
+        // Check if user has completed customization
+        checkUserProfile(session.user.id);
       }
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate("/customize");
+      if (session && event === 'SIGNED_IN') {
+        // Check if user has completed customization
+        checkUserProfile(session.user.id);
       }
     });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const checkUserProfile = async (userId: string) => {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('display_name')
+      .eq('id', userId)
+      .single();
+
+    // If they have a display_name, they've customized, go to dashboard
+    // Otherwise go to customization
+    if (profile?.display_name) {
+      navigate('/dashboard');
+    } else {
+      navigate('/customize');
+    }
+  };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -48,14 +48,10 @@ const Index = () => {
                 variant="magical" 
                 size="lg"
                 className="text-lg"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
+                onClick={() => window.location.href = '/auth'}
               >
                 <Sparkles className="w-5 h-5" />
-                Create Your Character
-              </Button>
-              <Button variant="outline" size="lg" className="text-lg border-2">
-                Learn More
+                Get Started
               </Button>
             </div>
 
@@ -201,7 +197,12 @@ const Index = () => {
                 </div>
               </div>
 
-              <Button variant="weave" size="lg" className="text-lg">
+              <Button 
+                variant="weave" 
+                size="lg" 
+                className="text-lg"
+                onClick={() => window.location.href = '/auth'}
+              >
                 <Sparkles className="w-5 h-5" />
                 Start Your Journey
               </Button>
@@ -228,16 +229,10 @@ const Index = () => {
                 variant="secondary" 
                 size="lg"
                 className="text-lg shadow-xl hover:shadow-2xl"
+                onClick={() => window.location.href = '/auth'}
               >
                 <Sparkles className="w-5 h-5" />
                 Get Started Free
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="text-lg bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20"
-              >
-                Watch Demo
               </Button>
             </div>
 
