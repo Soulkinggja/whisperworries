@@ -46,11 +46,11 @@ serve(async (req) => {
     }
 
     // Build user message content
-    const userContent: any[] = [{ type: 'text', text: worry }];
+    const userMessageContent: any[] = [{ type: 'text', text: worry }];
     
     // Add image if attachment URL is provided
     if (attachmentUrl) {
-      userContent.push({
+      userMessageContent.push({
         type: 'image_url',
         image_url: {
           url: attachmentUrl
@@ -67,7 +67,7 @@ serve(async (req) => {
       ...conversationHistory,
       {
         role: 'user',
-        content: userContent
+        content: userMessageContent
       }
     ];
 

@@ -215,7 +215,7 @@ export const ConversationThread = ({
       // Get AI response with attachment if present
       const { data, error } = await supabase.functions.invoke("analyze-worry", {
         body: {
-          worry: userMessage,
+          worry: userMessage || "Sent a photo",
           useCase: useCase,
           conversationHistory: conversationHistory,
           attachmentUrl: attachmentUrl,

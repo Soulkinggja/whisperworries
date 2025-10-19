@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Save, Trash2, Users, Heart } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Users, Heart, User as UserIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { User } from "@supabase/supabase-js";
@@ -206,6 +206,13 @@ const Journal = () => {
             Back
           </Button>
           <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/profile")}
+            >
+              <UserIcon className="w-4 h-4 mr-2" />
+              Profile
+            </Button>
             <Button
               variant="outline"
               onClick={() => navigate("/resources")}

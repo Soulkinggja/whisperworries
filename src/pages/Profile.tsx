@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ArrowLeft, Upload, User as UserIcon, Sun, Moon, Monitor, Loader2, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Upload, User, Moon, Sun, Laptop, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface Profile {
   id: string;
@@ -22,11 +23,13 @@ const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
-  const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [displayName, setDisplayName] = useState("");
-  const [userId, setUserId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -38,47 +41,41 @@ const Profile = () => {
       navigate("/auth");
       return;
     }
-    setUserId(session.user.id);
-    fetchProfile(session.user.id);
+    setUser(session.user);
+    loadProfile(session.user.id);
   };
 
-  const fetchProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .single();
+  const loadProfile = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
 
-      if (error) throw error;
-
+    if (error) {
+      console.error("Error loading profile:", error);
+    } else if (data) {
       setProfile(data);
       setDisplayName(data.display_name || "");
-      
-      // Set theme from profile
       if (data.theme) {
         setTheme(data.theme);
       }
-    } catch (error) {
-      console.error("Error fetching profile:", error);
     }
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !userId) return;
+    if (!file || !user) return;
 
-    // Check file type
     if (!file.type.startsWith("image/")) {
       toast({
-        title: "Invalid file type",
+        title: "Invalid file",
         description: "Please select an image file",
         variant: "destructive",
       });
       return;
     }
 
-    // Check file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
       toast({
         title: "File too large",
@@ -88,22 +85,15 @@ const Profile = () => {
       return;
     }
 
-    setUploading(true);
+    setIsUploading(true);
+
     try {
       const fileExt = file.name.split(".").pop();
-      const fileName = `${userId}/avatar.${fileExt}`;
-
-      // Delete old avatar if exists
-      if (profile?.avatar_url) {
-        const oldPath = profile.avatar_url.split("/").pop();
-        if (oldPath) {
-          await supabase.storage.from("avatars").remove([`${userId}/${oldPath}`]);
-        }
-      }
+      const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from("avatars")
-        .upload(fileName, file, { upsert: true });
+        .upload(fileName, file);
 
       if (uploadError) throw uploadError;
 
@@ -114,7 +104,7 @@ const Profile = () => {
       const { error: updateError } = await supabase
         .from("profiles")
         .update({ avatar_url: publicUrl })
-        .eq("id", userId);
+        .eq("id", user.id);
 
       if (updateError) throw updateError;
 
@@ -122,48 +112,54 @@ const Profile = () => {
 
       toast({
         title: "Success",
-        description: "Profile picture updated",
+        description: "Profile picture updated!",
       });
-    } catch (error: any) {
+    } catch (error) {
+      console.error("Error uploading avatar:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to upload avatar",
+        description: "Failed to upload profile picture",
         variant: "destructive",
       });
     } finally {
-      setUploading(false);
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 
   const handleSaveProfile = async () => {
-    if (!userId) return;
+    if (!user) return;
 
-    setLoading(true);
+    setIsLoading(true);
+
     try {
       const { error } = await supabase
         .from("profiles")
         .update({
-          display_name: displayName.trim() || null,
+          display_name: displayName || null,
           theme: theme || "system",
         })
-        .eq("id", userId);
+        .eq("id", user.id);
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "Profile updated successfully",
+        description: "Profile updated successfully!",
       });
 
-      fetchProfile(userId);
-    } catch (error: any) {
+      loadProfile(user.id);
+    } catch (error) {
+      console.error("Error updating profile:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to update profile",
+        description: "Failed to update profile",
         variant: "destructive",
       });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -172,119 +168,190 @@ const Profile = () => {
     navigate("/auth");
   };
 
-  const getThemeIcon = () => {
-    switch (theme) {
-      case "light":
-        return <Sun className="w-4 h-4" />;
-      case "dark":
-        return <Moon className="w-4 h-4" />;
-      default:
-        return <Laptop className="w-4 h-4" />;
+  const getThemeIcon = (themeValue: string) => {
+    switch (themeValue) {
+      case "light": return <Sun className="w-4 h-4 mr-2" />;
+      case "dark": return <Moon className="w-4 h-4 mr-2" />;
+      default: return <Monitor className="w-4 h-4 mr-2" />;
     }
+  };
+
+  const getInitials = () => {
+    if (displayName) {
+      return displayName
+        .split(" ")
+        .map(n => n[0])
+        .join("")
+        .toUpperCase()
+        .substring(0, 2);
+    }
+    return user?.email?.substring(0, 2).toUpperCase() || "U";
   };
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="container mx-auto max-w-2xl">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <Button variant="ghost" onClick={() => navigate(-1)}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
-          <Button variant="ghost" onClick={handleSignOut}>
+          <Button variant="outline" onClick={handleSignOut}>
             <LogOut className="w-4 h-4 mr-2" />
             Sign Out
           </Button>
         </div>
 
-        <Card>
+        <h1 className="text-4xl font-bold mb-2">
+          Your <span className="gradient-text">Profile</span>
+        </h1>
+        <p className="text-muted-foreground mb-8">
+          Manage your account settings and preferences
+        </p>
+
+        {/* Profile Picture Section */}
+        <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Profile Settings</CardTitle>
-            <CardDescription>Manage your account and preferences</CardDescription>
+            <CardTitle>Profile Picture</CardTitle>
+            <CardDescription>
+              Upload a profile picture to personalize your account
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Avatar Section */}
-            <div className="flex flex-col items-center gap-4">
-              <Avatar className="w-32 h-32">
+          <CardContent>
+            <div className="flex items-center gap-6">
+              <Avatar className="w-24 h-24">
                 <AvatarImage src={profile?.avatar_url || ""} />
-                <AvatarFallback>
-                  <User className="w-16 h-16" />
+                <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
+                  {getInitials()}
                 </AvatarFallback>
               </Avatar>
-              <div>
-                <Input
+              <div className="flex-1">
+                <input
+                  ref={fileInputRef}
                   type="file"
                   accept="image/*"
                   onChange={handleAvatarUpload}
                   className="hidden"
                   id="avatar-upload"
-                  disabled={uploading}
                 />
-                <Label htmlFor="avatar-upload">
-                  <Button variant="outline" disabled={uploading} asChild>
-                    <span>
-                      <Upload className="w-4 h-4 mr-2" />
-                      {uploading ? "Uploading..." : "Upload Photo"}
-                    </span>
-                  </Button>
-                </Label>
+                <Button
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading}
+                >
+                  {isUploading ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4 mr-2" />
+                  )}
+                  Upload Photo
+                </Button>
+                <p className="text-sm text-muted-foreground mt-2">
+                  JPG, PNG or GIF. Max 2MB.
+                </p>
               </div>
             </div>
-
-            {/* Display Name */}
-            <div className="space-y-2">
-              <Label htmlFor="display-name">Display Name</Label>
-              <Input
-                id="display-name"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                placeholder="Enter your display name"
-              />
-            </div>
-
-            {/* Theme Selection */}
-            <div className="space-y-2">
-              <Label htmlFor="theme">Theme</Label>
-              <Select value={theme} onValueChange={setTheme}>
-                <SelectTrigger id="theme">
-                  <div className="flex items-center gap-2">
-                    {getThemeIcon()}
-                    <SelectValue />
-                  </div>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="light">
-                    <div className="flex items-center gap-2">
-                      <Sun className="w-4 h-4" />
-                      Light
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="dark">
-                    <div className="flex items-center gap-2">
-                      <Moon className="w-4 h-4" />
-                      Dark
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="system">
-                    <div className="flex items-center gap-2">
-                      <Laptop className="w-4 h-4" />
-                      System
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Save Button */}
-            <Button
-              onClick={handleSaveProfile}
-              disabled={loading}
-              className="w-full"
-            >
-              {loading ? "Saving..." : "Save Changes"}
-            </Button>
           </CardContent>
         </Card>
+
+        {/* Account Information */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Account Information</CardTitle>
+            <CardDescription>
+              Update your personal information
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={user?.email || ""}
+                disabled
+                className="mt-2"
+              />
+              <p className="text-sm text-muted-foreground mt-1">
+                Email cannot be changed
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="displayName">Display Name</Label>
+              <Input
+                id="displayName"
+                placeholder="Enter your name"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="mt-2"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Appearance Settings */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Appearance</CardTitle>
+            <CardDescription>
+              Customize how the app looks for you
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Label htmlFor="theme">Theme</Label>
+            <Select value={theme} onValueChange={setTheme}>
+              <SelectTrigger className="mt-2">
+                <SelectValue>
+                  <div className="flex items-center">
+                    {getThemeIcon(theme || "system")}
+                    <span className="capitalize">{theme || "system"}</span>
+                  </div>
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">
+                  <div className="flex items-center">
+                    <Sun className="w-4 h-4 mr-2" />
+                    Light
+                  </div>
+                </SelectItem>
+                <SelectItem value="dark">
+                  <div className="flex items-center">
+                    <Moon className="w-4 h-4 mr-2" />
+                    Dark
+                  </div>
+                </SelectItem>
+                <SelectItem value="system">
+                  <div className="flex items-center">
+                    <Monitor className="w-4 h-4 mr-2" />
+                    System
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </CardContent>
+        </Card>
+
+        {/* Save Button */}
+        <Button
+          onClick={handleSaveProfile}
+          disabled={isLoading}
+          className="w-full"
+          size="lg"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <UserIcon className="w-4 h-4 mr-2" />
+              Save Profile
+            </>
+          )}
+        </Button>
       </div>
     </div>
   );
