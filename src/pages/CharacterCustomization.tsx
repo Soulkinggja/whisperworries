@@ -17,6 +17,11 @@ import { FriendCharacter } from "@/components/FriendCharacter";
 import { useAchievements } from "@/hooks/useAchievements";
 import { GoalsHabits } from "@/components/GoalsHabits";
 import { ColorPicker } from "@/components/ui/color-picker";
+import { StreakTracker } from "@/components/StreakTracker";
+import { GratitudeJar } from "@/components/GratitudeJar";
+import { VirtualPet } from "@/components/VirtualPet";
+import { MoodCalendar } from "@/components/MoodCalendar";
+import { WeeklyInsights } from "@/components/WeeklyInsights";
 import type { User } from "@supabase/supabase-js";
 
 const CharacterCustomization = () => {
@@ -427,7 +432,28 @@ const CharacterCustomization = () => {
             </TabsContent>
 
             <TabsContent value="wellness" className="space-y-6 animate-fade-in">
-              <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {/* Streak Tracker - Top Priority */}
+              <StreakTracker userId={user?.id} />
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Virtual Pet */}
+                <VirtualPet userId={user?.id} />
+                
+                {/* Gratitude Jar */}
+                <GratitudeJar userId={user?.id} />
+              </div>
+
+              {/* Mood Calendar */}
+              <MoodCalendar userId={user?.id} />
+
+              {/* Weekly Insights */}
+              <WeeklyInsights userId={user?.id} />
+
+              {/* Goals & Habits */}
+              <GoalsHabits userId={user?.id} />
+
+              {/* Existing Wellness Activities */}
+              <div className="grid md:grid-cols-2 gap-6 mt-6">
                 <div 
                   className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] cursor-pointer hover:shadow-[var(--shadow-glow)] transition-all hover:-translate-y-1 duration-300"
                   onClick={() => navigate("/daily-check-in")}
@@ -462,25 +488,6 @@ const CharacterCustomization = () => {
                   <Button variant="outline" className="w-full transition-all hover:scale-105">
                     Start Exercise
                   </Button>
-                </div>
-
-                <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] transition-all duration-300 hover:shadow-lg">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center text-3xl animate-float">
-                      💬
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">Daily Quote</h3>
-                      <p className="text-sm text-muted-foreground">Find inspiration</p>
-                    </div>
-                  </div>
-                  <p className="text-sm italic text-muted-foreground p-4 bg-muted/50 rounded-xl transition-all hover:bg-muted">
-                    "You are braver than you believe, stronger than you seem, and smarter than you think."
-                  </p>
-                </div>
-
-                <div className="md:col-span-2">
-                  <GoalsHabits />
                 </div>
               </div>
             </TabsContent>

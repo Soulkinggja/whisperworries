@@ -25,7 +25,11 @@ interface Completion {
   completed_at: string;
 }
 
-export const GoalsHabits = () => {
+interface GoalsHabitsProps {
+  userId?: string;
+}
+
+export const GoalsHabits = ({ userId }: GoalsHabitsProps) => {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [completions, setCompletions] = useState<Completion[]>([]);
   const [newGoal, setNewGoal] = useState({ title: "", description: "", target_days: 7 });
@@ -33,20 +37,21 @@ export const GoalsHabits = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchGoals();
-    fetchCompletions();
-  }, []);
+    if (userId) {
+      fetchGoals();
+      fetchCompletions();
+    }
+  }, [userId]);
 
   const fetchGoals = async () => {
+    if (!userId) return;
+    
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
       // @ts-ignore - Table exists but types not yet regenerated
       const { data, error }: any = await (supabase as any)
         .from("goals")
         .select("*")
-        .eq("user_id", user.id)
+        .eq("user_id", userId)
         .eq("is_active", true)
         .order("created_at", { ascending: false });
 
@@ -58,15 +63,14 @@ export const GoalsHabits = () => {
   };
 
   const fetchCompletions = async () => {
+    if (!userId) return;
+    
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
       // @ts-ignore - Table exists but types not yet regenerated
       const { data, error }: any = await (supabase as any)
         .from("habit_completions")
         .select("*")
-        .eq("user_id", user.id);
+        .eq("user_id", userId);
 
       if (error) throw error;
       setCompletions((data || []) as Completion[]);
@@ -86,12 +90,11 @@ export const GoalsHabits = () => {
     }
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
+      if (!userId) throw new Error("Not authenticated");
 
       // @ts-ignore - Table exists but types not yet regenerated
       const { error }: any = await (supabase as any).from("goals").insert({
-        user_id: user.id,
+        user_id: userId,
         title: newGoal.title,
         description: newGoal.description || null,
         target_days: newGoal.target_days,
@@ -118,12 +121,11 @@ export const GoalsHabits = () => {
 
   const completeGoal = async (goalId: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
+      if (!userId) throw new Error("Not authenticated");
 
       // @ts-ignore - Table exists but types not yet regenerated
       const { error }: any = await (supabase as any).from("habit_completions").insert({
-        user_id: user.id,
+        user_id: userId,
         goal_id: goalId,
       });
 

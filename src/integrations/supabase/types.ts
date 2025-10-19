@@ -97,6 +97,38 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_check_ins: {
+        Row: {
+          created_at: string
+          id: string
+          mood: number
+          note: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mood: number
+          note?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mood?: number
+          note?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_check_ins_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       friend_connections: {
         Row: {
           created_at: string
@@ -178,6 +210,104 @@ export type Database = {
           },
         ]
       }
+      goals: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          target_days: number | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          target_days?: number | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          target_days?: number | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gratitude_entries: {
+        Row: {
+          color: string | null
+          content: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      habit_completions: {
+        Row: {
+          completed_at: string
+          goal_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          goal_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          goal_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "habit_completions_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "habit_completions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_entries: {
         Row: {
           content: string
@@ -214,30 +344,117 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          character_color: string | null
+          character_face: string | null
+          character_shape: string | null
           created_at: string
           display_name: string | null
           gender: string | null
           id: string
+          onboarding_completed: boolean | null
           theme: string | null
           updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
+          character_color?: string | null
+          character_face?: string | null
+          character_shape?: string | null
           created_at?: string
           display_name?: string | null
           gender?: string | null
           id: string
+          onboarding_completed?: boolean | null
           theme?: string | null
           updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
+          character_color?: string | null
+          character_face?: string | null
+          character_shape?: string | null
           created_at?: string
           display_name?: string | null
           gender?: string | null
           id?: string
+          onboarding_completed?: boolean | null
           theme?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_pets: {
+        Row: {
+          created_at: string
+          experience: number
+          happiness: number
+          health: number
+          id: string
+          last_fed_at: string | null
+          last_played_at: string | null
+          level: number
+          pet_name: string
+          pet_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          experience?: number
+          happiness?: number
+          health?: number
+          id?: string
+          last_fed_at?: string | null
+          last_played_at?: string | null
+          level?: number
+          pet_name?: string
+          pet_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          experience?: number
+          happiness?: number
+          health?: number
+          id?: string
+          last_fed_at?: string | null
+          last_played_at?: string | null
+          level?: number
+          pet_name?: string
+          pet_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_streaks: {
+        Row: {
+          created_at: string
+          current_streak: number
+          id: string
+          last_check_in_date: string | null
+          longest_streak: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_check_in_date?: string | null
+          longest_streak?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          id?: string
+          last_check_in_date?: string | null
+          longest_streak?: number
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
