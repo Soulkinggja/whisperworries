@@ -53,7 +53,7 @@ const Profile = () => {
           voice.name.toLowerCase().includes('woman') ||
           voice.name.toLowerCase().includes('samantha') ||
           voice.name.toLowerCase().includes('victoria')
-        ).slice(0, 2);
+        ).slice(0, 3);
         
         const maleVoices = enVoices.filter(voice => 
           voice.name.toLowerCase().includes('male') ||
@@ -64,8 +64,8 @@ const Profile = () => {
           voice.name.toLowerCase().includes('james')
         ).slice(0, 3);
         
-        const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 5);
-        const finalVoices = selectedVoices.length === 5 ? selectedVoices : enVoices.slice(0, 5);
+        const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 6);
+        const finalVoices = selectedVoices.length === 6 ? selectedVoices : enVoices.slice(0, 6);
         
         setAvailableVoices(finalVoices);
       }, { once: true });
@@ -77,7 +77,7 @@ const Profile = () => {
         voice.name.toLowerCase().includes('woman') ||
         voice.name.toLowerCase().includes('samantha') ||
         voice.name.toLowerCase().includes('victoria')
-      ).slice(0, 2);
+      ).slice(0, 3);
       
       const maleVoices = enVoices.filter(voice => 
         voice.name.toLowerCase().includes('male') ||
@@ -88,8 +88,8 @@ const Profile = () => {
         voice.name.toLowerCase().includes('james')
       ).slice(0, 3);
       
-      const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 5);
-      const finalVoices = selectedVoices.length === 5 ? selectedVoices : enVoices.slice(0, 5);
+      const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 6);
+      const finalVoices = selectedVoices.length === 6 ? selectedVoices : enVoices.slice(0, 6);
       
       setAvailableVoices(finalVoices);
     }

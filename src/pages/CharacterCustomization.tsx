@@ -58,7 +58,7 @@ const CharacterCustomization = () => {
     }
   }, [transcript]);
 
-  // Load available voices - limit to 5 (2 female, 3 male) and load voice preference
+  // Load available voices - limit to 6 voices and load voice preference
   useEffect(() => {
     const loadVoices = () => {
       const allVoices = window.speechSynthesis.getVoices();
@@ -66,7 +66,7 @@ const CharacterCustomization = () => {
         // Filter for English voices
         const enVoices = allVoices.filter(voice => voice.lang.startsWith('en'));
         
-        // Find 2 female voices
+        // Find 3 female voices
         const femaleVoices = enVoices.filter(voice => 
           voice.name.toLowerCase().includes('female') ||
           voice.name.toLowerCase().includes('woman') ||
@@ -74,7 +74,7 @@ const CharacterCustomization = () => {
           voice.name.toLowerCase().includes('karen') ||
           voice.name.toLowerCase().includes('zira') ||
           voice.name.toLowerCase().includes('victoria')
-        ).slice(0, 2);
+        ).slice(0, 3);
         
         // Find 3 male voices
         const maleVoices = enVoices.filter(voice => 
@@ -86,11 +86,11 @@ const CharacterCustomization = () => {
           voice.name.toLowerCase().includes('james')
         ).slice(0, 3);
         
-        // Combine and limit to 5 voices total
-        const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 5);
+        // Combine and limit to 6 voices total
+        const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 6);
         
-        // If we don't have 5 voices, just take the first 5 English voices
-        const finalVoices = selectedVoices.length === 5 ? selectedVoices : enVoices.slice(0, 5);
+        // If we don't have 6 voices, just take the first 6 English voices
+        const finalVoices = selectedVoices.length === 6 ? selectedVoices : enVoices.slice(0, 6);
         
         setAvailableVoices(finalVoices);
         
@@ -120,6 +120,25 @@ const CharacterCustomization = () => {
     return () => {
       window.speechSynthesis.onvoiceschanged = null;
     };
+  }, [user]);
+
+  // Load character customization from profile
+  useEffect(() => {
+    if (user?.id) {
+      supabase
+        .from('profiles')
+        .select('character_color, character_shape, character_face, display_name')
+        .eq('id', user.id)
+        .single()
+        .then(({ data }) => {
+          if (data) {
+            if (data.character_color) setCustomColor(data.character_color);
+            if (data.character_shape) setSelectedShape(data.character_shape);
+            if (data.character_face) setSelectedFace(data.character_face);
+            if (data.display_name) setCharacterName(data.display_name);
+          }
+        });
+    }
   }, [user]);
 
   // Auth check
@@ -522,7 +541,7 @@ const CharacterCustomization = () => {
               <div className="grid md:grid-cols-2 gap-12 items-start">
             {/* Character Preview */}
             <FriendCharacter
-              selectedColor={selectedColor}
+              customColor={customColor}
               selectedShape={selectedShape}
               selectedFace={selectedFace}
               isSpeaking={isSpeaking}
@@ -914,7 +933,20 @@ const CharacterCustomization = () => {
               variant="magical" 
               size="lg" 
               className="w-full text-lg"
-              onClick={() => {
+              onClick={async () => {
+                // Save character to database
+                if (user?.id) {
+                  await supabase
+                    .from('profiles')
+                    .update({
+                      character_color: customColor,
+                      character_shape: selectedShape,
+                      character_face: selectedFace,
+                      display_name: characterName,
+                    })
+                    .eq('id', user.id);
+                }
+
                 setFadeOut(true);
                 setTimeout(() => {
                   setFadeOut(false);

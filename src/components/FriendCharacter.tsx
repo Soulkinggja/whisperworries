@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 interface FriendCharacterProps {
-  selectedColor?: string;
+  customColor?: string;
   selectedShape?: string;
   selectedFace?: string;
   isSpeaking?: boolean;
@@ -9,8 +9,8 @@ interface FriendCharacterProps {
 }
 
 export const FriendCharacter = ({
-  selectedColor = "character-gradient-blue",
-  selectedShape = "rounded",
+  customColor = "hsl(270, 65%, 65%)",
+  selectedShape = "circle",
   selectedFace = "happy",
   isSpeaking = false,
   characterName = "",
@@ -61,10 +61,12 @@ export const FriendCharacter = ({
       >
         {/* Head */}
         <div
-          className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center ${selectedColor}`}
+          className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center`}
           style={{
             borderRadius:
               selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+            backgroundColor: customColor,
+            boxShadow: `0 0 20px ${customColor}60`,
           }}
         >
           {/* Face */}
@@ -133,27 +135,33 @@ export const FriendCharacter = ({
 
         {/* Body */}
         <div
-          className={`w-28 h-32 transition-all duration-300 opacity-90 ${selectedColor}`}
+          className={`w-28 h-32 transition-all duration-300 opacity-90`}
           style={{
             borderRadius:
               selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+            backgroundColor: customColor,
+            boxShadow: `0 4px 20px ${customColor}40`,
           }}
         />
 
         {/* Arms */}
         <div className="absolute top-[100px] flex gap-[120px]">
           <div
-            className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
+            className={`w-12 h-28 transition-all duration-300 opacity-85`}
             style={{
               borderRadius:
                 selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+              backgroundColor: customColor,
+              boxShadow: `0 2px 12px ${customColor}30`,
             }}
           />
           <div
-            className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
+            className={`w-12 h-28 transition-all duration-300 opacity-85`}
             style={{
               borderRadius:
                 selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+              backgroundColor: customColor,
+              boxShadow: `0 2px 12px ${customColor}30`,
             }}
           />
         </div>
@@ -161,17 +169,21 @@ export const FriendCharacter = ({
         {/* Legs */}
         <div className="flex gap-2">
           <div
-            className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
+            className={`w-12 h-32 transition-all duration-300 opacity-85`}
             style={{
               borderRadius:
                 selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+              backgroundColor: customColor,
+              boxShadow: `0 2px 12px ${customColor}30`,
             }}
           />
           <div
-            className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
+            className={`w-12 h-32 transition-all duration-300 opacity-85`}
             style={{
               borderRadius:
                 selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+              backgroundColor: customColor,
+              boxShadow: `0 2px 12px ${customColor}30`,
             }}
           />
         </div>
