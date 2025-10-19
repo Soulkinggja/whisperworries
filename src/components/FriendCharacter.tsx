@@ -61,15 +61,34 @@ export const FriendCharacter = ({
         className="relative flex flex-col items-center gap-1 transition-transform duration-500"
         style={{ transform: getIdleTransform() }}
       >
-        {/* Hair for female */}
+        {/* Hair for female - improved styling */}
         {gender === "female" && (
-          <div
-            className="w-32 h-20 absolute -top-6 rounded-t-full z-0"
-            style={{
-              backgroundColor: customColor,
-              opacity: 0.9,
-            }}
-          />
+          <>
+            {/* Main hair volume */}
+            <div
+              className="w-36 h-24 absolute -top-8 rounded-t-full z-0"
+              style={{
+                backgroundColor: customColor,
+                opacity: 0.95,
+                boxShadow: `0 2px 12px ${customColor}40`,
+              }}
+            />
+            {/* Hair strands on sides */}
+            <div
+              className="w-16 h-20 absolute -top-6 -left-8 rounded-l-full z-0"
+              style={{
+                backgroundColor: customColor,
+                opacity: 0.9,
+              }}
+            />
+            <div
+              className="w-16 h-20 absolute -top-6 -right-8 rounded-r-full z-0"
+              style={{
+                backgroundColor: customColor,
+                opacity: 0.9,
+              }}
+            />
+          </>
         )}
 
         {/* Head */}
@@ -84,34 +103,33 @@ export const FriendCharacter = ({
         >
           {/* Face */}
           <div className="flex flex-col items-center gap-2">
-            {/* Eyes with blinking */}
+            {/* Eyes with blinking and eyelashes for female */}
             <div className="flex gap-3">
-              <div
-                className="w-3 bg-foreground rounded-full transition-all duration-150"
-                style={{
-                  height: blinkState
-                    ? "2px"
-                    : selectedFace === "calm"
-                    ? "2px"
-                    : selectedFace === "angry"
-                    ? "2px"
-                    : "12px",
-                  transform: selectedFace === "angry" ? "rotate(-20deg)" : "none",
-                }}
-              />
-              <div
-                className="w-3 bg-foreground rounded-full transition-all duration-150"
-                style={{
-                  height: blinkState
-                    ? "2px"
-                    : selectedFace === "calm"
-                    ? "2px"
-                    : selectedFace === "angry"
-                    ? "2px"
-                    : "12px",
-                  transform: selectedFace === "angry" ? "rotate(20deg)" : "none",
-                }}
-              />
+              {[0, 1].map((i) => (
+                <div key={i} className="relative">
+                  <div
+                    className="w-3 bg-foreground rounded-full transition-all duration-150"
+                    style={{
+                      height: blinkState
+                        ? "2px"
+                        : selectedFace === "calm"
+                        ? "2px"
+                        : selectedFace === "angry"
+                        ? "2px"
+                        : "12px",
+                      transform: selectedFace === "angry" ? (i === 0 ? "rotate(-20deg)" : "rotate(20deg)") : "none",
+                    }}
+                  />
+                  {/* Eyelashes for female */}
+                  {gender === "female" && (
+                    <div className="absolute -top-1 left-0 w-3 flex gap-[2px]">
+                      <div className="w-[2px] h-2 bg-foreground rounded-full rotate-[-20deg]" />
+                      <div className="w-[2px] h-2 bg-foreground rounded-full" />
+                      <div className="w-[2px] h-2 bg-foreground rounded-full rotate-[20deg]" />
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
             {/* Mouth */}
             <div
