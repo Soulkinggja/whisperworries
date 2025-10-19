@@ -42,6 +42,8 @@ const CharacterCustomization = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [selectedVoice, setSelectedVoice] = useState<string>("");
   const [selectedUseCase, setSelectedUseCase] = useState("venting");
   const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "conversation");
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
@@ -54,6 +56,33 @@ const CharacterCustomization = () => {
       setWorries(transcript);
     }
   }, [transcript]);
+
+  // Load available voices
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        setAvailableVoices(voices);
+        // Auto-select a kid-friendly voice
+        const preferredVoice = voices.find(voice => 
+          voice.name.toLowerCase().includes('female') || 
+          voice.name.toLowerCase().includes('samantha') ||
+          voice.name.toLowerCase().includes('karen') ||
+          voice.name.toLowerCase().includes('zira')
+        ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
+        if (preferredVoice) {
+          setSelectedVoice(preferredVoice.name);
+        }
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
 
   // Auth check
   useEffect(() => {
@@ -103,17 +132,10 @@ const CharacterCustomization = () => {
       
       const utterance = new SpeechSynthesisUtterance(text);
       
-      // Get available voices and select a kid-friendly one
-      const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(voice => 
-        voice.name.toLowerCase().includes('female') || 
-        voice.name.toLowerCase().includes('samantha') ||
-        voice.name.toLowerCase().includes('karen') ||
-        voice.name.toLowerCase().includes('zira')
-      ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
-      
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
+      // Use selected voice
+      const voice = availableVoices.find(v => v.name === selectedVoice);
+      if (voice) {
+        utterance.voice = voice;
       }
       
       utterance.rate = 0.9; // Slightly slower for kids
@@ -507,19 +529,33 @@ const CharacterCustomization = () => {
                 <div className="bg-card rounded-3xl p-6 shadow-[var(--shadow-soft)] border-2 border-primary/20">
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <h3 className="text-lg font-semibold text-primary">Your companion suggests:</h3>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleTextToSpeech(suggestion)}
-                      disabled={isPlayingAudio}
-                      className="shrink-0"
-                    >
-                      {isPlayingAudio ? (
-                        <VolumeX className="w-5 h-5 text-primary" />
-                      ) : (
-                        <Volume2 className="w-5 h-5 text-primary" />
-                      )}
-                    </Button>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Select value={selectedVoice} onValueChange={setSelectedVoice}>
+                        <SelectTrigger className="w-[180px] h-9 bg-background">
+                          <SelectValue placeholder="Select voice" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          {availableVoices.map((voice) => (
+                            <SelectItem key={voice.name} value={voice.name}>
+                              {voice.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleTextToSpeech(suggestion)}
+                        disabled={isPlayingAudio}
+                        className="shrink-0"
+                      >
+                        {isPlayingAudio ? (
+                          <VolumeX className="w-5 h-5 text-primary" />
+                        ) : (
+                          <Volume2 className="w-5 h-5 text-primary" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
                   <p className="text-base text-foreground leading-relaxed">{suggestion}</p>
                 </div>
