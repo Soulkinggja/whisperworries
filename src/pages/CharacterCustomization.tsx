@@ -16,15 +16,20 @@ import { ConversationList } from "@/components/ConversationList";
 import { FriendCharacter } from "@/components/FriendCharacter";
 import { useAchievements } from "@/hooks/useAchievements";
 import type { User } from "@supabase/supabase-js";
+import { CharacterOnboarding } from "./CharacterOnboarding";
+import { MoodTrendTracker } from "@/components/MoodTrendTracker";
+import { GoalsHabits } from "@/components/GoalsHabits";
 
 const CharacterCustomization = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const [selectedColor, setSelectedColor] = useState("character-gradient-blue");
-  const [selectedShape, setSelectedShape] = useState("square");
+  const [selectedColor, setSelectedColor] = useState("#9b87f5");
+  const [selectedShape, setSelectedShape] = useState("circle");
   const [selectedFace, setSelectedFace] = useState("happy");
+  const [selectedGender, setSelectedGender] = useState<"male" | "female">("female");
   const [characterName, setCharacterName] = useState("");
   const [characterSaved, setCharacterSaved] = useState(false);
+  const [isOnboarding, setIsOnboarding] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const [worries, setWorries] = useState("");
@@ -138,24 +143,104 @@ const CharacterCustomization = () => {
     }
   };
 
-  const colors = [
-    { name: "Blue", value: "character-gradient-blue" },
-    { name: "Purple", value: "character-gradient-purple" },
-    { name: "Pink", value: "character-gradient-pink" },
-    { name: "Orange", value: "character-gradient-orange" },
-    { name: "Green", value: "character-gradient-green" },
-  ];
+  useEffect(() => {
+    if (user) {
+      loadCharacterSettings();
+    }
+  }, [user]);
 
-  const shapes = ["square", "rounded"];
+  const loadCharacterSettings = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("character_color, character_shape, character_face, gender, onboarding_completed")
+      .eq("id", user.id)
+      .single();
+
+    if (data) {
+      if (!data.onboarding_completed) {
+        setIsOnboarding(true);
+      } else {
+        setSelectedColor(data.character_color || "#9b87f5");
+        setSelectedShape(data.character_shape || "circle");
+        setSelectedFace(data.character_face || "happy");
+        const gender = data.gender as "male" | "female" | null;
+        setSelectedGender(gender === "male" ? "male" : "female");
+        setCharacterSaved(true);
+      }
+    }
+  };
+
+  const saveCharacterSettings = async () => {
+    if (!user || !characterName.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a character name",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        character_color: selectedColor,
+        character_shape: selectedShape,
+        character_face: selectedFace,
+        gender: selectedGender,
+        onboarding_completed: true,
+      })
+      .eq("id", user.id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save character settings",
+        variant: "destructive",
+      });
+    } else {
+      setCharacterSaved(true);
+      toast({
+        title: "Character Saved!",
+        description: "Your companion is ready to help you",
+      });
+    }
+  };
+
+  const shapes = ["circle", "rounded", "square"];
   
   const faces = [
-    { name: "Happy", value: "happy" },
-    { name: "Calm", value: "calm" },
-    { name: "Neutral", value: "neutral" },
-    { name: "Cheerful", value: "cheerful" },
-    { name: "Sad", value: "sad" },
-    { name: "Angry", value: "angry" },
+    { name: "Happy", emoji: "😊", value: "happy" },
+    { name: "Calm", emoji: "😌", value: "calm" },
+    { name: "Neutral", emoji: "😐", value: "neutral" },
+    { name: "Cheerful", emoji: "😄", value: "cheerful" },
+    { name: "Excited", emoji: "🤩", value: "excited" },
+    { name: "Thoughtful", emoji: "🤔", value: "thoughtful" },
+    { name: "Sad", emoji: "😢", value: "sad" },
+    { name: "Worried", emoji: "😰", value: "worried" },
+    { name: "Sleepy", emoji: "😴", value: "sleepy" },
+    { name: "Surprised", emoji: "😲", value: "surprised" },
   ];
+
+  // Show onboarding screen for first-time setup
+  if (isOnboarding) {
+    return (
+      <CharacterOnboarding
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
+        selectedShape={selectedShape}
+        setSelectedShape={setSelectedShape}
+        selectedFace={selectedFace}
+        setSelectedFace={setSelectedFace}
+        selectedGender={selectedGender}
+        setSelectedGender={setSelectedGender}
+        characterName={characterName}
+        setCharacterName={setCharacterName}
+        onSave={saveCharacterSettings}
+      />
+    );
+  }
 
   // Introduction animation screen
   if (showIntro) {
@@ -417,7 +502,7 @@ const CharacterCustomization = () => {
             </TabsContent>
 
             <TabsContent value="wellness" className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-6">
                 <div 
                   className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] cursor-pointer hover:shadow-[var(--shadow-glow)] transition-all hover:-translate-y-1"
                   onClick={() => navigate("/daily-check-in")}
@@ -453,37 +538,11 @@ const CharacterCustomization = () => {
                     Start Exercise
                   </Button>
                 </div>
+              </div>
 
-                <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center text-3xl">
-                      💬
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">Daily Quote</h3>
-                      <p className="text-sm text-muted-foreground">Find inspiration</p>
-                    </div>
-                  </div>
-                  <p className="text-sm italic text-muted-foreground p-4 bg-muted/50 rounded-xl">
-                    "You are braver than you believe, stronger than you seem, and smarter than you think."
-                  </p>
-                </div>
-
-                <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Trophy className="w-8 h-8 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">Your Streak</h3>
-                      <p className="text-sm text-muted-foreground">Keep it going!</p>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-5xl font-bold text-primary mb-2">7</div>
-                    <div className="text-sm text-muted-foreground">days in a row</div>
-                  </div>
-                </div>
+              <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                {user && <MoodTrendTracker userId={user.id} />}
+                {user && <GoalsHabits userId={user.id} />}
               </div>
             </TabsContent>
 
@@ -625,20 +684,28 @@ const CharacterCustomization = () => {
               />
             </div>
 
-            {/* Colors */}
+            {/* Gender Selection */}
             <div>
-              <h3 className="text-xl font-semibold mb-4">Choose Color</h3>
-              <div className="flex gap-3 flex-wrap">
-                {colors.map((color) => (
-                  <button
-                    key={color.name}
-                    onClick={() => setSelectedColor(color.value)}
-                    className={`w-16 h-16 rounded-xl transition-all hover:scale-110 ${color.value} ${
-                      selectedColor === color.value ? "ring-4 ring-primary ring-offset-2" : ""
-                    }`}
-                    aria-label={`Select ${color.name}`}
-                  />
-                ))}
+              <h3 className="text-xl font-semibold mb-4">Gender</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <Button
+                  type="button"
+                  variant={selectedGender === "male" ? "default" : "outline"}
+                  className="h-16 text-lg"
+                  onClick={() => setSelectedGender("male")}
+                >
+                  <span className="text-2xl mr-2">♂</span>
+                  Male
+                </Button>
+                <Button
+                  type="button"
+                  variant={selectedGender === "female" ? "default" : "outline"}
+                  className="h-16 text-lg"
+                  onClick={() => setSelectedGender("female")}
+                >
+                  <span className="text-2xl mr-2">♀</span>
+                  Female
+                </Button>
               </div>
             </div>
 
