@@ -81,29 +81,42 @@ const CharacterCustomization = () => {
     navigate("/auth");
   };
 
-  const handleTextToSpeech = async (text: string) => {
+  const handleTextToSpeech = (text: string) => {
+    if (!('speechSynthesis' in window)) {
+      toast({
+        title: "Not Supported",
+        description: "Your browser doesn't support text-to-speech.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Stop any ongoing speech
+    if (isPlayingAudio) {
+      window.speechSynthesis.cancel();
+      setIsPlayingAudio(false);
+      return;
+    }
+
     try {
       setIsPlayingAudio(true);
       
-      const { data, error } = await supabase.functions.invoke('text-to-speech', {
-        body: { text, voice: 'alloy' }
-      });
-
-      if (error) throw error;
-
-      if (data?.audioContent) {
-        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-        audio.onended = () => setIsPlayingAudio(false);
-        audio.onerror = () => {
-          setIsPlayingAudio(false);
-          toast({
-            title: "Audio Error",
-            description: "Could not play audio. Please try again.",
-            variant: "destructive",
-          });
-        };
-        await audio.play();
-      }
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9; // Slightly slower for kids
+      utterance.pitch = 1.1; // Slightly higher pitch for friendly tone
+      utterance.volume = 1;
+      
+      utterance.onend = () => setIsPlayingAudio(false);
+      utterance.onerror = () => {
+        setIsPlayingAudio(false);
+        toast({
+          title: "Audio Error",
+          description: "Could not play audio. Please try again.",
+          variant: "destructive",
+        });
+      };
+      
+      window.speechSynthesis.speak(utterance);
     } catch (error) {
       console.error('Text-to-speech error:', error);
       setIsPlayingAudio(false);
