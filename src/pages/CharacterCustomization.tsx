@@ -619,23 +619,7 @@ const CharacterCustomization = () => {
 
             {/* Colors */}
             <div>
-              <h3 className="text-xl font-semibold mb-4">Choose Color</h3>
-              <div className="flex gap-3 flex-wrap mb-4">
-                {colors.map((color) => (
-                  <button
-                    key={color.name}
-                    onClick={() => setSelectedColor(color.value)}
-                    className={`w-16 h-16 rounded-xl transition-all hover:scale-110 duration-300 ${color.value} ${
-                      selectedColor === color.value ? "ring-4 ring-primary ring-offset-2 scale-110" : ""
-                    }`}
-                    aria-label={`Select ${color.name}`}
-                  />
-                ))}
-              </div>
-              <div className="mt-4">
-                <h4 className="text-sm font-medium mb-2 text-muted-foreground">Or create custom color</h4>
-                <ColorPicker value={customColor} onChange={setCustomColor} />
-              </div>
+              <ColorPicker value={customColor} onChange={setCustomColor} />
             </div>
 
             {/* Shapes */}
