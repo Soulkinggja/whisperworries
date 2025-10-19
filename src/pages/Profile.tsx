@@ -17,6 +17,7 @@ interface Profile {
   display_name: string | null;
   avatar_url: string | null;
   theme: string | null;
+  gender: string | null;
 }
 
 const Profile = () => {
@@ -28,6 +29,7 @@ const Profile = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [displayName, setDisplayName] = useState("");
+  const [gender, setGender] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -57,6 +59,7 @@ const Profile = () => {
     } else if (data) {
       setProfile(data);
       setDisplayName(data.display_name || "");
+      setGender(data.gender || "");
       if (data.theme) {
         setTheme(data.theme);
       }
@@ -139,6 +142,7 @@ const Profile = () => {
         .from("profiles")
         .update({
           display_name: displayName || null,
+          gender: gender || null,
           theme: theme || "system",
         })
         .eq("id", user.id);
@@ -286,6 +290,33 @@ const Profile = () => {
                 onChange={(e) => setDisplayName(e.target.value)}
                 className="mt-2"
               />
+            </div>
+
+            <div>
+              <Label htmlFor="gender">Gender</Label>
+              <Select value={gender} onValueChange={setGender}>
+                <SelectTrigger id="gender" className="mt-2">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">
+                    <span className="flex items-center gap-2">
+                      ♂ Male
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="female">
+                    <span className="flex items-center gap-2">
+                      ♀ Female
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="non-binary">
+                    <span className="flex items-center gap-2">
+                      ⚧ Non-binary
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>

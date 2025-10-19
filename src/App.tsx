@@ -11,6 +11,8 @@ import Journal from "./pages/Journal";
 import Friends from "./pages/Friends";
 import Resources from "./pages/Resources";
 import Profile from "./pages/Profile";
+import DailyCheckIn from "./pages/DailyCheckIn";
+import BreathingExercises from "./pages/BreathingExercises";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +32,8 @@ const App = () => (
             <Route path="/friends" element={<Friends />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/daily-check-in" element={<DailyCheckIn />} />
+            <Route path="/breathing" element={<BreathingExercises />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

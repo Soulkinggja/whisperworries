@@ -8,31 +8,31 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Warm, calming base colors */
-    --background: 280 40% 98%;
-    --foreground: 280 20% 15%;
+    /* Soft purple/teal wellness palette */
+    --background: 260 45% 97%;
+    --foreground: 260 15% 20%;
 
-    /* Card colors with subtle warmth */
-    --card: 280 50% 99%;
-    --card-foreground: 280 20% 15%;
+    /* Card colors with gentle gradients */
+    --card: 0 0% 100%;
+    --card-foreground: 260 15% 20%;
 
-    --popover: 280 50% 99%;
-    --popover-foreground: 280 20% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 260 15% 20%;
 
-    /* Primary: Deep warm purple */
-    --primary: 280 60% 55%;
+    /* Primary: Soft purple (Calm/Headspace inspired) */
+    --primary: 270 65% 65%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Soft coral */
-    --secondary: 15 80% 75%;
-    --secondary-foreground: 280 20% 15%;
+    /* Secondary: Warm neutral/beige */
+    --secondary: 30 25% 85%;
+    --secondary-foreground: 260 15% 30%;
 
-    /* Muted: Gentle lavender */
-    --muted: 280 30% 92%;
-    --muted-foreground: 280 15% 45%;
+    /* Muted: Light lavender */
+    --muted: 270 35% 94%;
+    --muted-foreground: 260 15% 50%;
 
-    /* Accent: Vibrant teal */
-    --accent: 180 70% 60%;
+    /* Accent: Calming teal */
+    --accent: 175 55% 55%;
     --accent-foreground: 0 0% 100%;
 
     /* Destructive stays similar */
@@ -45,10 +45,11 @@ All colors MUST be HSL.
 
     --radius: 1rem;
     
-    /* Custom gradient tokens */
-    --gradient-sunset: linear-gradient(135deg, hsl(280, 60%, 65%) 0%, hsl(15, 80%, 75%) 50%, hsl(45, 90%, 70%) 100%);
-    --gradient-calm: linear-gradient(180deg, hsl(280, 40%, 98%) 0%, hsl(260, 45%, 95%) 100%);
-    --gradient-weave: linear-gradient(135deg, hsl(180, 70%, 60%) 0%, hsl(280, 60%, 65%) 100%);
+    /* Wellness-inspired gradients */
+    --gradient-sunset: linear-gradient(135deg, hsl(270, 65%, 75%) 0%, hsl(175, 55%, 70%) 100%);
+    --gradient-calm: linear-gradient(180deg, hsl(260, 45%, 97%) 0%, hsl(270, 40%, 94%) 100%);
+    --gradient-weave: linear-gradient(135deg, hsl(175, 55%, 65%) 0%, hsl(270, 65%, 70%) 100%);
+    --gradient-wellness: linear-gradient(135deg, hsl(270, 65%, 75%) 0%, hsl(30, 25%, 85%) 50%, hsl(175, 55%, 70%) 100%);
     
     /* Character animated gradients */
     --gradient-blue: linear-gradient(135deg, hsl(210, 100%, 50%) 0%, hsl(220, 100%, 65%) 50%, hsl(200, 100%, 60%) 100%);
@@ -57,9 +58,9 @@ All colors MUST be HSL.
     --gradient-orange: linear-gradient(135deg, hsl(30, 90%, 55%) 0%, hsl(40, 95%, 65%) 50%, hsl(20, 85%, 60%) 100%);
     --gradient-green: linear-gradient(135deg, hsl(150, 60%, 50%) 0%, hsl(160, 65%, 60%) 50%, hsl(140, 55%, 55%) 100%);
     
-    /* Shadows with color */
-    --shadow-soft: 0 4px 20px -2px hsl(280, 40%, 80%);
-    --shadow-glow: 0 8px 32px -4px hsl(280, 60%, 70% / 0.3);
+    /* Soft wellness shadows */
+    --shadow-soft: 0 2px 16px -4px hsl(270, 30%, 70% / 0.15);
+    --shadow-glow: 0 4px 24px -6px hsl(270, 55%, 70% / 0.25);
     
     /* Animation settings */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -83,26 +84,26 @@ All colors MUST be HSL.
   }
 
   .dark {
-    /* Dark mode with warm undertones */
-    --background: 280 30% 8%;
-    --foreground: 280 15% 95%;
+    /* Dark wellness mode */
+    --background: 260 25% 12%;
+    --foreground: 260 10% 92%;
 
-    --card: 280 28% 12%;
-    --card-foreground: 280 15% 95%;
+    --card: 260 20% 16%;
+    --card-foreground: 260 10% 92%;
 
-    --popover: 280 28% 12%;
-    --popover-foreground: 280 15% 95%;
+    --popover: 260 20% 16%;
+    --popover-foreground: 260 10% 92%;
 
-    --primary: 280 60% 65%;
+    --primary: 270 60% 70%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 15 70% 60%;
+    --secondary: 30 20% 30%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 280 25% 18%;
-    --muted-foreground: 280 15% 65%;
+    --muted: 260 20% 22%;
+    --muted-foreground: 260 10% 70%;
 
-    --accent: 180 70% 55%;
+    --accent: 175 50% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 70% 55%;
@@ -112,8 +113,8 @@ All colors MUST be HSL.
     --input: 280 25% 20%;
     --ring: 280 60% 65%;
     
-    --shadow-soft: 0 4px 20px -2px hsl(280, 60%, 10%);
-    --shadow-glow: 0 8px 32px -4px hsl(280, 60%, 30% / 0.4);
+    --shadow-soft: 0 2px 16px -4px hsl(260, 40%, 8% / 0.5);
+    --shadow-glow: 0 4px 24px -6px hsl(270, 50%, 50% / 0.3);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

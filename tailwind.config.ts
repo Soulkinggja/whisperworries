@@ -108,6 +108,7 @@ export default {
         "gradient-sunset": "var(--gradient-sunset)",
         "gradient-calm": "var(--gradient-calm)",
         "gradient-weave": "var(--gradient-weave)",
+        "gradient-wellness": "var(--gradient-wellness)",
         "gradient-blue": "var(--gradient-blue)",
         "gradient-purple": "var(--gradient-purple)",
         "gradient-pink": "var(--gradient-pink)",
