@@ -33,8 +33,8 @@ export const MoodBlob = ({ userId }: MoodBlobProps) => {
     centerX: 0,
     centerY: 0,
     radius: 80,
-    tension: 0.3,
-    damping: 0.9,
+    tension: 0.15,
+    damping: 0.85,
   });
 
   useEffect(() => {
@@ -52,8 +52,8 @@ export const MoodBlob = ({ userId }: MoodBlobProps) => {
     blobRef.current.centerX = rect.width / 2;
     blobRef.current.centerY = rect.height / 2;
 
-    // Initialize blob points
-    const numPoints = 12;
+    // Initialize blob points - more points for smoother deformation
+    const numPoints = 16;
     blobRef.current.points = Array.from({ length: numPoints }, (_, i) => ({
       x: blobRef.current.centerX,
       y: blobRef.current.centerY,
@@ -82,22 +82,30 @@ export const MoodBlob = ({ userId }: MoodBlobProps) => {
 
       // Update physics
       points.forEach((point, i) => {
-        const targetX = centerX + Math.cos(point.angle + Date.now() * 0.001) * radius;
-        const targetY = centerY + Math.sin(point.angle + Date.now() * 0.001) * radius;
+        const targetX = centerX + Math.cos(point.angle + Date.now() * 0.0008) * radius;
+        const targetY = centerY + Math.sin(point.angle + Date.now() * 0.0008) * radius;
 
-        // Apply poke force
+        // Apply drag/poke force - much stronger and wider
         if (isPoking) {
           const dx = point.x - pokePosition.x;
           const dy = point.y - pokePosition.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            const force = (100 - dist) / 100;
-            point.vx += (dx / dist) * force * 5;
-            point.vy += (dy / dist) * force * 5;
+          
+          if (dist < 150) {
+            // Strong repulsion when far from pointer
+            const force = (150 - dist) / 150;
+            point.vx += (dx / dist) * force * 12;
+            point.vy += (dy / dist) * force * 12;
+          }
+          
+          // Additional attraction for dragging effect when very close
+          if (dist < 40) {
+            point.vx += -dx * 0.2;
+            point.vy += -dy * 0.2;
           }
         }
 
-        // Spring physics
+        // Spring physics - softer for more squish
         point.vx += (targetX - point.x) * tension;
         point.vy += (targetY - point.y) * tension;
         point.vx *= damping;
@@ -109,41 +117,49 @@ export const MoodBlob = ({ userId }: MoodBlobProps) => {
 
       // Draw blob
       ctx.beginPath();
+      
+      // Calculate actual center based on points for better gradient placement
+      const avgX = points.reduce((sum, p) => sum + p.x, 0) / points.length;
+      const avgY = points.reduce((sum, p) => sum + p.y, 0) / points.length;
+      
       const gradient = ctx.createRadialGradient(
-        centerX, centerY, 0,
-        centerX, centerY, radius
+        avgX, avgY, 0,
+        avgX, avgY, radius * 1.2
       );
       const colors = moodColors[mood];
       gradient.addColorStop(0, colors.from);
       gradient.addColorStop(1, colors.to);
       ctx.fillStyle = gradient;
 
-      // Draw smooth curve through points
+      // Draw smooth curve through points with more control points for smoother stretching
       points.forEach((point, i) => {
         const nextPoint = points[(i + 1) % points.length];
-        const midX = (point.x + nextPoint.x) / 2;
-        const midY = (point.y + nextPoint.y) / 2;
+        const cp1x = point.x + (nextPoint.x - point.x) * 0.3;
+        const cp1y = point.y + (nextPoint.y - point.y) * 0.3;
+        const cp2x = point.x + (nextPoint.x - point.x) * 0.7;
+        const cp2y = point.y + (nextPoint.y - point.y) * 0.7;
 
         if (i === 0) {
-          ctx.moveTo(midX, midY);
+          ctx.moveTo(point.x, point.y);
         } else {
-          ctx.quadraticCurveTo(point.x, point.y, midX, midY);
+          ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, nextPoint.x, nextPoint.y);
         }
       });
 
       ctx.closePath();
       ctx.fill();
 
-      // Add shine effect
+      // Add shine effect that follows the blob's deformation
       const shine = ctx.createRadialGradient(
-        centerX - radius * 0.3,
-        centerY - radius * 0.3,
+        avgX - radius * 0.3,
+        avgY - radius * 0.3,
         0,
-        centerX - radius * 0.3,
-        centerY - radius * 0.3,
-        radius * 0.5
+        avgX - radius * 0.3,
+        avgY - radius * 0.3,
+        radius * 0.6
       );
-      shine.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+      shine.addColorStop(0, 'rgba(255, 255, 255, 0.5)');
+      shine.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');
       shine.addColorStop(1, 'rgba(255, 255, 255, 0)');
       ctx.fillStyle = shine;
       ctx.fill();
