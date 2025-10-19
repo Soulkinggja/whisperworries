@@ -170,9 +170,10 @@ const CharacterCustomization = () => {
           <div className="relative flex flex-col items-center gap-1 transition-all duration-[3000ms] ease-out">
             {/* Head */}
             <div
-              className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center ${selectedColor}`}
+              className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
               style={{
                 borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                backgroundColor: customColor,
               }}
             >
               {/* Face */}
@@ -216,24 +217,27 @@ const CharacterCustomization = () => {
             
             {/* Body */}
             <div
-              className={`w-28 h-32 transition-all duration-300 opacity-90 ${selectedColor}`}
+              className="w-28 h-32 transition-all duration-300 opacity-90"
               style={{
                 borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                backgroundColor: customColor,
               }}
             />
             
             {/* Arms */}
             <div className="absolute top-[100px] flex gap-[120px]">
               <div
-                className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
+                className="w-12 h-28 transition-all duration-300 opacity-85"
                 style={{
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                  backgroundColor: customColor,
                 }}
               />
               <div
-                className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
+                className="w-12 h-28 transition-all duration-300 opacity-85"
                 style={{
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                  backgroundColor: customColor,
                 }}
               />
             </div>
@@ -241,15 +245,17 @@ const CharacterCustomization = () => {
             {/* Legs */}
             <div className="flex gap-2">
               <div
-                className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
+                className="w-12 h-32 transition-all duration-300 opacity-85"
                 style={{
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                  backgroundColor: customColor,
                 }}
               />
               <div
-                className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
+                className="w-12 h-32 transition-all duration-300 opacity-85"
                 style={{
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                  backgroundColor: customColor,
                 }}
               />
             </div>
@@ -513,9 +519,10 @@ const CharacterCustomization = () => {
             <div className="relative flex flex-col items-center gap-1">
               {/* Head */}
               <div
-                className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center ${selectedColor}`}
+                className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
                 style={{
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                  backgroundColor: customColor,
                 }}
               >
                 {/* Face */}
@@ -559,24 +566,27 @@ const CharacterCustomization = () => {
               
               {/* Body */}
               <div
-                className={`w-28 h-32 transition-all duration-300 opacity-90 ${selectedColor}`}
+                className="w-28 h-32 transition-all duration-300 opacity-90"
                 style={{
                   borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",
+                  backgroundColor: customColor,
                 }}
               />
               
               {/* Arms */}
               <div className="absolute top-[100px] flex gap-[120px]">
                 <div
-                  className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
+                  className="w-12 h-28 transition-all duration-300 opacity-85"
                   style={{
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                    backgroundColor: customColor,
                   }}
                 />
                 <div
-                  className={`w-12 h-28 transition-all duration-300 opacity-85 ${selectedColor}`}
+                  className="w-12 h-28 transition-all duration-300 opacity-85"
                   style={{
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "8px" : "50%",
+                    backgroundColor: customColor,
                   }}
                 />
               </div>
@@ -584,15 +594,17 @@ const CharacterCustomization = () => {
               {/* Legs */}
               <div className="flex gap-2">
                 <div
-                  className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
+                  className="w-12 h-32 transition-all duration-300 opacity-85"
                   style={{
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                    backgroundColor: customColor,
                   }}
                 />
                 <div
-                  className={`w-12 h-32 transition-all duration-300 opacity-85 ${selectedColor}`}
+                  className="w-12 h-32 transition-all duration-300 opacity-85"
                   style={{
                     borderRadius: selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "10px" : "50%",
+                    backgroundColor: customColor,
                   }}
                 />
               </div>
