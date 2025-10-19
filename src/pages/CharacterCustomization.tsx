@@ -519,10 +519,12 @@ const CharacterCustomization = () => {
             <div className="relative flex flex-col items-center gap-1 animate-gentle-sway">
               {/* Head */}
               <div
-                className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+                className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center animate-color-glow"
                 style={{
                   borderRadius: selectedShape === "circle" ? "50%" : "4px",
                   backgroundColor: customColor,
+                  color: customColor,
+                  boxShadow: `0 0 20px ${customColor}, 0 0 40px ${customColor}40`,
                 }}
               >
                 {/* Face */}
@@ -530,7 +532,7 @@ const CharacterCustomization = () => {
                   {/* Eyes */}
                   <div className="flex gap-3">
                     <div 
-                      className="w-3 h-3 bg-foreground rounded-full"
+                      className="w-3 h-3 bg-foreground rounded-full animate-blink"
                       style={{
                         height: selectedFace === "calm" ? "2px" : 
                                 selectedFace === "angry" ? "2px" : "12px",
@@ -538,7 +540,7 @@ const CharacterCustomization = () => {
                       }}
                     />
                     <div 
-                      className="w-3 h-3 bg-foreground rounded-full"
+                      className="w-3 h-3 bg-foreground rounded-full animate-blink"
                       style={{
                         height: selectedFace === "calm" ? "2px" : 
                                 selectedFace === "angry" ? "2px" : "12px",
@@ -548,7 +550,7 @@ const CharacterCustomization = () => {
                   </div>
                   {/* Mouth */}
                   <div 
-                    className="w-8 h-1 bg-foreground rounded-full"
+                    className="w-8 h-1 bg-foreground rounded-full animate-mouth-talk"
                     style={{
                       borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
                                    selectedFace === "cheerful" ? "0 0 100px 100px" :
@@ -566,10 +568,11 @@ const CharacterCustomization = () => {
               
               {/* Body */}
               <div
-                className="w-28 h-32 transition-all duration-300 opacity-90"
+                className="w-28 h-32 transition-all duration-300 opacity-90 animate-breath"
                 style={{
                   borderRadius: selectedShape === "circle" ? "50%" : "4px",
                   backgroundColor: customColor,
+                  boxShadow: `0 4px 20px ${customColor}60`,
                 }}
               />
               
@@ -580,6 +583,7 @@ const CharacterCustomization = () => {
                   style={{
                     borderRadius: selectedShape === "circle" ? "50%" : "4px",
                     backgroundColor: customColor,
+                    boxShadow: `0 2px 12px ${customColor}40`,
                   }}
                 />
                 <div
@@ -587,6 +591,7 @@ const CharacterCustomization = () => {
                   style={{
                     borderRadius: selectedShape === "circle" ? "50%" : "4px",
                     backgroundColor: customColor,
+                    boxShadow: `0 2px 12px ${customColor}40`,
                   }}
                 />
               </div>
@@ -598,6 +603,7 @@ const CharacterCustomization = () => {
                   style={{
                     borderRadius: selectedShape === "circle" ? "50%" : "4px",
                     backgroundColor: customColor,
+                    boxShadow: `0 2px 12px ${customColor}40`,
                   }}
                 />
                 <div
@@ -605,6 +611,7 @@ const CharacterCustomization = () => {
                   style={{
                     borderRadius: selectedShape === "circle" ? "50%" : "4px",
                     backgroundColor: customColor,
+                    boxShadow: `0 2px 12px ${customColor}40`,
                   }}
                 />
               </div>
