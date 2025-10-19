@@ -46,6 +46,7 @@ const CharacterCustomization = () => {
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   const [selectedUseCase, setSelectedUseCase] = useState("venting");
   const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "conversation");
+  const [autoPlayPending, setAutoPlayPending] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const { toast } = useToast();
   const { checkWorryMilestones } = useAchievements(user?.id);
@@ -57,7 +58,7 @@ const CharacterCustomization = () => {
     }
   }, [transcript]);
 
-  // Load available voices - limit to 5 (2 female, 3 male)
+  // Load available voices - limit to 5 (2 female, 3 male) and load voice preference
   useEffect(() => {
     const loadVoices = () => {
       const allVoices = window.speechSynthesis.getVoices();
@@ -93,8 +94,21 @@ const CharacterCustomization = () => {
         
         setAvailableVoices(finalVoices);
         
-        // Auto-select first voice (female if available)
-        if (finalVoices.length > 0) {
+        // Load voice preference from profile or auto-select first voice
+        if (user?.id) {
+          supabase
+            .from('profiles')
+            .select('voice_preference')
+            .eq('id', user.id)
+            .single()
+            .then(({ data }) => {
+              if (data?.voice_preference) {
+                setSelectedVoice(data.voice_preference);
+              } else if (finalVoices.length > 0) {
+                setSelectedVoice(finalVoices[0].name);
+              }
+            });
+        } else if (finalVoices.length > 0) {
           setSelectedVoice(finalVoices[0].name);
         }
       }
@@ -106,7 +120,7 @@ const CharacterCustomization = () => {
     return () => {
       window.speechSynthesis.onvoiceschanged = null;
     };
-  }, []);
+  }, [user]);
 
   // Auth check
   useEffect(() => {
@@ -204,6 +218,14 @@ const CharacterCustomization = () => {
     setIsSpeaking(false);
   };
 
+  // Auto-play when suggestion is ready
+  useEffect(() => {
+    if (autoPlayPending && suggestion && !isLoading) {
+      setAutoPlayPending(false);
+      handleTextToSpeech(suggestion);
+    }
+  }, [suggestion, autoPlayPending, isLoading]);
+
   const handleSubmitWorry = async () => {
     if (!worries.trim()) {
       toast({
@@ -236,13 +258,13 @@ const CharacterCustomization = () => {
       if (data?.suggestion) {
         setSuggestion(data.suggestion);
         
+        // Set auto-play flag
+        setAutoPlayPending(true);
+        
         // Play musical melody
         const { playMelody } = await import('@/utils/musicalMelody');
-        setIsSpeaking(true);
-        playMelody().then(() => {
-          setIsSpeaking(false);
-        }).catch(() => {
-          setIsSpeaking(false);
+        playMelody().catch(() => {
+          // Ignore melody errors
         });
 
         // Save to database

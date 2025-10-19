@@ -18,6 +18,7 @@ interface Profile {
   avatar_url: string | null;
   theme: string | null;
   gender: string | null;
+  voice_preference: string | null;
 }
 
 const Profile = () => {
@@ -30,12 +31,69 @@ const Profile = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [displayName, setDisplayName] = useState("");
   const [gender, setGender] = useState("");
+  const [selectedVoice, setSelectedVoice] = useState("");
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     checkAuth();
+    loadVoices();
   }, []);
+
+  const loadVoices = () => {
+    const allVoices = window.speechSynthesis.getVoices();
+    if (allVoices.length === 0) {
+      window.speechSynthesis.addEventListener('voiceschanged', () => {
+        const voices = window.speechSynthesis.getVoices();
+        const enVoices = voices.filter(voice => voice.lang.startsWith('en'));
+        
+        const femaleVoices = enVoices.filter(voice => 
+          voice.name.toLowerCase().includes('female') ||
+          voice.name.toLowerCase().includes('woman') ||
+          voice.name.toLowerCase().includes('samantha') ||
+          voice.name.toLowerCase().includes('victoria')
+        ).slice(0, 2);
+        
+        const maleVoices = enVoices.filter(voice => 
+          voice.name.toLowerCase().includes('male') ||
+          voice.name.toLowerCase().includes('man') ||
+          voice.name.toLowerCase().includes('daniel') ||
+          voice.name.toLowerCase().includes('alex') ||
+          voice.name.toLowerCase().includes('david') ||
+          voice.name.toLowerCase().includes('james')
+        ).slice(0, 3);
+        
+        const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 5);
+        const finalVoices = selectedVoices.length === 5 ? selectedVoices : enVoices.slice(0, 5);
+        
+        setAvailableVoices(finalVoices);
+      }, { once: true });
+    } else {
+      const enVoices = allVoices.filter(voice => voice.lang.startsWith('en'));
+      
+      const femaleVoices = enVoices.filter(voice => 
+        voice.name.toLowerCase().includes('female') ||
+        voice.name.toLowerCase().includes('woman') ||
+        voice.name.toLowerCase().includes('samantha') ||
+        voice.name.toLowerCase().includes('victoria')
+      ).slice(0, 2);
+      
+      const maleVoices = enVoices.filter(voice => 
+        voice.name.toLowerCase().includes('male') ||
+        voice.name.toLowerCase().includes('man') ||
+        voice.name.toLowerCase().includes('daniel') ||
+        voice.name.toLowerCase().includes('alex') ||
+        voice.name.toLowerCase().includes('david') ||
+        voice.name.toLowerCase().includes('james')
+      ).slice(0, 3);
+      
+      const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 5);
+      const finalVoices = selectedVoices.length === 5 ? selectedVoices : enVoices.slice(0, 5);
+      
+      setAvailableVoices(finalVoices);
+    }
+  };
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -60,6 +118,7 @@ const Profile = () => {
       setProfile(data);
       setDisplayName(data.display_name || "");
       setGender(data.gender || "");
+      setSelectedVoice(data.voice_preference || "");
       if (data.theme) {
         setTheme(data.theme);
       }
@@ -144,6 +203,7 @@ const Profile = () => {
           display_name: displayName || null,
           gender: gender || null,
           theme: theme || "system",
+          voice_preference: selectedVoice || null,
         })
         .eq("id", user.id);
 
@@ -360,41 +420,62 @@ const Profile = () => {
           <CardHeader>
             <CardTitle>Appearance</CardTitle>
             <CardDescription>
-              Customize how the app looks for you
+              Customize how the app looks and sounds for you
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Label htmlFor="theme">Theme</Label>
-            <Select value={theme} onValueChange={setTheme}>
-              <SelectTrigger className="mt-2">
-                <SelectValue>
-                  <div className="flex items-center">
-                    {getThemeIcon(theme || "system")}
-                    <span className="capitalize">{theme || "system"}</span>
-                  </div>
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">
-                  <div className="flex items-center">
-                    <Sun className="w-4 h-4 mr-2" />
-                    Light
-                  </div>
-                </SelectItem>
-                <SelectItem value="dark">
-                  <div className="flex items-center">
-                    <Moon className="w-4 h-4 mr-2" />
-                    Dark
-                  </div>
-                </SelectItem>
-                <SelectItem value="system">
-                  <div className="flex items-center">
-                    <Monitor className="w-4 h-4 mr-2" />
-                    System
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="theme">Theme</Label>
+              <Select value={theme} onValueChange={setTheme}>
+                <SelectTrigger className="mt-2">
+                  <SelectValue>
+                    <div className="flex items-center">
+                      {getThemeIcon(theme || "system")}
+                      <span className="capitalize">{theme || "system"}</span>
+                    </div>
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="light">
+                    <div className="flex items-center">
+                      <Sun className="w-4 h-4 mr-2" />
+                      Light
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="dark">
+                    <div className="flex items-center">
+                      <Moon className="w-4 h-4 mr-2" />
+                      Dark
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="system">
+                    <div className="flex items-center">
+                      <Monitor className="w-4 h-4 mr-2" />
+                      System
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="voice">Voice Preference</Label>
+              <Select value={selectedVoice} onValueChange={setSelectedVoice}>
+                <SelectTrigger id="voice" className="mt-2">
+                  <SelectValue placeholder="Select a voice for your character" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableVoices.map((voice) => (
+                    <SelectItem key={voice.name} value={voice.name}>
+                      {voice.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-sm text-muted-foreground mt-1">
+                This voice will be used when your character speaks
+              </p>
+            </div>
           </CardContent>
         </Card>
 

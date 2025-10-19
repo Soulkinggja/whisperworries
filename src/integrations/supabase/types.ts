@@ -354,6 +354,7 @@ export type Database = {
           onboarding_completed: boolean | null
           theme: string | null
           updated_at: string | null
+          voice_preference: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -367,6 +368,7 @@ export type Database = {
           onboarding_completed?: boolean | null
           theme?: string | null
           updated_at?: string | null
+          voice_preference?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -380,6 +382,7 @@ export type Database = {
           onboarding_completed?: boolean | null
           theme?: string | null
           updated_at?: string | null
+          voice_preference?: string | null
         }
         Relationships: []
       }
