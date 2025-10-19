@@ -102,6 +102,20 @@ const CharacterCustomization = () => {
       setIsPlayingAudio(true);
       
       const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Get available voices and select a kid-friendly one
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(voice => 
+        voice.name.toLowerCase().includes('female') || 
+        voice.name.toLowerCase().includes('samantha') ||
+        voice.name.toLowerCase().includes('karen') ||
+        voice.name.toLowerCase().includes('zira')
+      ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+      
       utterance.rate = 0.9; // Slightly slower for kids
       utterance.pitch = 1.1; // Slightly higher pitch for friendly tone
       utterance.volume = 1;
