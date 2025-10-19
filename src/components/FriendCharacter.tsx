@@ -6,6 +6,7 @@ interface FriendCharacterProps {
   selectedFace?: string;
   isSpeaking?: boolean;
   characterName?: string;
+  gender?: string;
 }
 
 export const FriendCharacter = ({
@@ -14,6 +15,7 @@ export const FriendCharacter = ({
   selectedFace = "happy",
   isSpeaking = false,
   characterName = "",
+  gender = "male",
 }: FriendCharacterProps) => {
   const [blinkState, setBlinkState] = useState(false);
   const [idleAnimation, setIdleAnimation] = useState(0);
@@ -59,9 +61,20 @@ export const FriendCharacter = ({
         className="relative flex flex-col items-center gap-1 transition-transform duration-500"
         style={{ transform: getIdleTransform() }}
       >
+        {/* Hair for female */}
+        {gender === "female" && (
+          <div
+            className="w-32 h-20 absolute -top-6 rounded-t-full z-0"
+            style={{
+              backgroundColor: customColor,
+              opacity: 0.9,
+            }}
+          />
+        )}
+
         {/* Head */}
         <div
-          className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center`}
+          className={`w-24 h-24 transition-all duration-300 relative flex items-center justify-center z-10`}
           style={{
             borderRadius:
               selectedShape === "square" ? "4px" : selectedShape === "rounded" ? "12px" : "50%",

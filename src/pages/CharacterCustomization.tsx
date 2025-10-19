@@ -625,6 +625,7 @@ const CharacterCustomization = () => {
               selectedFace={selectedFace}
               isSpeaking={isSpeaking}
               characterName={characterName}
+              gender={selectedGender || "male"}
             />
 
             {/* Worries Input */}
@@ -844,9 +845,20 @@ const CharacterCustomization = () => {
               <h2 className="text-2xl font-bold gradient-text animate-bounce">{characterName}</h2>
             )}
             <div className="relative flex flex-col items-center gap-1 animate-gentle-sway">
+              {/* Hair for female */}
+              {selectedGender === "female" && (
+                <div
+                  className="w-32 h-20 absolute -top-6 rounded-t-full z-0"
+                  style={{
+                    backgroundColor: customColor,
+                    opacity: 0.9,
+                  }}
+                />
+              )}
+
               {/* Head */}
               <div
-                className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center animate-color-glow"
+                className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center animate-color-glow z-10"
                 style={{
                   borderRadius: selectedShape === "circle" ? "50%" : "4px",
                   backgroundColor: customColor,
@@ -973,55 +985,27 @@ const CharacterCustomization = () => {
               <h3 className="text-xl font-semibold mb-4">Choose Gender</h3>
               <div className="flex gap-3">
                 <button
-                  onClick={() => {
-                    setSelectedGender("male");
-                    setSelectedHairStyle("short");
-                  }}
+                  onClick={() => setSelectedGender("male")}
                   className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
                     selectedGender === "male"
                       ? "border-primary bg-primary/10 text-primary"
                       : "border-border bg-card"
                   }`}
                 >
-                  ♂ Male
+                  ♂ Male (No Hair)
                 </button>
                 <button
-                  onClick={() => {
-                    setSelectedGender("female");
-                    setSelectedHairStyle("long");
-                  }}
+                  onClick={() => setSelectedGender("female")}
                   className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
                     selectedGender === "female"
                       ? "border-primary bg-primary/10 text-primary"
                       : "border-border bg-card"
                   }`}
                 >
-                  ♀ Female
+                  ♀ Female (With Hair)
                 </button>
               </div>
             </div>
-
-            {/* Hair Style Selection */}
-            {selectedGender && (
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Choose Hair Style</h3>
-                <div className="flex gap-3 flex-wrap">
-                  {(selectedGender === "male" ? maleHairStyles : femaleHairStyles).map((hair) => (
-                    <button
-                      key={hair.value}
-                      onClick={() => setSelectedHairStyle(hair.value)}
-                      className={`px-6 py-3 rounded-xl border-2 transition-all hover:scale-105 ${
-                        selectedHairStyle === hair.value
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "border-border bg-card"
-                      }`}
-                    >
-                      {hair.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Shapes */}
             <div>

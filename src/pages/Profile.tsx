@@ -381,14 +381,11 @@ const Profile = () => {
                       ♀ Female
                     </span>
                   </SelectItem>
-                  <SelectItem value="non-binary">
-                    <span className="flex items-center gap-2">
-                      ⚧ Non-binary
-                    </span>
-                  </SelectItem>
-                  <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
                 </SelectContent>
               </Select>
+              <p className="text-sm text-muted-foreground mt-1">
+                {gender === "female" ? "Female avatars have hair" : gender === "male" ? "Male avatars don't have hair" : "Select gender to see avatar style"}
+              </p>
             </div>
           </CardContent>
         </Card>
