@@ -57,21 +57,44 @@ const CharacterCustomization = () => {
     }
   }, [transcript]);
 
-  // Load available voices
+  // Load available voices - limit to 4 (2 male, 2 female)
   useEffect(() => {
     const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        setAvailableVoices(voices);
-        // Auto-select a kid-friendly voice
-        const preferredVoice = voices.find(voice => 
-          voice.name.toLowerCase().includes('female') || 
+      const allVoices = window.speechSynthesis.getVoices();
+      if (allVoices.length > 0) {
+        // Filter for English voices
+        const enVoices = allVoices.filter(voice => voice.lang.startsWith('en'));
+        
+        // Find 2 female voices
+        const femaleVoices = enVoices.filter(voice => 
+          voice.name.toLowerCase().includes('female') ||
+          voice.name.toLowerCase().includes('woman') ||
           voice.name.toLowerCase().includes('samantha') ||
           voice.name.toLowerCase().includes('karen') ||
-          voice.name.toLowerCase().includes('zira')
-        ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
-        if (preferredVoice) {
-          setSelectedVoice(preferredVoice.name);
+          voice.name.toLowerCase().includes('zira') ||
+          voice.name.toLowerCase().includes('victoria')
+        ).slice(0, 2);
+        
+        // Find 2 male voices
+        const maleVoices = enVoices.filter(voice => 
+          voice.name.toLowerCase().includes('male') ||
+          voice.name.toLowerCase().includes('man') ||
+          voice.name.toLowerCase().includes('daniel') ||
+          voice.name.toLowerCase().includes('alex') ||
+          voice.name.toLowerCase().includes('david')
+        ).slice(0, 2);
+        
+        // Combine and limit to 4 voices total
+        const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 4);
+        
+        // If we don't have 4 voices, just take the first 4 English voices
+        const finalVoices = selectedVoices.length === 4 ? selectedVoices : enVoices.slice(0, 4);
+        
+        setAvailableVoices(finalVoices);
+        
+        // Auto-select first voice (female if available)
+        if (finalVoices.length > 0) {
+          setSelectedVoice(finalVoices[0].name);
         }
       }
     };
