@@ -116,7 +116,14 @@ export const FriendCharacter = ({
                         ? "2px"
                         : selectedFace === "angry"
                         ? "2px"
+                        : selectedFace === "tired"
+                        ? "6px"
+                        : selectedFace === "stressed"
+                        ? "14px"
+                        : selectedFace === "nervous"
+                        ? "14px"
                         : "12px",
+                      width: selectedFace === "nervous" || selectedFace === "stressed" ? "14px" : "12px",
                       transform: selectedFace === "angry" ? (i === 0 ? "rotate(-20deg)" : "rotate(20deg)") : "none",
                     }}
                   />
@@ -133,14 +140,12 @@ export const FriendCharacter = ({
             </div>
             {/* Mouth */}
             <div
-              className={`w-8 h-1 bg-foreground rounded-full transition-all duration-150 ${
+              className={`w-8 h-1 bg-foreground transition-all duration-150 ${
                 isSpeaking ? "animate-[mouth-talk_0.3s_ease-in-out_infinite]" : ""
               }`}
               style={{
                 borderRadius:
                   selectedFace === "happy"
-                    ? "0 0 100px 100px"
-                    : selectedFace === "cheerful"
                     ? "0 0 100px 100px"
                     : selectedFace === "sad"
                     ? "100px 100px 0 0"
@@ -148,17 +153,37 @@ export const FriendCharacter = ({
                     ? "0"
                     : selectedFace === "calm"
                     ? "100px"
+                    : selectedFace === "nervous"
+                    ? "50% 50% 30% 70%"
+                    : selectedFace === "tired"
+                    ? "100px"
+                    : selectedFace === "stressed"
+                    ? "0"
                     : "100px",
                 height:
                   selectedFace === "happy"
                     ? "8px"
-                    : selectedFace === "cheerful"
-                    ? "10px"
                     : selectedFace === "sad"
                     ? "6px"
                     : selectedFace === "angry"
                     ? "3px"
+                    : selectedFace === "calm"
+                    ? "4px"
+                    : selectedFace === "nervous"
+                    ? "3px"
+                    : selectedFace === "tired"
+                    ? "3px"
+                    : selectedFace === "stressed"
+                    ? "4px"
                     : "4px",
+                width:
+                  selectedFace === "nervous"
+                    ? "20px"
+                    : selectedFace === "stressed"
+                    ? "24px"
+                    : selectedFace === "tired"
+                    ? "16px"
+                    : "32px",
               }}
             />
           </div>

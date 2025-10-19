@@ -349,11 +349,12 @@ const CharacterCustomization = () => {
   
   const faces = [
     { name: "Happy", value: "happy" },
-    { name: "Calm", value: "calm" },
-    { name: "Neutral", value: "neutral" },
-    { name: "Cheerful", value: "cheerful" },
     { name: "Sad", value: "sad" },
+    { name: "Calm", value: "calm" },
     { name: "Angry", value: "angry" },
+    { name: "Nervous", value: "nervous" },
+    { name: "Tired", value: "tired" },
+    { name: "Stressed", value: "stressed" },
   ];
 
   const maleHairStyles = [
@@ -484,7 +485,11 @@ const CharacterCustomization = () => {
                         className="w-3 h-3 bg-foreground rounded-full"
                         style={{
                           height: selectedFace === "calm" ? "2px" : 
-                                  selectedFace === "angry" ? "2px" : "12px",
+                                  selectedFace === "angry" ? "2px" : 
+                                  selectedFace === "tired" ? "6px" :
+                                  selectedFace === "stressed" ? "14px" :
+                                  selectedFace === "nervous" ? "14px" : "12px",
+                          width: selectedFace === "nervous" || selectedFace === "stressed" ? "14px" : "12px",
                           transform: selectedFace === "angry" ? (i === 0 ? "rotate(-20deg)" : "rotate(20deg)") : "none",
                         }}
                       />
@@ -501,17 +506,25 @@ const CharacterCustomization = () => {
                 </div>
                 {/* Mouth */}
                 <div 
-                  className="w-8 h-1 bg-foreground rounded-full"
+                  className="w-8 h-1 bg-foreground"
                   style={{
                     borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
-                                 selectedFace === "cheerful" ? "0 0 100px 100px" :
                                  selectedFace === "sad" ? "100px 100px 0 0" :
                                  selectedFace === "angry" ? "0" :
-                                 selectedFace === "calm" ? "100px" : "100px",
+                                 selectedFace === "calm" ? "100px" :
+                                 selectedFace === "nervous" ? "50% 50% 30% 70%" :
+                                 selectedFace === "tired" ? "100px" :
+                                 selectedFace === "stressed" ? "0" : "100px",
                     height: selectedFace === "happy" ? "8px" : 
-                            selectedFace === "cheerful" ? "10px" : 
                             selectedFace === "sad" ? "6px" :
-                            selectedFace === "angry" ? "3px" : "4px",
+                            selectedFace === "angry" ? "3px" :
+                            selectedFace === "calm" ? "4px" :
+                            selectedFace === "nervous" ? "3px" :
+                            selectedFace === "tired" ? "3px" :
+                            selectedFace === "stressed" ? "4px" : "4px",
+                    width: selectedFace === "nervous" ? "20px" :
+                           selectedFace === "stressed" ? "24px" :
+                           selectedFace === "tired" ? "16px" : "32px",
                   }}
                 />
               </div>
@@ -931,7 +944,11 @@ const CharacterCustomization = () => {
                           className="w-3 h-3 bg-foreground rounded-full animate-blink"
                           style={{
                             height: selectedFace === "calm" ? "2px" : 
-                                    selectedFace === "angry" ? "2px" : "12px",
+                                    selectedFace === "angry" ? "2px" : 
+                                    selectedFace === "tired" ? "6px" :
+                                    selectedFace === "stressed" ? "14px" :
+                                    selectedFace === "nervous" ? "14px" : "12px",
+                            width: selectedFace === "nervous" || selectedFace === "stressed" ? "14px" : "12px",
                             transform: selectedFace === "angry" ? (i === 0 ? "rotate(-20deg)" : "rotate(20deg)") : "none",
                           }}
                         />
@@ -948,17 +965,25 @@ const CharacterCustomization = () => {
                   </div>
                   {/* Mouth */}
                   <div 
-                    className="w-8 h-1 bg-foreground rounded-full animate-mouth-talk"
+                    className="w-8 h-1 bg-foreground animate-mouth-talk"
                     style={{
                       borderRadius: selectedFace === "happy" ? "0 0 100px 100px" : 
-                                   selectedFace === "cheerful" ? "0 0 100px 100px" :
                                    selectedFace === "sad" ? "100px 100px 0 0" :
                                    selectedFace === "angry" ? "0" :
-                                   selectedFace === "calm" ? "100px" : "100px",
+                                   selectedFace === "calm" ? "100px" :
+                                   selectedFace === "nervous" ? "50% 50% 30% 70%" :
+                                   selectedFace === "tired" ? "100px" :
+                                   selectedFace === "stressed" ? "0" : "100px",
                       height: selectedFace === "happy" ? "8px" : 
-                              selectedFace === "cheerful" ? "10px" : 
                               selectedFace === "sad" ? "6px" :
-                              selectedFace === "angry" ? "3px" : "4px",
+                              selectedFace === "angry" ? "3px" :
+                              selectedFace === "calm" ? "4px" :
+                              selectedFace === "nervous" ? "3px" :
+                              selectedFace === "tired" ? "3px" :
+                              selectedFace === "stressed" ? "4px" : "4px",
+                      width: selectedFace === "nervous" ? "20px" :
+                             selectedFace === "stressed" ? "24px" :
+                             selectedFace === "tired" ? "16px" : "32px",
                     }}
                   />
                 </div>
