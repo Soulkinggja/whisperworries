@@ -25,7 +25,8 @@ export const MoodTrendTracker = () => {
       const fourteenDaysAgo = new Date();
       fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
 
-      const { data, error } = await supabase
+      // @ts-ignore - Table exists but types not yet regenerated
+      const { data, error }: any = await (supabase as any)
         .from("daily_check_ins")
         .select("mood, created_at")
         .eq("user_id", user.id)
@@ -34,7 +35,7 @@ export const MoodTrendTracker = () => {
 
       if (error) throw error;
 
-      const formattedData = data.map((entry) => ({
+      const formattedData = (data || []).map((entry: any) => ({
         date: new Date(entry.created_at).toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",

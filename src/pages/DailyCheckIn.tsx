@@ -38,7 +38,8 @@ const DailyCheckIn = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data, error } = await supabase
+      // @ts-ignore - Table exists but types not yet regenerated
+      const { data, error }: any = await (supabase as any)
         .from("daily_check_ins")
         .select("*")
         .eq("user_id", user.id)
@@ -46,7 +47,7 @@ const DailyCheckIn = () => {
         .limit(10);
 
       if (error) throw error;
-      setCheckInHistory(data || []);
+      setCheckInHistory((data || []) as CheckIn[]);
     } catch (error) {
       console.error("Error fetching check-in history:", error);
     }
@@ -58,7 +59,8 @@ const DailyCheckIn = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { error } = await supabase.from("daily_check_ins").insert({
+      // @ts-ignore - Table exists but types not yet regenerated
+      const { error }: any = await (supabase as any).from("daily_check_ins").insert({
         user_id: user.id,
         mood: mood[0],
         note: note || null,
