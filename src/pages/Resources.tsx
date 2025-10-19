@@ -123,26 +123,6 @@ const Resources = () => {
     },
   ];
 
-  const youthResources = [
-    {
-      title: "Kids Help Phone",
-      description: "Free, 24/7 counseling for young people",
-      contact: "Text CONNECT to 686868",
-      icon: <MessageCircle className="w-5 h-5" />,
-    },
-    {
-      title: "Teen Line",
-      description: "Teens helping teens through peer support",
-      contact: "Text TEEN to 839863",
-      icon: <Users className="w-5 h-5" />,
-    },
-    {
-      title: "Youth Mental Health Resources",
-      description: "Age-appropriate information and support",
-      website: "youthmentalhealth.com",
-      icon: <BookOpen className="w-5 h-5" />,
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-calm">
@@ -226,11 +206,10 @@ const Resources = () => {
 
           {/* Tabbed Content */}
           <Tabs defaultValue="self-care" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="self-care">Self-Care</TabsTrigger>
               <TabsTrigger value="coping">Coping Tools</TabsTrigger>
               <TabsTrigger value="learn">Learn More</TabsTrigger>
-              <TabsTrigger value="youth">Youth Support</TabsTrigger>
             </TabsList>
 
             {/* Self-Care Tips */}
@@ -311,44 +290,6 @@ const Resources = () => {
               </Card>
             </TabsContent>
 
-            {/* Youth-Specific Resources */}
-            <TabsContent value="youth">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Youth Mental Health Support</CardTitle>
-                  <CardDescription>
-                    Resources specifically designed for young people
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {youthResources.map((resource, index) => (
-                    <div key={index} className="p-6 bg-muted rounded-lg space-y-2">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-                          {resource.icon}
-                        </div>
-                        <h3 className="font-bold text-lg">{resource.title}</h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground ml-13">{resource.description}</p>
-                      {resource.contact && (
-                        <p className="font-medium text-primary ml-13">{resource.contact}</p>
-                      )}
-                      {resource.website && (
-                        <a
-                          href={`https://${resource.website}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline font-medium flex items-center gap-2 ml-13"
-                        >
-                          <Globe className="w-4 h-4" />
-                          {resource.website}
-                        </a>
-                      )}
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </TabsContent>
           </Tabs>
         </div>
       </div>
