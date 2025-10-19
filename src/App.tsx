@@ -13,6 +13,7 @@ import Resources from "./pages/Resources";
 import Profile from "./pages/Profile";
 import DailyCheckIn from "./pages/DailyCheckIn";
 import BreathingExercises from "./pages/BreathingExercises";
+import AvatarDemo from "./pages/AvatarDemo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/daily-check-in" element={<DailyCheckIn />} />
             <Route path="/breathing" element={<BreathingExercises />} />
+            <Route path="/avatar-demo" element={<AvatarDemo />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

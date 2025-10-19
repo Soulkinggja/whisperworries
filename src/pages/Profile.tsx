@@ -412,6 +412,28 @@ const Profile = () => {
               </div>
               <span className="text-sm text-muted-foreground">Calm your mind</span>
             </Button>
+            <Button
+              variant="outline"
+              className="h-auto p-4 flex flex-col items-start gap-2"
+              onClick={() => navigate("/avatar-demo")}
+            >
+              <div className="flex items-center gap-2 w-full">
+                <span className="text-2xl">👤</span>
+                <span className="font-semibold">Avatar Styles</span>
+              </div>
+              <span className="text-sm text-muted-foreground">View male & female options</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="h-auto p-4 flex flex-col items-start gap-2"
+              onClick={() => navigate("/customize")}
+            >
+              <div className="flex items-center gap-2 w-full">
+                <span className="text-2xl">🎨</span>
+                <span className="font-semibold">Customize Avatar</span>
+              </div>
+              <span className="text-sm text-muted-foreground">Create your companion</span>
+            </Button>
           </CardContent>
         </Card>
 
