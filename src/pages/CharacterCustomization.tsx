@@ -57,7 +57,7 @@ const CharacterCustomization = () => {
     }
   }, [transcript]);
 
-  // Load available voices - limit to 4 (2 male, 2 female)
+  // Load available voices - limit to 5 (2 female, 3 male)
   useEffect(() => {
     const loadVoices = () => {
       const allVoices = window.speechSynthesis.getVoices();
@@ -75,20 +75,21 @@ const CharacterCustomization = () => {
           voice.name.toLowerCase().includes('victoria')
         ).slice(0, 2);
         
-        // Find 2 male voices
+        // Find 3 male voices
         const maleVoices = enVoices.filter(voice => 
           voice.name.toLowerCase().includes('male') ||
           voice.name.toLowerCase().includes('man') ||
           voice.name.toLowerCase().includes('daniel') ||
           voice.name.toLowerCase().includes('alex') ||
-          voice.name.toLowerCase().includes('david')
-        ).slice(0, 2);
+          voice.name.toLowerCase().includes('david') ||
+          voice.name.toLowerCase().includes('james')
+        ).slice(0, 3);
         
-        // Combine and limit to 4 voices total
-        const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 4);
+        // Combine and limit to 5 voices total
+        const selectedVoices = [...femaleVoices, ...maleVoices].slice(0, 5);
         
-        // If we don't have 4 voices, just take the first 4 English voices
-        const finalVoices = selectedVoices.length === 4 ? selectedVoices : enVoices.slice(0, 4);
+        // If we don't have 5 voices, just take the first 5 English voices
+        const finalVoices = selectedVoices.length === 5 ? selectedVoices : enVoices.slice(0, 5);
         
         setAvailableVoices(finalVoices);
         
@@ -147,12 +148,11 @@ const CharacterCustomization = () => {
     if (isPlayingAudio) {
       window.speechSynthesis.cancel();
       setIsPlayingAudio(false);
+      setIsSpeaking(false);
       return;
     }
 
     try {
-      setIsPlayingAudio(true);
-      
       const utterance = new SpeechSynthesisUtterance(text);
       
       // Use selected voice
@@ -165,9 +165,19 @@ const CharacterCustomization = () => {
       utterance.pitch = 1.1; // Slightly higher pitch for friendly tone
       utterance.volume = 1;
       
-      utterance.onend = () => setIsPlayingAudio(false);
+      utterance.onstart = () => {
+        setIsPlayingAudio(true);
+        setIsSpeaking(true);
+      };
+      
+      utterance.onend = () => {
+        setIsPlayingAudio(false);
+        setIsSpeaking(false);
+      };
+      
       utterance.onerror = () => {
         setIsPlayingAudio(false);
+        setIsSpeaking(false);
         toast({
           title: "Audio Error",
           description: "Could not play audio. Please try again.",
@@ -179,12 +189,19 @@ const CharacterCustomization = () => {
     } catch (error) {
       console.error('Text-to-speech error:', error);
       setIsPlayingAudio(false);
+      setIsSpeaking(false);
       toast({
         title: "Error",
         description: "Could not generate speech. Please try again.",
         variant: "destructive",
       });
     }
+  };
+
+  const handleStopSpeech = () => {
+    window.speechSynthesis.cancel();
+    setIsPlayingAudio(false);
+    setIsSpeaking(false);
   };
 
   const handleSubmitWorry = async () => {
@@ -565,19 +582,25 @@ const CharacterCustomization = () => {
                           ))}
                         </SelectContent>
                       </Select>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleTextToSpeech(suggestion)}
-                        disabled={isPlayingAudio}
-                        className="shrink-0"
-                      >
-                        {isPlayingAudio ? (
-                          <VolumeX className="w-5 h-5 text-primary" />
-                        ) : (
+                      {!isPlayingAudio ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleTextToSpeech(suggestion)}
+                          className="shrink-0"
+                        >
                           <Volume2 className="w-5 h-5 text-primary" />
-                        )}
-                      </Button>
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleStopSpeech}
+                          className="shrink-0"
+                        >
+                          <VolumeX className="w-5 h-5 text-destructive" />
+                        </Button>
+                      )}
                     </div>
                   </div>
                   <p className="text-base text-foreground leading-relaxed">{suggestion}</p>
