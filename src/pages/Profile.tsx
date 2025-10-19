@@ -321,6 +321,40 @@ const Profile = () => {
           </CardContent>
         </Card>
 
+        {/* Wellness Quick Access */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Wellness Tools</CardTitle>
+            <CardDescription>
+              Quick access to your daily wellness features
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid sm:grid-cols-2 gap-4">
+            <Button
+              variant="outline"
+              className="h-auto p-4 flex flex-col items-start gap-2"
+              onClick={() => navigate("/daily-check-in")}
+            >
+              <div className="flex items-center gap-2 w-full">
+                <span className="text-2xl">😊</span>
+                <span className="font-semibold">Daily Check-In</span>
+              </div>
+              <span className="text-sm text-muted-foreground">Track your mood today</span>
+            </Button>
+            <Button
+              variant="outline"
+              className="h-auto p-4 flex flex-col items-start gap-2"
+              onClick={() => navigate("/breathing")}
+            >
+              <div className="flex items-center gap-2 w-full">
+                <span className="text-2xl">🫁</span>
+                <span className="font-semibold">Breathing Exercises</span>
+              </div>
+              <span className="text-sm text-muted-foreground">Calm your mind</span>
+            </Button>
+          </CardContent>
+        </Card>
+
         {/* Appearance Settings */}
         <Card className="mb-6">
           <CardHeader>

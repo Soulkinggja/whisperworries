@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Sparkles, LogOut, BookOpen, User as UserIcon } from "lucide-react";
+import { Sparkles, LogOut, BookOpen, User as UserIcon, MessageSquare, Clock, Trophy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { WorryHistory } from "@/components/WorryHistory";
@@ -301,11 +301,24 @@ const CharacterCustomization = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-8">
-              <TabsTrigger value="conversation">Conversation</TabsTrigger>
+            <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-5 mb-8">
+              <TabsTrigger value="conversation">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Chat
+              </TabsTrigger>
               <TabsTrigger value="new">Quick Worry</TabsTrigger>
-              <TabsTrigger value="history">History</TabsTrigger>
-              <TabsTrigger value="achievements">Achievements</TabsTrigger>
+              <TabsTrigger value="wellness">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Wellness
+              </TabsTrigger>
+              <TabsTrigger value="history">
+                <Clock className="w-4 h-4 mr-2" />
+                History
+              </TabsTrigger>
+              <TabsTrigger value="achievements">
+                <Trophy className="w-4 h-4 mr-2" />
+                Achievements
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="conversation">
@@ -401,6 +414,77 @@ const CharacterCustomization = () => {
               </Button>
             </div>
           </div>
+            </TabsContent>
+
+            <TabsContent value="wellness" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div 
+                  className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] cursor-pointer hover:shadow-[var(--shadow-glow)] transition-all hover:-translate-y-1"
+                  onClick={() => navigate("/daily-check-in")}
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-3xl">
+                      😊
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold">Daily Check-In</h3>
+                      <p className="text-sm text-muted-foreground">Track your mood</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="w-full">
+                    Start Check-In
+                  </Button>
+                </div>
+
+                <div 
+                  className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] cursor-pointer hover:shadow-[var(--shadow-glow)] transition-all hover:-translate-y-1"
+                  onClick={() => navigate("/breathing")}
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-3xl">
+                      🫁
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold">Breathing Exercises</h3>
+                      <p className="text-sm text-muted-foreground">Calm your mind</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="w-full">
+                    Start Exercise
+                  </Button>
+                </div>
+
+                <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center text-3xl">
+                      💬
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold">Daily Quote</h3>
+                      <p className="text-sm text-muted-foreground">Find inspiration</p>
+                    </div>
+                  </div>
+                  <p className="text-sm italic text-muted-foreground p-4 bg-muted/50 rounded-xl">
+                    "You are braver than you believe, stronger than you seem, and smarter than you think."
+                  </p>
+                </div>
+
+                <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Trophy className="w-8 h-8 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold">Your Streak</h3>
+                      <p className="text-sm text-muted-foreground">Keep it going!</p>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-bold text-primary mb-2">7</div>
+                    <div className="text-sm text-muted-foreground">days in a row</div>
+                  </div>
+                </div>
+              </div>
             </TabsContent>
 
             <TabsContent value="history">
