@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -15,12 +15,16 @@ import { ConversationThread } from "@/components/ConversationThread";
 import { ConversationList } from "@/components/ConversationList";
 import { FriendCharacter } from "@/components/FriendCharacter";
 import { useAchievements } from "@/hooks/useAchievements";
+import { GoalsHabits } from "@/components/GoalsHabits";
+import { ColorPicker } from "@/components/ui/color-picker";
 import type { User } from "@supabase/supabase-js";
 
 const CharacterCustomization = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [user, setUser] = useState<User | null>(null);
   const [selectedColor, setSelectedColor] = useState("character-gradient-blue");
+  const [customColor, setCustomColor] = useState("hsl(270, 65%, 65%)");
   const [selectedShape, setSelectedShape] = useState("square");
   const [selectedFace, setSelectedFace] = useState("happy");
   const [characterName, setCharacterName] = useState("");
@@ -32,7 +36,7 @@ const CharacterCustomization = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedUseCase, setSelectedUseCase] = useState("venting");
-  const [activeTab, setActiveTab] = useState("conversation");
+  const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "conversation");
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const { toast } = useToast();
   const { checkWorryMilestones } = useAchievements(user?.id);
@@ -416,14 +420,14 @@ const CharacterCustomization = () => {
           </div>
             </TabsContent>
 
-            <TabsContent value="wellness" className="space-y-6">
+            <TabsContent value="wellness" className="space-y-6 animate-fade-in">
               <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
                 <div 
-                  className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] cursor-pointer hover:shadow-[var(--shadow-glow)] transition-all hover:-translate-y-1"
+                  className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] cursor-pointer hover:shadow-[var(--shadow-glow)] transition-all hover:-translate-y-1 duration-300"
                   onClick={() => navigate("/daily-check-in")}
                 >
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-3xl">
+                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-3xl animate-float">
                       😊
                     </div>
                     <div>
@@ -437,11 +441,11 @@ const CharacterCustomization = () => {
                 </div>
 
                 <div 
-                  className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] cursor-pointer hover:shadow-[var(--shadow-glow)] transition-all hover:-translate-y-1"
+                  className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] cursor-pointer hover:shadow-[var(--shadow-glow)] transition-all hover:-translate-y-1 duration-300"
                   onClick={() => navigate("/breathing")}
                 >
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-3xl">
+                    <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-3xl animate-pulse-glow">
                       🫁
                     </div>
                     <div>
@@ -449,14 +453,14 @@ const CharacterCustomization = () => {
                       <p className="text-sm text-muted-foreground">Calm your mind</p>
                     </div>
                   </div>
-                  <Button variant="outline" className="w-full">
+                  <Button variant="outline" className="w-full transition-all hover:scale-105">
                     Start Exercise
                   </Button>
                 </div>
 
-                <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
+                <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)] transition-all duration-300 hover:shadow-lg">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center text-3xl">
+                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center text-3xl animate-float">
                       💬
                     </div>
                     <div>
@@ -464,25 +468,13 @@ const CharacterCustomization = () => {
                       <p className="text-sm text-muted-foreground">Find inspiration</p>
                     </div>
                   </div>
-                  <p className="text-sm italic text-muted-foreground p-4 bg-muted/50 rounded-xl">
+                  <p className="text-sm italic text-muted-foreground p-4 bg-muted/50 rounded-xl transition-all hover:bg-muted">
                     "You are braver than you believe, stronger than you seem, and smarter than you think."
                   </p>
                 </div>
 
-                <div className="bg-card rounded-3xl p-8 shadow-[var(--shadow-soft)]">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Trophy className="w-8 h-8 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">Your Streak</h3>
-                      <p className="text-sm text-muted-foreground">Keep it going!</p>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-5xl font-bold text-primary mb-2">7</div>
-                    <div className="text-sm text-muted-foreground">days in a row</div>
-                  </div>
+                <div className="md:col-span-2">
+                  <GoalsHabits />
                 </div>
               </div>
             </TabsContent>
@@ -628,17 +620,21 @@ const CharacterCustomization = () => {
             {/* Colors */}
             <div>
               <h3 className="text-xl font-semibold mb-4">Choose Color</h3>
-              <div className="flex gap-3 flex-wrap">
+              <div className="flex gap-3 flex-wrap mb-4">
                 {colors.map((color) => (
                   <button
                     key={color.name}
                     onClick={() => setSelectedColor(color.value)}
-                    className={`w-16 h-16 rounded-xl transition-all hover:scale-110 ${color.value} ${
-                      selectedColor === color.value ? "ring-4 ring-primary ring-offset-2" : ""
+                    className={`w-16 h-16 rounded-xl transition-all hover:scale-110 duration-300 ${color.value} ${
+                      selectedColor === color.value ? "ring-4 ring-primary ring-offset-2 scale-110" : ""
                     }`}
                     aria-label={`Select ${color.name}`}
                   />
                 ))}
+              </div>
+              <div className="mt-4">
+                <h4 className="text-sm font-medium mb-2 text-muted-foreground">Or create custom color</h4>
+                <ColorPicker value={customColor} onChange={setCustomColor} />
               </div>
             </div>
 

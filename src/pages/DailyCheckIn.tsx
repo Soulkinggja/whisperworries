@@ -93,11 +93,11 @@ const DailyCheckIn = () => {
       <div className="max-w-4xl mx-auto pt-8">
         <Button
           variant="ghost"
-          onClick={() => navigate("/customize")}
-          className="mb-6"
+          onClick={() => navigate("/customize?tab=wellness")}
+          className="mb-6 transition-all hover:scale-105 hover:translate-x-1"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
+          Back to Wellness
         </Button>
 
         <div className="grid gap-6 md:grid-cols-2">
