@@ -516,7 +516,7 @@ const CharacterCustomization = () => {
             {characterName && (
               <h2 className="text-2xl font-bold gradient-text animate-bounce">{characterName}</h2>
             )}
-            <div className="relative flex flex-col items-center gap-1 animate-bounce">
+            <div className="relative flex flex-col items-center gap-1 animate-gentle-sway">
               {/* Head */}
               <div
                 className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"

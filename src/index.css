@@ -200,6 +200,40 @@ All colors MUST be HSL.
     }
   }
   
+  @keyframes gentle-sway {
+    0%, 100% {
+      transform: translateX(0) translateY(0) rotate(0deg);
+    }
+    25% {
+      transform: translateX(-2px) translateY(-3px) rotate(-1deg);
+    }
+    50% {
+      transform: translateX(2px) translateY(-2px) rotate(0.5deg);
+    }
+    75% {
+      transform: translateX(-1px) translateY(-1px) rotate(-0.5deg);
+    }
+  }
+  
+  @keyframes breath {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
+  
+  @keyframes subtle-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  
+  
   .animate-float {
     animation: float 3s ease-in-out infinite;
   }
@@ -220,6 +254,19 @@ All colors MUST be HSL.
   .animate-scale-in {
     animation: scale-in 0.3s ease-out;
   }
+  
+  .animate-gentle-sway {
+    animation: gentle-sway 4s ease-in-out infinite;
+  }
+  
+  .animate-breath {
+    animation: breath 3s ease-in-out infinite;
+  }
+  
+  .animate-subtle-bounce {
+    animation: subtle-bounce 2s ease-in-out infinite;
+  }
+  
   
   .gradient-text {
     background: var(--gradient-sunset);
