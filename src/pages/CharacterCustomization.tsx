@@ -19,7 +19,7 @@ import { GoalsHabits } from "@/components/GoalsHabits";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { StreakTracker } from "@/components/StreakTracker";
 import { GratitudeJar } from "@/components/GratitudeJar";
-import { VirtualPet } from "@/components/VirtualPet";
+import { ThoughtClouds } from "@/components/ThoughtClouds";
 import { MoodCalendar } from "@/components/MoodCalendar";
 import { WeeklyInsights } from "@/components/WeeklyInsights";
 import { useSpeechToText } from "@/hooks/useSpeechToText";
@@ -648,8 +648,8 @@ const CharacterCustomization = () => {
               <StreakTracker userId={user?.id} />
 
               <div className="grid md:grid-cols-2 gap-6">
-                {/* Virtual Pet */}
-                <VirtualPet userId={user?.id} />
+                {/* Thought Clouds */}
+                <ThoughtClouds userId={user?.id} />
                 
                 {/* Gratitude Jar */}
                 <GratitudeJar userId={user?.id} />
