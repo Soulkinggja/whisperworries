@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Sparkles, LogOut, BookOpen, User as UserIcon, MessageSquare, Clock, Trophy } from "lucide-react";
+import { Sparkles, LogOut, BookOpen, User as UserIcon, MessageSquare, Clock, Trophy, Mic, MicOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { WorryHistory } from "@/components/WorryHistory";
@@ -22,6 +22,7 @@ import { GratitudeJar } from "@/components/GratitudeJar";
 import { VirtualPet } from "@/components/VirtualPet";
 import { MoodCalendar } from "@/components/MoodCalendar";
 import { WeeklyInsights } from "@/components/WeeklyInsights";
+import { useSpeechToText } from "@/hooks/useSpeechToText";
 import type { User } from "@supabase/supabase-js";
 
 const CharacterCustomization = () => {
@@ -45,6 +46,13 @@ const CharacterCustomization = () => {
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const { toast } = useToast();
   const { checkWorryMilestones } = useAchievements(user?.id);
+  const { isListening, transcript, startListening, stopListening, resetTranscript } = useSpeechToText();
+
+  useEffect(() => {
+    if (transcript) {
+      setWorries(transcript);
+    }
+  }, [transcript]);
 
   // Auth check
   useEffect(() => {
@@ -401,13 +409,36 @@ const CharacterCustomization = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                <Textarea
-                  value={worries}
-                  onChange={(e) => setWorries(e.target.value)}
-                  placeholder="Type your worries here..."
-                  className="min-h-[300px] text-lg resize-none"
-                  disabled={isLoading}
-                />
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center mb-2">
+                    <Label>Share your thoughts</Label>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={isListening ? stopListening : startListening}
+                      disabled={isLoading}
+                    >
+                      {isListening ? (
+                        <>
+                          <MicOff className="w-4 h-4 mr-2 text-destructive animate-pulse" />
+                          Stop Recording
+                        </>
+                      ) : (
+                        <>
+                          <Mic className="w-4 h-4 mr-2" />
+                          Start Recording
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <Textarea
+                    value={worries}
+                    onChange={(e) => setWorries(e.target.value)}
+                    placeholder="Type or speak your worries here..."
+                    className="min-h-[300px] text-lg resize-none"
+                    disabled={isLoading}
+                  />
+                </div>
               </div>
               
               {suggestion && (

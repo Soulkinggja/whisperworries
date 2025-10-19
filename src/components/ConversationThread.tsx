@@ -2,12 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
-import { Send, Loader2, MessageCircle, Paperclip, X } from "lucide-react";
+import { Send, Loader2, MessageCircle, Paperclip, X, Mic, MicOff } from "lucide-react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Card } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
 import { Input } from "./ui/input";
+import { useSpeechToText } from "@/hooks/useSpeechToText";
 
 interface Message {
   id: string;
@@ -39,6 +40,13 @@ export const ConversationThread = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { isListening, transcript, startListening, stopListening, resetTranscript } = useSpeechToText();
+
+  useEffect(() => {
+    if (transcript) {
+      setNewMessage(transcript);
+    }
+  }, [transcript]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -149,6 +157,10 @@ export const ConversationThread = ({
 
     const userMessage = newMessage.trim();
     setNewMessage("");
+    resetTranscript();
+    if (isListening) {
+      stopListening();
+    }
     setIsTyping(true);
     setIsSending(true);
 
@@ -367,6 +379,19 @@ export const ConversationThread = ({
               className="h-[80px] w-[80px]"
             >
               <Paperclip className="w-5 h-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={isListening ? stopListening : startListening}
+              disabled={isSending || uploadingFile}
+              className="h-[80px] w-[80px]"
+            >
+              {isListening ? (
+                <MicOff className="w-5 h-5 text-destructive animate-pulse" />
+              ) : (
+                <Mic className="w-5 h-5" />
+              )}
             </Button>
             <Textarea
               ref={textareaRef}
