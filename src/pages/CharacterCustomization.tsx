@@ -435,34 +435,69 @@ const CharacterCustomization = () => {
         <div className="flex flex-col items-center gap-8">
           {/* Character moving to center */}
           <div className="relative flex flex-col items-center gap-1 transition-all duration-[3000ms] ease-out">
+            {/* Hair for female */}
+            {selectedGender === "female" && (
+              <>
+                {/* Main hair volume */}
+                <div
+                  className="w-36 h-24 absolute -top-8 rounded-t-full z-0"
+                  style={{
+                    backgroundColor: customColor,
+                    opacity: 0.95,
+                    boxShadow: `0 2px 12px ${customColor}40`,
+                  }}
+                />
+                {/* Hair strands on sides */}
+                <div
+                  className="w-16 h-20 absolute -top-6 -left-8 rounded-l-full z-0"
+                  style={{
+                    backgroundColor: customColor,
+                    opacity: 0.9,
+                  }}
+                />
+                <div
+                  className="w-16 h-20 absolute -top-6 -right-8 rounded-r-full z-0"
+                  style={{
+                    backgroundColor: customColor,
+                    opacity: 0.9,
+                  }}
+                />
+              </>
+            )}
+
             {/* Head */}
             <div
-              className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center"
+              className="w-24 h-24 transition-all duration-300 relative flex items-center justify-center z-10"
               style={{
                 borderRadius: selectedShape === "circle" ? "50%" : "4px",
                 backgroundColor: customColor,
+                boxShadow: `0 0 20px ${customColor}60`,
               }}
             >
               {/* Face */}
               <div className="flex flex-col items-center gap-2">
-                {/* Eyes */}
+                {/* Eyes with eyelashes for female */}
                 <div className="flex gap-3">
-                  <div 
-                    className="w-3 h-3 bg-foreground rounded-full"
-                    style={{
-                      height: selectedFace === "calm" ? "2px" : 
-                              selectedFace === "angry" ? "2px" : "12px",
-                      transform: selectedFace === "angry" ? "rotate(-20deg)" : "none",
-                    }}
-                  />
-                  <div 
-                    className="w-3 h-3 bg-foreground rounded-full"
-                    style={{
-                      height: selectedFace === "calm" ? "2px" : 
-                              selectedFace === "angry" ? "2px" : "12px",
-                      transform: selectedFace === "angry" ? "rotate(20deg)" : "none",
-                    }}
-                  />
+                  {[0, 1].map((i) => (
+                    <div key={i} className="relative">
+                      <div 
+                        className="w-3 h-3 bg-foreground rounded-full"
+                        style={{
+                          height: selectedFace === "calm" ? "2px" : 
+                                  selectedFace === "angry" ? "2px" : "12px",
+                          transform: selectedFace === "angry" ? (i === 0 ? "rotate(-20deg)" : "rotate(20deg)") : "none",
+                        }}
+                      />
+                      {/* Eyelashes for female */}
+                      {selectedGender === "female" && (
+                        <div className="absolute -top-1 left-0 w-3 flex gap-[2px]">
+                          <div className="w-[2px] h-2 bg-foreground rounded-full rotate-[-20deg]" />
+                          <div className="w-[2px] h-2 bg-foreground rounded-full" />
+                          <div className="w-[2px] h-2 bg-foreground rounded-full rotate-[20deg]" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
                 {/* Mouth */}
                 <div 
@@ -488,6 +523,7 @@ const CharacterCustomization = () => {
               style={{
                 borderRadius: selectedShape === "circle" ? "50%" : "4px",
                 backgroundColor: customColor,
+                boxShadow: `0 4px 20px ${customColor}40`,
               }}
             />
             
@@ -1015,7 +1051,7 @@ const CharacterCustomization = () => {
                       : "border-border bg-card"
                   }`}
                 >
-                  ♂ Male (No Hair)
+                  ♂ Male
                 </button>
                 <button
                   onClick={() => setSelectedGender("female")}
@@ -1025,7 +1061,7 @@ const CharacterCustomization = () => {
                       : "border-border bg-card"
                   }`}
                 >
-                  ♀ Female (With Hair)
+                  ♀ Female
                 </button>
               </div>
             </div>
