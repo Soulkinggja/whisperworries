@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,55 +6,29 @@ import { Slider } from "@/components/ui/slider";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Sparkles } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { format } from "date-fns";
-
-interface CheckIn {
-  id: string;
-  mood: number;
-  note: string;
-  created_at: string;
-}
+import { Card } from "@/components/ui/card";
 
 const DailyCheckIn = () => {
   const [mood, setMood] = useState([3]);
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
-  const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
-  const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-      if (user) fetchCheckIns(user.id);
-    });
-  }, []);
-
-  const fetchCheckIns = async (userId: string) => {
-    const { data, error } = await supabase
-      .from("daily_check_ins")
-      .select("*")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(10);
-
-    if (data) setCheckIns(data);
-  };
 
   const moodEmojis = ["😢", "😕", "😐", "🙂", "😊"];
   const moodLabels = ["Very Low", "Low", "Neutral", "Good", "Great"];
 
   const handleSubmit = async () => {
-    if (!user) return;
-
     setLoading(true);
     try {
-      const { error } = await supabase.from("daily_check_ins").insert({
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { error } = await supabase.from("journal_entries").insert({
         user_id: user.id,
-        mood: mood[0],
-        note,
+        title: `Daily Check-in - ${new Date().toLocaleDateString()}`,
+        content: note,
+        mood: moodLabels[mood[0] - 1],
       });
 
       if (error) throw error;
@@ -63,10 +37,8 @@ const DailyCheckIn = () => {
         title: "✨ Check-in saved!",
         description: "Your daily mood has been recorded.",
       });
-      
-      setMood([3]);
-      setNote("");
-      fetchCheckIns(user.id);
+
+      navigate("/customize");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -143,57 +115,18 @@ const DailyCheckIn = () => {
               />
             </div>
 
-            {/* Submit Buttons */}
-            <div className="flex gap-2">
-              <Button
-                onClick={() => navigate("/customize")}
-                variant="outline"
-                className="flex-1"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <Button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="flex-1"
-                size="lg"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                {loading ? "Saving..." : "Save Check-In"}
-              </Button>
-            </div>
+            {/* Submit Button */}
+            <Button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="w-full"
+              size="lg"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              {loading ? "Saving..." : "Save Check-In"}
+            </Button>
           </div>
         </Card>
-
-        {/* Check-in History */}
-        {checkIns.length > 0 && (
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle>Recent Check-Ins</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {checkIns.map((checkIn) => (
-                  <div key={checkIn.id} className="p-3 border rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{moodEmojis[checkIn.mood - 1]}</span>
-                        <span className="font-medium">{moodLabels[checkIn.mood - 1]}</span>
-                      </div>
-                      <span className="text-sm text-muted-foreground">
-                        {format(new Date(checkIn.created_at), "MMM dd, yyyy")}
-                      </span>
-                    </div>
-                    {checkIn.note && (
-                      <p className="text-sm text-muted-foreground">{checkIn.note}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );

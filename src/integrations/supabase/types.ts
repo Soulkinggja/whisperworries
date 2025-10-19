@@ -97,38 +97,6 @@ export type Database = {
         }
         Relationships: []
       }
-      daily_check_ins: {
-        Row: {
-          created_at: string
-          id: string
-          mood: number
-          note: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          mood: number
-          note?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          mood?: number
-          note?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "daily_check_ins_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       friend_connections: {
         Row: {
           created_at: string
@@ -210,80 +178,6 @@ export type Database = {
           },
         ]
       }
-      goals: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: string
-          is_active: boolean | null
-          target_days: number | null
-          title: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_active?: boolean | null
-          target_days?: number | null
-          title: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_active?: boolean | null
-          target_days?: number | null
-          title?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "goals_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      habit_completions: {
-        Row: {
-          completed_at: string
-          goal_id: string
-          id: string
-          user_id: string
-        }
-        Insert: {
-          completed_at?: string
-          goal_id: string
-          id?: string
-          user_id: string
-        }
-        Update: {
-          completed_at?: string
-          goal_id?: string
-          id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "habit_completions_goal_id_fkey"
-            columns: ["goal_id"]
-            isOneToOne: false
-            referencedRelation: "goals"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "habit_completions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       journal_entries: {
         Row: {
           content: string
@@ -320,40 +214,28 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
-          character_color: string | null
-          character_face: string | null
-          character_shape: string | null
           created_at: string
           display_name: string | null
           gender: string | null
           id: string
-          onboarding_completed: boolean | null
           theme: string | null
           updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
-          character_color?: string | null
-          character_face?: string | null
-          character_shape?: string | null
           created_at?: string
           display_name?: string | null
           gender?: string | null
           id: string
-          onboarding_completed?: boolean | null
           theme?: string | null
           updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
-          character_color?: string | null
-          character_face?: string | null
-          character_shape?: string | null
           created_at?: string
           display_name?: string | null
           gender?: string | null
           id?: string
-          onboarding_completed?: boolean | null
           theme?: string | null
           updated_at?: string | null
         }
