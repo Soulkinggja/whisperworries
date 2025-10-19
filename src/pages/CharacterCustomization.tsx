@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Sparkles, LogOut, BookOpen, User as UserIcon, MessageSquare, Clock, Trophy, Mic, MicOff } from "lucide-react";
+import { Sparkles, LogOut, BookOpen, User as UserIcon, MessageSquare, Clock, Trophy, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { WorryHistory } from "@/components/WorryHistory";
@@ -41,6 +41,7 @@ const CharacterCustomization = () => {
   const [suggestion, setSuggestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [selectedUseCase, setSelectedUseCase] = useState("venting");
   const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "conversation");
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
@@ -78,6 +79,40 @@ const CharacterCustomization = () => {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/auth");
+  };
+
+  const handleTextToSpeech = async (text: string) => {
+    try {
+      setIsPlayingAudio(true);
+      
+      const { data, error } = await supabase.functions.invoke('text-to-speech', {
+        body: { text, voice: 'alloy' }
+      });
+
+      if (error) throw error;
+
+      if (data?.audioContent) {
+        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+        audio.onended = () => setIsPlayingAudio(false);
+        audio.onerror = () => {
+          setIsPlayingAudio(false);
+          toast({
+            title: "Audio Error",
+            description: "Could not play audio. Please try again.",
+            variant: "destructive",
+          });
+        };
+        await audio.play();
+      }
+    } catch (error) {
+      console.error('Text-to-speech error:', error);
+      setIsPlayingAudio(false);
+      toast({
+        title: "Error",
+        description: "Could not generate speech. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSubmitWorry = async () => {
@@ -443,7 +478,22 @@ const CharacterCustomization = () => {
               
               {suggestion && (
                 <div className="bg-card rounded-3xl p-6 shadow-[var(--shadow-soft)] border-2 border-primary/20">
-                  <h3 className="text-lg font-semibold mb-3 text-primary">Your companion suggests:</h3>
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <h3 className="text-lg font-semibold text-primary">Your companion suggests:</h3>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleTextToSpeech(suggestion)}
+                      disabled={isPlayingAudio}
+                      className="shrink-0"
+                    >
+                      {isPlayingAudio ? (
+                        <VolumeX className="w-5 h-5 text-primary" />
+                      ) : (
+                        <Volume2 className="w-5 h-5 text-primary" />
+                      )}
+                    </Button>
+                  </div>
                   <p className="text-base text-foreground leading-relaxed">{suggestion}</p>
                 </div>
               )}
