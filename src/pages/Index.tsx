@@ -58,6 +58,11 @@ const Index = () => {
           
           <p className="text-xs md:text-sm text-muted-foreground mt-4 md:mt-6">A safe space for your thoughts • Free to use </p>
         </div>
+
+        {/* Copyright */}
+        <footer className="mt-8 text-xs text-muted-foreground">
+          Copyright © 2025 by Devin McIntosh and Aiden Beckford
+        </footer>
       </div>
     </div>;
 };

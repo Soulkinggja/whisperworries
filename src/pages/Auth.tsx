@@ -326,6 +326,10 @@ const Auth = () => {
             </TabsContent>
           </Tabs>
         </div>
+
+        <footer className="mt-6 text-center text-xs text-muted-foreground">
+          Copyright © 2025 by Devin McIntosh and Aiden Beckford
+        </footer>
       </div>
     </div>
   );
