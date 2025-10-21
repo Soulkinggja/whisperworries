@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles, Heart, Users, BookOpen } from "lucide-react";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-gradient-calm flex items-center justify-center px-4">
+  return <div className="min-h-screen bg-gradient-calm flex items-center justify-center px-4">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float" style={{
+        animationDelay: "1s"
+      }} />
       </div>
 
       <div className="container max-w-4xl mx-auto text-center relative z-10 space-y-8 md:space-y-12">
@@ -51,23 +51,14 @@ const Index = () => {
 
         {/* CTA Button */}
         <div className="pt-4 md:pt-8 animate-fade-in px-4">
-          <Button 
-            variant="magical" 
-            size="lg"
-            className="text-lg md:text-xl px-8 md:px-12 py-5 md:py-6 shadow-xl hover:shadow-2xl active:scale-95 w-full sm:w-auto min-h-[3rem]"
-            onClick={() => window.location.href = '/auth'}
-          >
+          <Button variant="magical" size="lg" className="text-lg md:text-xl px-8 md:px-12 py-5 md:py-6 shadow-xl hover:shadow-2xl active:scale-95 w-full sm:w-auto min-h-[3rem]" onClick={() => window.location.href = '/auth'}>
             <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
             Get Started
           </Button>
           
-          <p className="text-xs md:text-sm text-muted-foreground mt-4 md:mt-6">
-            A safe space for your thoughts • Free to use
-          </p>
+          <p className="text-xs md:text-sm text-muted-foreground mt-4 md:mt-6">A safe space for your thoughts • Free to use </p>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
